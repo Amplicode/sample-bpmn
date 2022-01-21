@@ -1,1 +1,3 @@
 rootProject.name = 'insurance-demo'
+
+include 'frontend'

@@ -3,5 +3,83 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
-                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1642572039581-1" author="amplicode">
+        <createTable tableName="claim">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_claim"/>
+            </column>
+            <column name="policy_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="timestamp" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1024)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1642572039581-2" author="amplicode">
+        <createTable tableName="policy">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_policy"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="policy_type_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="policy_holder_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="insurance_premium" type="DECIMAL(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="insurance_sum" type="DECIMAL(19, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="case_description" type="VARCHAR(1024)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1642572039581-3" author="amplicode">
+        <createTable tableName="policy_type">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_policy_type"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(1024)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1642572039581-4" author="amplicode">
+        <createTable tableName="policyholder">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_policyholder"/>
+            </column>
+            <column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_of_birth" type="timestamp with time zone">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="1642572039581-5" author="amplicode">
+        <addForeignKeyConstraint baseColumnNames="policy_id" baseTableName="claim" constraintName="FK_CLAIM_ON_POLICY"
+                                 referencedColumnNames="id" referencedTableName="policy"/>
+    </changeSet>
+    <changeSet id="1642572039581-6" author="amplicode">
+        <addForeignKeyConstraint baseColumnNames="policy_holder_id" baseTableName="policy"
+                                 constraintName="FK_POLICY_ON_POLICY_HOLDER" referencedColumnNames="id"
+                                 referencedTableName="policyholder"/>
+    </changeSet>
+    <changeSet id="1642572039581-7" author="amplicode">
+        <addForeignKeyConstraint baseColumnNames="policy_type_id" baseTableName="policy"
+                                 constraintName="FK_POLICY_ON_POLICY_TYPE" referencedColumnNames="id"
+                                 referencedTableName="policy_type"/>
+    </changeSet>
+
 </databaseChangeLog>

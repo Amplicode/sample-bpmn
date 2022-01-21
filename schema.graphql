@@ -1,0 +1,138 @@
+# This file was automatically generated. Do not edit manually.
+
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type ClaimOutputDto {
+    description: String
+    id: Long
+    policy: String
+    timestamp: String
+}
+
+"Mutation root"
+type Mutation {
+    delete_Claim(id: Long!): Boolean!
+    delete_Policy(id: Long!): Boolean!
+    delete_PolicyType(id: Long!): Boolean!
+    delete_Policyholder(id: Long!): Boolean!
+    upsert_Claim(dto: ClaimInputDtoInput): ClaimOutputDto
+    upsert_Policy(dto: PolicyInputDtoInput): PolicyOutputDto
+    upsert_PolicyType(dto: PolicyTypeDtoInput): PolicyTypeDto
+    upsert_Policyholder(dto: PolicyholderDtoInput): PolicyholderDto
+}
+
+type PolicyOutputDto {
+    caseDescription: String
+    id: Long
+    insurancePremium: BigDecimal
+    insuranceSum: BigDecimal
+    name: String
+    policyType: String
+    policyholder: String
+}
+
+type PolicyTypeDto {
+    description: String
+    id: Long
+    name: String
+}
+
+type PolicyholderDto {
+    address: String
+    dateOfBirth: String
+    id: Long
+    name: String
+}
+
+"Query root"
+type Query {
+    claim(id: Long!): ClaimOutputDto
+    claims: [ClaimOutputDto]
+    policies: [PolicyOutputDto]
+    policy(id: Long!): PolicyOutputDto
+    policyType(id: Long!): PolicyTypeDto
+    policyTypes: [PolicyTypeDto]
+    policyholder(id: Long!): PolicyholderDto
+    policyholders: [PolicyholderDto]
+}
+
+"BigDecimal"
+scalar BigDecimal
+
+"BigInteger"
+scalar BigInteger
+
+"Byte"
+scalar Byte
+
+"Char"
+scalar Char
+
+"Date"
+scalar Date
+
+"DateTime"
+scalar DateTime
+
+"LocalDate"
+scalar LocalDate
+
+"LocalDateTime"
+scalar LocalDateTime
+
+"LocalTime"
+scalar LocalTime
+
+"Long"
+scalar Long
+
+"OffsetDateTime"
+scalar OffsetDateTime
+
+"OffsetTime"
+scalar OffsetTime
+
+"Short"
+scalar Short
+
+"Time"
+scalar Time
+
+"UUID"
+scalar UUID
+
+"Void"
+scalar Void
+
+input ClaimInputDtoInput {
+    description: String
+    id: Long
+    policy: Long
+    timestamp: OffsetDateTime
+}
+
+input PolicyInputDtoInput {
+    caseDescription: String
+    id: Long
+    insurancePremium: BigDecimal
+    insuranceSum: BigDecimal
+    name: String
+    policyType: Long
+    policyholder: Long
+}
+
+input PolicyTypeDtoInput {
+    description: String
+    id: Long
+    name: String
+}
+
+input PolicyholderDtoInput {
+    address: String
+    dateOfBirth: String
+    id: Long
+    name: String
+}

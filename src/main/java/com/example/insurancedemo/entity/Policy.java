@@ -27,7 +27,7 @@ public class Policy {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "policy_holder_id", nullable = false)
-    private PolicyHolder policyHolder;
+    private Policyholder policyholder;
 
     @Column(name = "insurance_premium", nullable = false, precision = 19, scale = 2)
     private BigDecimal insurancePremium;
@@ -38,12 +38,12 @@ public class Policy {
     @Column(name = "case_description", length = 1024)
     private String caseDescription;
 
-    public PolicyHolder getPolicyHolder() {
-        return policyHolder;
+    public Policyholder getPolicyholder() {
+        return policyholder;
     }
 
-    public void setPolicyHolder(PolicyHolder policyHolder) {
-        this.policyHolder = policyHolder;
+    public void setPolicyholder(Policyholder policyholder) {
+        this.policyholder = policyholder;
     }
 
     public String getCaseDescription() {
