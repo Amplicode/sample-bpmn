@@ -26,6 +26,8 @@ dependencies {
 //    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.3'
+
     implementation 'org.liquibase:liquibase-core'
     implementation "org.mapstruct:mapstruct"
     implementation 'io.leangen.graphql:graphql-spqr-spring-boot-starter'

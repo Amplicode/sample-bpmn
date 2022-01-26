@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Policyholder",
+      "type": "textfield",
+      "id": "Field_0yg2o9o",
+      "key": "policyholderId",
+      "description": "Your ID in the Insurance System",
+      "validate": {
+        "required": true,
+        "regularExpressionPattern": "^[0-9]$"
+      }
+    },
+    {
+      "label": "Policy",
+      "type": "textfield",
+      "id": "Field_0ash189",
+      "key": "policyId",
+      "description": "Your Policy ID",
+      "validate": {
+        "regularExpressionPattern": "^[0-9]$",
+        "required": true
+      }
+    },
+    {
+      "label": "Description",
+      "type": "textfield",
+      "id": "Field_1q496o6",
+      "key": "description",
+      "description": "Claim Description",
+      "validate": {
+        "maxLength": 1024
+      }
+    }
+  ],
+  "type": "default",
+  "id": "initial"
+}

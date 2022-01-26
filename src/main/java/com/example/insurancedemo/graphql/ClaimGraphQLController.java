@@ -12,6 +12,7 @@ import io.leangen.graphql.annotations.GraphQLQuery;
 import io.leangen.graphql.spqr.spring.annotations.GraphQLApi;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -49,6 +50,7 @@ public class ClaimGraphQLController {
 
     @GraphQLMutation(name = "upsert_Claim")
     public ClaimOutputDto upsert(@GraphQLArgument(name = "dto") ClaimInputDto dto) {
+        dto.setTimestamp(OffsetDateTime.now());
         final Claim claim = repository.save(mapper.fromDto(dto));
         return mapper.fromEntity(claim);
     }
