@@ -160,16 +160,16 @@ export const PolicyholderList = observer(({onSelect}: EntityListScreenProps) => 
     );
 });
 
-const fieldArray = ["dateOfBirth", "address"];
+const fieldArray = ["id", "dateOfBirth", "address"];
 
 const Fields = ({entity}: { entity: any }) => (
     <>
         {Object.keys(entity)
-            .filter(p => p !== "id" && p !== "name" && entity[p] != null)
+            .filter(p => p !== "name" && entity[p] != null)
             .sort((a, b) => fieldArray.indexOf(a) - fieldArray.indexOf(b))
             .map(p => (
                 <div key={p}>
-                    <strong>{guessLabel(p)}:</strong> {renderFieldValue(entity, p)}
+                    <strong>{guessLabelExtended(p)}:</strong> {renderFieldValue(entity, p)}
                 </div>
             ))}
     </>
@@ -265,4 +265,8 @@ function getUpdateFn(e: any) {
             }
         });
     };
+}
+
+function guessLabelExtended(p: string) {
+    return p == "id" ? "ID" : guessLabel(p);
 }

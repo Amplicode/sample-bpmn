@@ -111,7 +111,6 @@ input ClaimInputDtoInput {
     description: String
     id: Long
     policy: Long
-    timestamp: OffsetDateTime
 }
 
 input PolicyInputDtoInput {

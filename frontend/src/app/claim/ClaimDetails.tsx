@@ -190,19 +190,19 @@ export const ClaimDetails = observer(({id}: EntityDetailsScreenProps) => {
                         <TextArea rows={2}/>
                     </Form.Item>
 
-                    <Form.Item
-                        name="timestamp"
-                        label="Timestamp"
-                        style={{marginBottom: "12px"}}
-                        rules={[
-                            {
-                                required: true,
-                                message: "Field \"Timestamp\" is mandatory"
-                            }
-                        ]}
-                    >
-                        <DatePicker format="DD/MM/YYYY HH:mm:ss" showTime/>
-                    </Form.Item>
+                    {/*<Form.Item*/}
+                    {/*    name="timestamp"*/}
+                    {/*    label="Timestamp"*/}
+                    {/*    style={{marginBottom: "12px"}}*/}
+                    {/*    rules={[*/}
+                    {/*        {*/}
+                    {/*            required: true,*/}
+                    {/*            message: "Field \"Timestamp\" is mandatory"*/}
+                    {/*        }*/}
+                    {/*    ]}*/}
+                    {/*>*/}
+                    {/*    <DatePicker format="DD/MM/YYYY HH:mm:ss" showTime/>*/}
+                    {/*</Form.Item>*/}
 
                     {formError && (
                         <Alert

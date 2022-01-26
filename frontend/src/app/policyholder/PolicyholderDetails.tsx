@@ -116,7 +116,7 @@ export const PolicyholderDetails = observer(({id}: EntityDetailsScreenProps) => 
         }
     }, [item, form]);
 
-    // useDefaultEditorHotkeys({saveEntity: form.submit});
+    useDefaultEditorHotkeys({saveEntity: form.submit});
 
     if (queryLoading) {
         return <Spin/>;
