@@ -40,7 +40,7 @@ const POLICY = gql(/* GraphQL */ `
 `);
 
 const POLICYHOLDERS = gql(/* GraphQL */ `
-    query policyholders {
+    query policyholdersList {
         policyholders {
             id
             name
@@ -49,7 +49,7 @@ const POLICYHOLDERS = gql(/* GraphQL */ `
 `);
 
 const POLICY__TYPES = gql(/* GraphQL */ `
-    query policyTypes {
+    query policyTypesList {
         policyTypes {
             id
             name

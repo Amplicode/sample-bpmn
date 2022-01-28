@@ -30,7 +30,7 @@ const CLAIM = gql(/* GraphQL */ `
 `);
 
 const POLICIES = gql(/* GraphQL */ `
-    query policies {
+    query policiesList {
         policies {
             id
             name
