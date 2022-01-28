@@ -24,12 +24,10 @@ public class RaisePremiumService implements JavaDelegate {
         final long policyId = BPMSupport.parseLongVariable(execution, "policyId");
         final Policy policy = policyRepository.getById(policyId);
 
-        final BigDecimal insurancePremium = (BigDecimal) execution.getVariable("insurancePremium");
+        final BigDecimal insurancePremium = BPMSupport.parseBigDecimalVariable(execution, "insurancePremium");
 
         policy.setInsurancePremium(insurancePremium);
 
         policyRepository.save(policy);
-
-        execution.setVariable("insurancePremium", insurancePremium);
     }
 }

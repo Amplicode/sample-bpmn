@@ -21,7 +21,7 @@ public class PerformPaymentService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution execution) throws Exception {
         final long policyId = BPMSupport.parseLongVariable(execution, "policyId");
-        final BigDecimal amount = (BigDecimal) execution.getVariable("amount");
+        final BigDecimal amount = BPMSupport.parseBigDecimalVariable(execution, "amount");
 
         final Policy policy = policyRepository.getById(policyId);
 

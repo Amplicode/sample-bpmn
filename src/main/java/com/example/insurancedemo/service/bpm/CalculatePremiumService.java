@@ -29,7 +29,7 @@ public class CalculatePremiumService implements JavaDelegate {
 
         final BigDecimal insuranceSum = policy.getInsuranceSum();
 
-        final BigDecimal amount = (BigDecimal) execution.getVariable("amount");
+        final BigDecimal amount = BPMSupport.parseBigDecimalVariable(execution, "amount");
 
         final BigDecimal unchangedPremiumLimit = insuranceSum.divide(BigDecimal.valueOf(2), new MathContext(insuranceSum.precision()));
 
@@ -37,7 +37,15 @@ public class CalculatePremiumService implements JavaDelegate {
             final BigDecimal newInsurancePremium = insurancePremium.multiply(BigDecimal.valueOf(2),
                     new MathContext(insurancePremium.precision()));
 
-            execution.setVariable("insurancePremium", newInsurancePremium);
+
+
+            execution.setVariable("insurancePremium", BPMSupport.formatBigDecimal(newInsurancePremium));
+
+            // Variable "text" is for possible notification creation; maybe it's better to put out this functionality into
+            // a suitable service task.
+            execution.setVariable("text", "Mr Insured,\n" +
+                    "The payment on your insurance claim exceeded the limit. The future insurance premium is " +
+                    "set to " + newInsurancePremium + ".");
 
             execution.setVariable("isPremiumChanged", true);
         } else {

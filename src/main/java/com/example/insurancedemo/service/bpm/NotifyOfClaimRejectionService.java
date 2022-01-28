@@ -6,6 +6,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service for Notification Service Task
+ */
 @Service
 public class NotifyOfClaimRejectionService implements JavaDelegate {
 

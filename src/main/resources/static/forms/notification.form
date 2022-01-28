@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "To",
+      "type": "textfield",
+      "id": "Field_06crpfz",
+      "key": "to",
+      "description": "Email Recipient",
+      "validate": {
+        "required": true,
+        "pattern": "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
+      }
+    },
+    {
+      "label": "Subject",
+      "type": "textfield",
+      "id": "Field_07p2eac",
+      "key": "subject",
+      "description": "Subject of the Email"
+    },
+    {
+      "label": "Text",
+      "type": "textfield",
+      "id": "Field_168vdhy",
+      "key": "text",
+      "description": "Text of the Notification",
+      "validate": {
+        "required": true
+      }
+    }
+  ],
+  "type": "default",
+  "id": "notification"
+}

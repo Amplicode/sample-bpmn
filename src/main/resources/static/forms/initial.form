@@ -9,7 +9,7 @@
       "description": "Your ID in the Insurance System",
       "validate": {
         "required": true,
-        "regularExpressionPattern": "^[0-9]$"
+        "pattern": "^[0-9]$"
       }
     },
     {
@@ -19,7 +19,7 @@
       "key": "policyId",
       "description": "Your Policy ID",
       "validate": {
-        "regularExpressionPattern": "^[0-9]$",
+        "pattern": "^[0-9]$",
         "required": true
       }
     },

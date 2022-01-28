@@ -35,7 +35,7 @@ public class CalculatePaymentAmountService implements JavaDelegate {
 
             final BigDecimal amount = BPMSupport.randomBigDecimal(insuranceSum);
 
-            execution.setVariable("amount", amount);
+            execution.setVariable("amount", BPMSupport.formatBigDecimal(amount));
         } else {
             throw new ClaimNotFoundException("Claim with ID " + claimId + " is not found");
         }

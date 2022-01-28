@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
+/**
+ * Service for Notification Service Task
+ */
 @Service
 public class NotifyOfPremiumIncreaseService implements JavaDelegate {
 
