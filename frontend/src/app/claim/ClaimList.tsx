@@ -25,7 +25,9 @@ const CLAIMS = gql(/* GraphQL */ `
         claims {
             description
             id
-            policy
+            policy {
+                name
+            }
             timestamp
         }
     }

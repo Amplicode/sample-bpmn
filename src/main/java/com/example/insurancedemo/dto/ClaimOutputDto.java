@@ -3,7 +3,7 @@ package com.example.insurancedemo.dto;
 public class ClaimOutputDto {
 
     private Long id;
-    private String policy;
+    private PolicyOutputDto policy;
     private String timestamp;
     private String description;
 
@@ -15,11 +15,11 @@ public class ClaimOutputDto {
         this.id = id;
     }
 
-    public String getPolicy() {
+    public PolicyOutputDto getPolicy() {
         return policy;
     }
 
-    public void setPolicy(String policy) {
+    public void setPolicy(PolicyOutputDto policy) {
         this.policy = policy;
     }
 

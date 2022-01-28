@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 public class ClaimInputDto {
 
     private Long id;
-    private Long policy;
+    private Long policy;    // ID
     private OffsetDateTime timestamp;
     private String description;
 

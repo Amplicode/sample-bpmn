@@ -34,8 +34,12 @@ const POLICIES = gql(/* GraphQL */ `
             insurancePremium
             insuranceSum
             name
-            policyType
-            policyholder
+            policyType {
+                name
+            }
+            policyholder {
+                name
+            }
         }
     }
 `);

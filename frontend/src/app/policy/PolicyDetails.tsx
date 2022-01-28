@@ -19,10 +19,6 @@ import {
 } from "@amplicode/react-core";
 import TextArea from "antd/es/input/TextArea";
 
-interface Policy {
-
-}
-
 const {Option} = Select;
 
 const POLICY = gql(/* GraphQL */ `
@@ -33,8 +29,14 @@ const POLICY = gql(/* GraphQL */ `
             insurancePremium
             insuranceSum
             name
-            policyType
-            policyholder
+            policyType {
+                id
+                name
+            }
+            policyholder {
+                id
+                name
+            }
         }
     }
 `);
@@ -65,8 +67,14 @@ const UPSERT__POLICY = gql(/* GraphQL */ `
             insurancePremium
             insuranceSum
             name
-            policyholder
-            policyType
+            policyholder {
+                id
+                name
+            }
+            policyType {
+                id
+                name
+            }
         }
     }
 `);
@@ -209,7 +217,7 @@ export const PolicyDetails = observer(({id}: EntityDetailsScreenProps) => {
                             }
                         ]}>
                         <Select loading={policyholdersQueryLoading}
-                                disabled={item}>
+                                disabled={item != null}>
                             {policyholders?.map((policyholder: any) => {
                                 return <Option value={policyholder["id"]} key={policyholder["id"]}>
                                     {policyholder["name"]}
@@ -329,7 +337,8 @@ function formValuesToData(values: any, id?: string): any {
 }
 
 function dataToFormValues(data: any): any {
-    return data;
+    const {policyholder, policyType, ...filteredData} = data;
+    return {policyholder: policyholder.id, policyType: policyType.id, ...filteredData};
 }
 
 function getUpdateFn(values: any) {

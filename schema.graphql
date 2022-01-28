@@ -8,7 +8,7 @@ schema {
 type ClaimOutputDto {
     description: String
     id: Long
-    policy: String
+    policy: PolicyOutputDto
     timestamp: String
 }
 
@@ -30,8 +30,8 @@ type PolicyOutputDto {
     insurancePremium: BigDecimal
     insuranceSum: BigDecimal
     name: String
-    policyType: String
-    policyholder: String
+    policyType: PolicyTypeDto
+    policyholder: PolicyholderDto
 }
 
 type PolicyTypeDto {

@@ -1,15 +1,13 @@
 package com.example.insurancedemo.dto;
 
-import java.math.BigDecimal;
-
 public class PolicyOutputDto {
 
     private Long id;
     private String name;
-    private String policyType;
-    private String policyholder;
-    private BigDecimal insurancePremium;
-    private BigDecimal insuranceSum;
+    private PolicyTypeDto policyType;
+    private PolicyholderDto policyholder;
+    private String insurancePremium;
+    private String insuranceSum;
     private String caseDescription;
 
     public Long getId() {
@@ -28,35 +26,35 @@ public class PolicyOutputDto {
         this.name = name;
     }
 
-    public String getPolicyType() {
+    public PolicyTypeDto getPolicyType() {
         return policyType;
     }
 
-    public void setPolicyType(String policyType) {
+    public void setPolicyType(PolicyTypeDto policyType) {
         this.policyType = policyType;
     }
 
-    public String getPolicyholder() {
+    public PolicyholderDto getPolicyholder() {
         return policyholder;
     }
 
-    public void setPolicyholder(String policyholder) {
+    public void setPolicyholder(PolicyholderDto policyholder) {
         this.policyholder = policyholder;
     }
 
-    public BigDecimal getInsurancePremium() {
+    public String getInsurancePremium() {
         return insurancePremium;
     }
 
-    public void setInsurancePremium(BigDecimal insurancePremium) {
+    public void setInsurancePremium(String insurancePremium) {
         this.insurancePremium = insurancePremium;
     }
 
-    public BigDecimal getInsuranceSum() {
+    public String getInsuranceSum() {
         return insuranceSum;
     }
 
-    public void setInsuranceSum(BigDecimal insuranceSum) {
+    public void setInsuranceSum(String insuranceSum) {
         this.insuranceSum = insuranceSum;
     }
 

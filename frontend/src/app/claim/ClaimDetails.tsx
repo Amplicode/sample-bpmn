@@ -9,20 +9,16 @@ import {EntityDetailsScreenProps, useDefaultEditorHotkeys, useScreens} from "@am
 import TextArea from "antd/es/input/TextArea";
 import moment from "moment";
 
-interface Claim {
-    id?: string
-    policy: string | number
-    description?: string
-    timestamp: string
-}
-
 const {Option} = Select;
 
 const CLAIM = gql(/* GraphQL */ `
     query claim($id: Long!) {
         claim(id: $id) {
             id
-            policy
+            policy {
+                id
+                name
+            }
             timestamp
             description
         }
@@ -172,7 +168,8 @@ export const ClaimDetails = observer(({id}: EntityDetailsScreenProps) => {
                                    }
                                ]}
                     >
-                        <Select loading={policiesQueryLoading}>
+                        <Select loading={policiesQueryLoading}
+                                disabled={item}>
                             {policies?.map((policy: any) => {
                                 return <Option value={policy["id"]} key={policy["id"]}>
                                     {policy["name"]}
@@ -240,9 +237,9 @@ function formValuesToData(values: any, id?: string): any {
     };
 }
 
-function dataToFormValues(item: Claim): any {
-    const {timestamp, ...filteredItem} = item;
-    return {timestamp: moment(timestamp, "DD/MM/YYYY HH:mm:ss"), ...filteredItem};
+function dataToFormValues(item: any): any {
+    const {timestamp, policy, ...filteredItem} = item;
+    return {timestamp: moment(timestamp, "DD/MM/YYYY HH:mm:ss"), policy: policy["id"], ...filteredItem};
 }
 
 function getUpdateFn(values: any) {

@@ -18,8 +18,12 @@ public interface ClaimMapper {
     @Mapping(target = "policy.id", source = "policy")
     Claim fromDto(ClaimInputDto dto);
 
-    @Mapping(target = "policy", source = "policy.name")
     @Mapping(target = "timestamp", qualifiedByName = "formatDateTime")
+    @Mapping(target = "policy.policyholder", ignore = true)
+    @Mapping(target = "policy.policyType", ignore = true)
+    @Mapping(target = "policy.insuranceSum", ignore = true)
+    @Mapping(target = "policy.insurancePremium", ignore = true)
+    @Mapping(target = "policy.caseDescription", ignore = true)
     ClaimOutputDto fromEntity(Claim entity);
 
     @Named("formatDateTime")
