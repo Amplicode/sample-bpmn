@@ -3,13 +3,12 @@ package com.example.insurancedemo.mapper;
 import com.example.insurancedemo.dto.PolicyInputDto;
 import com.example.insurancedemo.dto.PolicyOutputDto;
 import com.example.insurancedemo.entity.Policy;
+import com.example.insurancedemo.support.BPMSupport;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 
 @Mapper(componentModel = "spring")
 public interface PolicyMapper {
@@ -27,10 +26,6 @@ public interface PolicyMapper {
 
     @Named("formatBigDecimal")
     default String formatBigDecimal(BigDecimal bd) {
-        final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        dfs.setGroupingSeparator(',');
-        DecimalFormat decimalFormat = new DecimalFormat("0.00", dfs);
-        return decimalFormat.format(bd);
+        return BPMSupport.formatBigDecimal(bd);
     }
 }

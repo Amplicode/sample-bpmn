@@ -72,7 +72,7 @@
         <camunda:inputOutput>
           <camunda:inputParameter name="text">${text}</camunda:inputParameter>
           <camunda:inputParameter name="subject">Premium Increase</camunda:inputParameter>
-          <camunda:inputParameter name="to">artem.glinov@phystech.edu</camunda:inputParameter>
+          <camunda:inputParameter name="to" />
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_070759p</bpmn:incoming>
@@ -81,10 +81,9 @@
     <bpmn:userTask id="Activity_12i7m77" name="notify customer" camunda:formRef="notification" camunda:formRefBinding="deployment" camunda:assignee="demo">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="text">Mr Insured,\n
-Unfortunately, your insurance claim was rejected.</camunda:inputParameter>
+          <camunda:inputParameter name="text">${text}</camunda:inputParameter>
           <camunda:inputParameter name="subject">Claim Rejection</camunda:inputParameter>
-          <camunda:inputParameter name="to">artem.glinov@phystech.edu</camunda:inputParameter>
+          <camunda:inputParameter name="to" />
         </camunda:inputOutput>
         <camunda:taskListener delegateExpression="${notificationCompleteListener}" event="complete" />
       </bpmn:extensionElements>

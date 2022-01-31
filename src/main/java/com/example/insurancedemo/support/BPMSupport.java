@@ -13,15 +13,23 @@ public class BPMSupport {
 
     private static final Random random;
 
+    private static final DecimalFormat variableDecimalFormat;
+
     private static final DecimalFormat decimalFormat;
 
     static {
         random = new Random();
-        final DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        dfs.setGroupingSeparator(',');
-        decimalFormat = new DecimalFormat("#0.00E0", dfs);
-        decimalFormat.setParseBigDecimal(true);
+
+        final DecimalFormatSymbols variableDFS = new DecimalFormatSymbols();
+        variableDFS.setDecimalSeparator('.');
+        variableDFS.setGroupingSeparator(',');
+        variableDecimalFormat = new DecimalFormat("#0.00E0", variableDFS);
+        variableDecimalFormat.setParseBigDecimal(true);
+
+        final DecimalFormatSymbols DFS = new DecimalFormatSymbols();
+        DFS.setDecimalSeparator('.');
+        DFS.setGroupingSeparator(',');
+        decimalFormat = new DecimalFormat("0.00", DFS);
     }
 
     public static BigDecimal randomBigDecimal(BigDecimal range) {
@@ -36,13 +44,18 @@ public class BPMSupport {
 
     public static BigDecimal parseBigDecimalVariable(DelegateExecution execution, String variableName) {
         try {
-            return (BigDecimal) decimalFormat.parse((String) execution.getVariable(variableName));
+            return (BigDecimal) variableDecimalFormat.parse((String) execution.getVariable(variableName));
         } catch (ParseException e) {
             throw new RuntimeException("Variable " + variableName + " can not be parsed correctly");
         }
     }
 
-    public static String formatBigDecimal(BigDecimal number) {
-        return decimalFormat.format(number);
+    public static String formatBigDecimalVariable(BigDecimal bd) {
+        return variableDecimalFormat.format(bd);
     }
+
+    public static String formatBigDecimal(BigDecimal bd) {
+        return decimalFormat.format(bd);
+    }
+
 }

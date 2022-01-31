@@ -7,6 +7,8 @@ import com.example.insurancedemo.repository.ClaimRepository;
 import com.example.insurancedemo.support.BPMSupport;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,6 +16,8 @@ import java.util.Optional;
 
 @Service
 public class CalculatePaymentAmountService implements JavaDelegate {
+
+    private static final Logger logger = LoggerFactory.getLogger(CalculatePaymentAmountService.class);
 
     private final ClaimRepository claimRepository;
 
@@ -23,6 +27,8 @@ public class CalculatePaymentAmountService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
+        logger.info("Payment Amount calculation started");
+
         final long claimId = (long) execution.getVariable("claimId");
 
         final Optional<Claim> claimOptional = claimRepository.findById(claimId);
@@ -35,7 +41,13 @@ public class CalculatePaymentAmountService implements JavaDelegate {
 
             final BigDecimal amount = BPMSupport.randomBigDecimal(insuranceSum);
 
-            execution.setVariable("amount", BPMSupport.formatBigDecimal(amount));
+            final String formattedAmount = BPMSupport.formatBigDecimalVariable(amount);
+
+            logger.info("Calculated Payment Amount = " + BPMSupport.formatBigDecimal(amount));
+
+            execution.setVariable("amount", formattedAmount);
+
+            logger.info("Payment Amount calculation ended");
         } else {
             throw new ClaimNotFoundException("Claim with ID " + claimId + " is not found");
         }

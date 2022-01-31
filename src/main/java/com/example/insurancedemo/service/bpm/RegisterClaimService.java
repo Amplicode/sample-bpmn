@@ -8,6 +8,8 @@ import com.example.insurancedemo.repository.PolicyRepository;
 import com.example.insurancedemo.support.BPMSupport;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -16,6 +18,8 @@ import java.util.Optional;
 
 @Service
 public class RegisterClaimService implements JavaDelegate {
+
+    private static final Logger logger = LoggerFactory.getLogger(RegisterClaimService.class);
 
     private final ClaimRepository claimRepository;
     private final PolicyRepository policyRepository;
@@ -27,6 +31,8 @@ public class RegisterClaimService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution execution) throws Exception {
+        logger.info("Registration of Claim started");
+
         final long policyId = BPMSupport.parseLongVariable(execution, "policyId");
 
         final Optional<Policy> policyOptional = policyRepository.findById(policyId);
@@ -52,6 +58,8 @@ public class RegisterClaimService implements JavaDelegate {
             final Claim savedClaim = claimRepository.save(claim);
 
             execution.setVariable("claimId", savedClaim.getId());
+
+            logger.info("Registration of Claim ended");
         } else {
             throw new IncorrectPolicyholderException("Incorrect Policyholder ID for Policy with ID = " + policyId);
         }
