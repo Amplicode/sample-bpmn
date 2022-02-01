@@ -8,7 +8,17 @@
       <bpmn:incoming>Flow_1cqwveg</bpmn:incoming>
       <bpmn:outgoing>Flow_0yr4wps</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0zylflx" name="assess claim" camunda:delegateExpression="${simpleAssessmentServiceImpl}">
+    <bpmn:serviceTask id="Activity_0zylflx" name="assess claim">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="url">http://localhost:8081/assess</camunda:inputParameter>
+            <camunda:outputParameter name="isClaimAccepted">${response == 'true'}</camunda:outputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0yr4wps</bpmn:incoming>
       <bpmn:outgoing>Flow_1xvj7g0</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -83,7 +93,6 @@
         <camunda:inputOutput>
           <camunda:inputParameter name="text">${text}</camunda:inputParameter>
           <camunda:inputParameter name="subject">Claim Rejection</camunda:inputParameter>
-          <camunda:inputParameter name="to" />
         </camunda:inputOutput>
         <camunda:taskListener delegateExpression="${notificationCompleteListener}" event="complete" />
       </bpmn:extensionElements>
@@ -139,7 +148,7 @@
         <di:waypoint x="565" y="270" />
         <di:waypoint x="700" y="270" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="619" y="252" width="17" height="14" />
+          <dc:Bounds x="620" y="252" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1h9890j_di" bpmnElement="Flow_1h9890j">
@@ -173,12 +182,6 @@
       <bpmndi:BPMNShape id="Activity_0zylflx_di" bpmnElement="Activity_0zylflx">
         <dc:Bounds x="280" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0muwd9x_di" bpmnElement="Gateway_0muwd9x" isMarkerVisible="true">
-        <dc:Bounds x="515" y="245" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="504" y="223" width="73" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_12bxsqj_di" bpmnElement="Event_12bxsqj">
         <dc:Bounds x="522" y="612" width="36" height="36" />
       </bpmndi:BPMNShape>
@@ -208,6 +211,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_02vvd49_di" bpmnElement="Activity_12i7m77">
         <dc:Bounds x="490" y="450" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0muwd9x_di" bpmnElement="Gateway_0muwd9x" isMarkerVisible="true">
+        <dc:Bounds x="515" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="505" y="223" width="72" height="14" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

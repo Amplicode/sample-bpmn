@@ -59,6 +59,10 @@ public class RegisterClaimService implements JavaDelegate {
 
             execution.setVariable("claimId", savedClaim.getId());
 
+            // Set the notification text
+            execution.setVariable("text", "Mr Insured,\n" +
+                    "Unfortunately, your insurance claim was rejected.");   // TODO: must be in another place
+
             logger.info("Registration of Claim ended");
         } else {
             throw new IncorrectPolicyholderException("Incorrect Policyholder ID for Policy with ID = " + policyId);
