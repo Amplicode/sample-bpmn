@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Optional;
 
@@ -61,7 +62,11 @@ public class RegisterClaimService implements JavaDelegate {
 
             // Set the notification text
             execution.setVariable("text", "Mr Insured,\n" +
-                    "Unfortunately, your insurance claim was rejected.");   // TODO: must be in another place
+                    "Unfortunately, your insurance claim was rejected.");   // TODO: should be in another place
+
+            final BigDecimal insuranceSum = policy.getInsuranceSum();
+
+            execution.setVariable("insuranceSum", BPMSupport.formatBigDecimalVariable(insuranceSum));
 
             logger.info("Registration of Claim ended");
         } else {

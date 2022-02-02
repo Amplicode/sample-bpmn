@@ -36,7 +36,7 @@
       <bpmn:incoming>Flow_1h9890j</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1h9890j" sourceRef="Activity_12i7m77" targetRef="Event_12bxsqj" />
-    <bpmn:serviceTask id="Activity_1aark1s" name="calculate payment amount" camunda:delegateExpression="${calculatePaymentAmountService}">
+    <bpmn:serviceTask id="Activity_1aark1s" name="calculate payment amount" camunda:type="external" camunda:topic="paymentCalculation">
       <bpmn:incoming>Flow_0oqtlkg</bpmn:incoming>
       <bpmn:outgoing>Flow_1bmtwf4</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -141,14 +141,14 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1bmtwf4_di" bpmnElement="Flow_1bmtwf4">
-        <di:waypoint x="800" y="270" />
+        <di:waypoint x="770" y="270" />
         <di:waypoint x="850" y="270" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0oqtlkg_di" bpmnElement="Flow_0oqtlkg">
         <di:waypoint x="565" y="270" />
-        <di:waypoint x="700" y="270" />
+        <di:waypoint x="670" y="270" />
         <bpmndi:BPMNLabel>
-          <dc:Bounds x="620" y="252" width="18" height="14" />
+          <dc:Bounds x="606" y="252" width="18" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1h9890j_di" bpmnElement="Flow_1h9890j">
@@ -185,9 +185,6 @@
       <bpmndi:BPMNShape id="Event_12bxsqj_di" bpmnElement="Event_12bxsqj">
         <dc:Bounds x="522" y="612" width="36" height="36" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1aark1s_di" bpmnElement="Activity_1aark1s">
-        <dc:Bounds x="700" y="230" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1x7jz41_di" bpmnElement="Activity_1x7jz41">
         <dc:Bounds x="850" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -217,6 +214,9 @@
         <bpmndi:BPMNLabel>
           <dc:Bounds x="505" y="223" width="72" height="14" />
         </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1aark1s_di" bpmnElement="Activity_1aark1s">
+        <dc:Bounds x="670" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
