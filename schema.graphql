@@ -27,8 +27,8 @@ type Mutation {
 type PolicyOutputDto {
     caseDescription: String
     id: Long
-    insurancePremium: BigDecimal
-    insuranceSum: BigDecimal
+    insurancePremium: String
+    insuranceSum: String
     name: String
     policyType: PolicyTypeDto
     policyholder: PolicyholderDto
@@ -111,6 +111,7 @@ input ClaimInputDtoInput {
     description: String
     id: Long
     policy: Long
+    timestamp: OffsetDateTime
 }
 
 input PolicyInputDtoInput {

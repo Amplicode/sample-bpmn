@@ -4,6 +4,7 @@ import { ClaimList } from "./claim/ClaimList";
 import { PolicyholderList } from "./policyholder/PolicyholderList";
 import { Home } from "./home/Home";
 import { screenStore } from "@amplicode/react-core";
+import {TaskList} from "./tasklist/TaskList";
 
 screenStore.registerScreen("home", {
   component: Home,
@@ -28,4 +29,9 @@ screenStore.registerScreen("policy-list", {
 screenStore.registerScreen("policy-type-list", {
   component: PolicyTypeList,
   captionKey: "screen.PolicyTypeList"
+});
+
+screenStore.registerScreen("task-list", {
+  component: TaskList,
+  captionKey: "screen.TaskList"
 });

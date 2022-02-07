@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Fill the Field",
+      "type": "textfield",
+      "id": "Field_1ygehu5",
+      "key": "field_1pef39m"
+    }
+  ],
+  "type": "default",
+  "id": "simpleform"
+}
