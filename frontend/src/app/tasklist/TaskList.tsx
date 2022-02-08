@@ -149,7 +149,8 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
                     {tasks == null || tasks.length === 0 ? (
                         <Empty/>
                     ) : (
-                        tasks.map((e: any) => (
+                        tasks.sort((a: any, b: any) => a.name.localeCompare(b.name))
+                            .map((e: any) => (
                             <Card
                                 key={e["id"]}
                                 title={guessDisplayName(e)}
