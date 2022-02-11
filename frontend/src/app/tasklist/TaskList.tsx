@@ -3,44 +3,72 @@ import {CheckOutlined, CloseOutlined, EnterOutlined} from "@ant-design/icons";
 import {Button, Card, Empty, message} from "antd";
 import {FormattedMessage, IntlShape, useIntl} from "react-intl";
 import {useCallback, useEffect, useState} from "react";
-import {useRouteMatch} from "react-router-dom";
+import {useHistory, useRouteMatch} from "react-router-dom";
 import {
     EntityListScreenProps,
     guessDisplayName,
-    guessLabel,
+    guessLabel, OpenInBreadcrumbParams,
     Screens,
     useDefaultBrowserHotkeys,
     useScreens
 } from "@amplicode/react-core";
 import axios, {AxiosResponse} from "axios";
+import {TaskForm} from "../form/TaskForm";
+import {StartEventForm} from "../form/StartEventForm";
 
 const ROUTE = "task-list";
 
 export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
             const screens: Screens = useScreens();
             const intl = useIntl();
-            const match = useRouteMatch<{ entityId: string }>(`/${ROUTE}/:entityId`);
 
+            // const [id, setId] = useState<string | undefined>();
+            // const [key, setKey] = useState<string | undefined>();
+
+            const userTaskMatch = useRouteMatch<{ id: string }>(`/${ROUTE}/user-task-id#:id`);
+            const startEventMatch = useRouteMatch<{ processDefinitionKey: string }>(
+                `/${ROUTE}/process-definition-key#:processDefinitionKey`);
+            const history = useHistory();
 
             // Entity list can work in select mode, which means that you can select an entity instance and it will be passed to onSelect callback.
             // This functionality is used in EntityLookupField.
             const isSelectMode = onSelect != null;
 
-            const openEditor = useCallback((id?: string) => {
-                // TODO Uncomment the code below, specify the editor component and remove the alert
-                alert("Please specify the editor component");
+            const openTaskForm = useCallback(
+                (id: string) => {
+                    const params: OpenInBreadcrumbParams = {
+                        breadcrumbCaption: "Task Execution",
+                        component: TaskForm,
+                        props: {
+                            id: id,
+                            changeTriggerState: changeTriggerState
+                        }
+                    };
 
-                // const params: OpenInBreadcrumbParams = {
-                //   breadcrumbCaption: intl.formatMessage({id: 'screen.ExampleComponentName'}), // TODO specify message id
-                //   component: ExampleComponentName, // TODO specify component name
-                // };
-                // if (id != null) {
-                //   params.props = {id};
-                // }
-                // screens.openInBreadcrumb(params);
-                // // Append /id to existing url
-                // history.push(id ? `/${ROUTE}/${id}` : `/${ROUTE}/new`);
-            }, []);
+                    screens.openInBreadcrumb(params);
+                    // Append /id to existing url
+                    history.push(`/${ROUTE}/user-task-id#${id}`);
+                },
+                [screens, history, intl]
+            );
+
+            const openStartEventForm = useCallback(
+                (key: string) => {
+                    const params: OpenInBreadcrumbParams = {
+                        breadcrumbCaption: "Start Event Form",
+                        component: StartEventForm,
+                        props: {
+                            processDefinitionKey: key,
+                            changeTriggerState: changeTriggerState
+                        }
+                    };
+
+                    screens.openInBreadcrumb(params);
+
+                    history.push(`/${ROUTE}/process-definition-key#${key}`);
+                },
+                [screens, history, intl]
+            );
 
             const [tasks, setTasks] = useState<Array<any>>([]);
 
@@ -54,14 +82,14 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
                         return filterTaskResponse(taskResponse);
                     })
                     .then((filteredResponse) => {
-                        const processDefinitionPromices = filteredResponse.map(task => {
+                        const processDefinitionPromises = filteredResponse.map(task => {
                                 const {processDefinitionId} = task;
 
                                 return getProcessDefinition(processDefinitionId);
                             }
                         );
 
-                        Promise.all(processDefinitionPromices)
+                        Promise.all(processDefinitionPromises)
                             .then(processDefinitionNames => names = processDefinitionNames)
                             .then(() => {
                                 return filteredResponse.map(task => {
@@ -76,48 +104,28 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
 
             }, [taskListLoadingTrigger]);
 
-            function getProcessDefinition(id: string) {
-                return axios.get(`http://localhost:8080/engine-rest/process-definition/${id}`)
-                    .then((response) => {
-                        return response.data.name;
-                    })
-                    .catch(error => processError(error));
-            }
+            const changeTriggerState = () => {
+                setTaskListLoadingTrigger(taskListLoadingTrigger => !taskListLoadingTrigger);
+            };
 
-            function filterTaskProperties(task: any) {
-                const {id, name, assignee, created, processDefinitionId, priority} = task;
-
-                return {
-                    id,
-                    name,
-                    assignee,
-                    created,
-                    processDefinitionId,
-                    priority
-                };
-            }
-
-            function filterTaskResponse(taskResponse: AxiosResponse<Array<any>>) {
-                return taskResponse.data
-                    .map(task => filterTaskProperties(task));
-            }
-
-            function startProcessInstance() {
-                axios.post("http://localhost:8080/engine-rest/process-definition/key/simpleProcess/start",
-                    {}, {headers: {'Content-Type': 'application/json'}})
-                    .catch(error => processError(error));
-
-                setTimeout(() => setTaskListLoadingTrigger(false), 1500);
-            }
 
             useEffect(() => {
                 if (
                     screens.activeTab?.breadcrumbs.length === 1 &&
-                    match?.params.entityId != null
+                    userTaskMatch?.params.id != null
                 ) {
-                    openEditor(match.params.entityId);
+                    openTaskForm(userTaskMatch.params.id);
                 }
-            }, [match, openEditor, screens]);
+            }, [userTaskMatch, openTaskForm, screens]);
+
+            useEffect(() => {
+                if (
+                    screens.activeTab?.breadcrumbs.length === 1 &&
+                    startEventMatch?.params.processDefinitionKey != null
+                ) {
+                    openStartEventForm(startEventMatch.params.processDefinitionKey);
+                }
+            }, [startEventMatch, openStartEventForm, screens]);
 
             useDefaultBrowserHotkeys();
 
@@ -141,7 +149,7 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
                     )}
 
                     <div style={{marginBottom: "12px"}}>
-                        <Button type="primary" onClick={() => startProcessInstance()}>
+                        <Button type="primary" onClick={() => openStartEventForm("InsuranceClaimProcessing")}>
                             Start Process Instance
                         </Button>
                     </div>
@@ -151,21 +159,21 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
                     ) : (
                         tasks.sort((a: any, b: any) => a.name.localeCompare(b.name))
                             .map((e: any) => (
-                            <Card
-                                key={e["id"]}
-                                title={guessDisplayName(e)}
-                                style={{marginBottom: "12px"}}
-                                actions={getCardActions({
-                                    screens,
-                                    entityInstance: e,
-                                    onSelect,
-                                    intl,
-                                    openEditor
-                                })}
-                            >
-                                <Fields entity={e}/>
-                            </Card>
-                        ))
+                                <Card
+                                    key={e["id"]}
+                                    title={guessDisplayName(e)}
+                                    style={{marginBottom: "12px"}}
+                                    actions={getCardActions({
+                                        screens,
+                                        entityInstance: e,
+                                        onSelect,
+                                        intl,
+                                        openTaskForm
+                                    })}
+                                >
+                                    <Fields entity={e}/>
+                                </Card>
+                            ))
                     )}
                 </div>
             );
@@ -196,11 +204,11 @@ interface CardActionsInput {
     entityInstance: any;
     onSelect?: (entityInstance: this["entityInstance"]) => void;
     intl: IntlShape;
-    openEditor: (id?: string) => void;
+    openTaskForm: (id: string) => void;
 }
 
 function getCardActions(input: CardActionsInput) {
-    const {screens, entityInstance, onSelect, intl, openEditor} = input;
+    const {screens, entityInstance, onSelect, intl, openTaskForm} = input;
 
     if (onSelect == null) {
         return [
@@ -208,7 +216,7 @@ function getCardActions(input: CardActionsInput) {
                 key="details"
                 title={intl.formatMessage({id: "common.viewDetails"})}
                 onClick={() => {
-                    openEditor(entityInstance.id);
+                    openTaskForm(entityInstance.id);
                 }}
             />
         ];
@@ -232,6 +240,7 @@ function getCardActions(input: CardActionsInput) {
     }
 }
 
+// todo: must be in a separate module
 function processError(error: Error) {
     if (axios.isAxiosError(error)) {
         if (error.response) {
@@ -245,4 +254,30 @@ function processError(error: Error) {
     } else {
         message.error(error.message);
     }
+}
+
+function getProcessDefinition(id: string) {
+    return axios.get(`http://localhost:8080/engine-rest/process-definition/${id}`)
+        .then((response) => {
+            return response.data.name;
+        })
+        .catch(error => processError(error));
+}
+
+function filterTaskProperties(task: any) {
+    const {id, name, assignee, created, processDefinitionId, priority} = task;
+
+    return {
+        id,
+        name,
+        assignee,
+        created,
+        processDefinitionId,
+        priority
+    };
+}
+
+function filterTaskResponse(taskResponse: AxiosResponse<Array<any>>) {
+    return taskResponse.data
+        .map(task => filterTaskProperties(task));
 }
