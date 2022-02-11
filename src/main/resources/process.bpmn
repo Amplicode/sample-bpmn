@@ -8,17 +8,7 @@
       <bpmn:incoming>Flow_1cqwveg</bpmn:incoming>
       <bpmn:outgoing>Flow_0yr4wps</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:serviceTask id="Activity_0zylflx" name="assess claim">
-      <bpmn:extensionElements>
-        <camunda:connector>
-          <camunda:inputOutput>
-            <camunda:inputParameter name="method">POST</camunda:inputParameter>
-            <camunda:inputParameter name="url">http://localhost:8081/assess</camunda:inputParameter>
-            <camunda:outputParameter name="isClaimAccepted">${response == 'true'}</camunda:outputParameter>
-          </camunda:inputOutput>
-          <camunda:connectorId>http-connector</camunda:connectorId>
-        </camunda:connector>
-      </bpmn:extensionElements>
+    <bpmn:serviceTask id="Activity_0zylflx" name="assess claim" camunda:delegateExpression="${simpleAssessmentServiceImpl}">
       <bpmn:incoming>Flow_0yr4wps</bpmn:incoming>
       <bpmn:outgoing>Flow_1xvj7g0</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -36,7 +26,7 @@
       <bpmn:incoming>Flow_1h9890j</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1h9890j" sourceRef="Activity_12i7m77" targetRef="Event_12bxsqj" />
-    <bpmn:serviceTask id="Activity_1aark1s" name="calculate payment amount" camunda:type="external" camunda:topic="paymentCalculation">
+    <bpmn:serviceTask id="Activity_1aark1s" name="calculate payment amount" camunda:delegateExpression="${calculatePaymentAmountService}">
       <bpmn:incoming>Flow_0oqtlkg</bpmn:incoming>
       <bpmn:outgoing>Flow_1bmtwf4</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -182,8 +172,17 @@
       <bpmndi:BPMNShape id="Activity_0zylflx_di" bpmnElement="Activity_0zylflx">
         <dc:Bounds x="280" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0muwd9x_di" bpmnElement="Gateway_0muwd9x" isMarkerVisible="true">
+        <dc:Bounds x="515" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="505" y="223" width="72" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_12bxsqj_di" bpmnElement="Event_12bxsqj">
         <dc:Bounds x="522" y="612" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1aark1s_di" bpmnElement="Activity_1aark1s">
+        <dc:Bounds x="670" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1x7jz41_di" bpmnElement="Activity_1x7jz41">
         <dc:Bounds x="850" y="230" width="100" height="80" />
@@ -208,15 +207,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_02vvd49_di" bpmnElement="Activity_12i7m77">
         <dc:Bounds x="490" y="450" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_0muwd9x_di" bpmnElement="Gateway_0muwd9x" isMarkerVisible="true">
-        <dc:Bounds x="515" y="245" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="505" y="223" width="72" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1aark1s_di" bpmnElement="Activity_1aark1s">
-        <dc:Bounds x="670" y="230" width="100" height="80" />
       </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -1,4 +1,4 @@
-package com.example.insurancedemo.service.messagebroker;
+package com.example.insurancedemo.service.assessment;
 
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
