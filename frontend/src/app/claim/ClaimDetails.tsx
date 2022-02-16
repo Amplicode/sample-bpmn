@@ -8,6 +8,7 @@ import {useHistory} from "react-router-dom";
 import {EntityDetailsScreenProps, useDefaultEditorHotkeys, useScreens} from "@amplicode/react-core";
 import TextArea from "antd/es/input/TextArea";
 import moment from "moment";
+import "../Form.css";
 
 const {Option} = Select;
 

@@ -38,5 +38,6 @@
   "screen.PolicyDetails": "Policy Details",
   "screen.PolicyTypeDetails": "Policy Type Details",
   "screen.PolicyTypeList": "Policy Types",
-  "screen.TaskList": "Task List"
+  "screen.NotificationTaskList": "Notification Task List",
+  "screen.AssessmentTaskList": "Assessment Task List"
 }

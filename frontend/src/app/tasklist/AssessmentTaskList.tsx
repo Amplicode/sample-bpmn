@@ -1,5 +1,5 @@
 import {observer} from "mobx-react";
-import {CheckOutlined, CloseOutlined, EnterOutlined} from "@ant-design/icons";
+import {CheckOutlined, CloseOutlined} from "@ant-design/icons";
 import {Button, Card, Empty, message} from "antd";
 import {FormattedMessage, IntlShape, useIntl} from "react-intl";
 import {useCallback, useEffect, useState} from "react";
@@ -7,56 +7,44 @@ import {useHistory, useRouteMatch} from "react-router-dom";
 import {
     EntityListScreenProps,
     guessDisplayName,
-    guessLabel, OpenInBreadcrumbParams,
+    guessLabel,
+    OpenInBreadcrumbParams,
     Screens,
     useDefaultBrowserHotkeys,
     useScreens
 } from "@amplicode/react-core";
 import axios, {AxiosResponse} from "axios";
-import {TaskForm} from "../form/TaskForm";
-import {StartEventForm} from "../form/StartEventForm";
+import {ClaimAssessmentForm} from "../form/static/ClaimAssessmentForm";
+import {StartEventDynamicForm} from "../form/dynamic/StartEventDynamicForm";
+import {StartEventStaticForm} from "../form/static/StartEventStaticForm";
 
-const ROUTE = "task-list";
+const ROUTE = "assessment-task-list";
 
-export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
+export const AssessmentTaskList = observer(({onSelect}: EntityListScreenProps) => {
             const screens: Screens = useScreens();
             const intl = useIntl();
 
             // const [id, setId] = useState<string | undefined>();
             // const [key, setKey] = useState<string | undefined>();
 
-            const userTaskMatch = useRouteMatch<{ id: string }>(`/${ROUTE}/user-task-id#:id`);
-            const startEventMatch = useRouteMatch<{ processDefinitionKey: string }>(
-                `/${ROUTE}/process-definition-key#:processDefinitionKey`);
+            const startEventDynamicMatch = useRouteMatch<{ processDefinitionKey: string }>(
+                `/${ROUTE}/dynamic/process-definition-key#:processDefinitionKey`);
+            const startEventStaticMatch = useRouteMatch<{ processDefinitionKey: string }>(
+                `/${ROUTE}/static/process-definition-key#:processDefinitionKey`);
+
+            const assessmentTaskStaticMatch = useRouteMatch<{ id: string }>(`/${ROUTE}/static/user-task-id#:id`);
+
             const history = useHistory();
 
             // Entity list can work in select mode, which means that you can select an entity instance and it will be passed to onSelect callback.
             // This functionality is used in EntityLookupField.
             const isSelectMode = onSelect != null;
 
-            const openTaskForm = useCallback(
-                (id: string) => {
-                    const params: OpenInBreadcrumbParams = {
-                        breadcrumbCaption: "Task Execution",
-                        component: TaskForm,
-                        props: {
-                            id: id,
-                            changeTriggerState: changeTriggerState
-                        }
-                    };
-
-                    screens.openInBreadcrumb(params);
-                    // Append /id to existing url
-                    history.push(`/${ROUTE}/user-task-id#${id}`);
-                },
-                [screens, history, intl]
-            );
-
-            const openStartEventForm = useCallback(
+            const openStartEventDynamicForm = useCallback(
                 (key: string) => {
                     const params: OpenInBreadcrumbParams = {
-                        breadcrumbCaption: "Start Event Form",
-                        component: StartEventForm,
+                        breadcrumbCaption: "Start Event Dynamic Form",
+                        component: StartEventDynamicForm,
                         props: {
                             processDefinitionKey: key,
                             changeTriggerState: changeTriggerState
@@ -64,20 +52,61 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
                     };
 
                     screens.openInBreadcrumb(params);
-
-                    history.push(`/${ROUTE}/process-definition-key#${key}`);
+                    history.push(`/${ROUTE}/dynamic/process-definition-key#${key}`);
                 },
                 [screens, history, intl]
             );
 
+            const openStartEventStaticForm = useCallback(
+                (key: string) => {
+                    const params: OpenInBreadcrumbParams = {
+                        breadcrumbCaption: "Start Event Static Form",
+                        component: StartEventStaticForm,
+                        props: {
+                            processDefinitionKey: key,
+                            changeTriggerState: changeTriggerState
+                        }
+                    };
+
+                    screens.openInBreadcrumb(params);
+                    history.push(`/${ROUTE}/static/process-definition-key#${key}`);
+                },
+                [screens, history, intl]
+            );
+
+            const openAssessmentStaticForm = useCallback(
+                (id: string) => {
+                    const params: OpenInBreadcrumbParams = {
+                        breadcrumbCaption: "Task Execution (Static Form)",
+                        component: ClaimAssessmentForm,
+                        props: {
+                            id: id,
+                            changeTriggerState: changeTriggerState
+                        }
+                    };
+
+                    screens.openInBreadcrumb(params);
+                    history.push(`/${ROUTE}/static/user-task-id#${id}`);
+                },
+                [screens, history, intl]
+            );
             const [tasks, setTasks] = useState<Array<any>>([]);
 
             let names: any[] = [];
 
             const [taskListLoadingTrigger, setTaskListLoadingTrigger] = useState(true);
 
+            const changeTriggerState = () => {
+                setTaskListLoadingTrigger(taskListLoadingTrigger => !taskListLoadingTrigger);
+            };
+
             useEffect(() => {
-                axios.get<Array<any>>("http://localhost:8080/engine-rest/task")
+                axios.get<Array<any>>("http://localhost:8080/engine-rest/task",
+                    {
+                        params: {
+                            assignee: "appraiser"
+                        }
+                    })
                     .then(taskResponse => {
                         return filterTaskResponse(taskResponse);
                     })
@@ -104,28 +133,32 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
 
             }, [taskListLoadingTrigger]);
 
-            const changeTriggerState = () => {
-                setTaskListLoadingTrigger(taskListLoadingTrigger => !taskListLoadingTrigger);
-            };
-
+            useEffect(() => {
+                if (
+                    screens.activeTab?.breadcrumbs.length === 1 &&
+                    startEventDynamicMatch?.params.processDefinitionKey != null
+                ) {
+                    openStartEventDynamicForm(startEventDynamicMatch.params.processDefinitionKey);
+                }
+            }, [startEventDynamicMatch, openStartEventDynamicForm, screens]);
 
             useEffect(() => {
                 if (
                     screens.activeTab?.breadcrumbs.length === 1 &&
-                    userTaskMatch?.params.id != null
+                    startEventStaticMatch?.params.processDefinitionKey != null
                 ) {
-                    openTaskForm(userTaskMatch.params.id);
+                    openStartEventStaticForm(startEventStaticMatch.params.processDefinitionKey);
                 }
-            }, [userTaskMatch, openTaskForm, screens]);
+            }, [startEventStaticMatch, openStartEventStaticForm, screens]);
 
             useEffect(() => {
                 if (
                     screens.activeTab?.breadcrumbs.length === 1 &&
-                    startEventMatch?.params.processDefinitionKey != null
+                    assessmentTaskStaticMatch?.params.id != null
                 ) {
-                    openStartEventForm(startEventMatch.params.processDefinitionKey);
+                    openAssessmentStaticForm(assessmentTaskStaticMatch.params.id);
                 }
-            }, [startEventMatch, openStartEventForm, screens]);
+            }, [assessmentTaskStaticMatch, openAssessmentStaticForm, screens]);
 
             useDefaultBrowserHotkeys();
 
@@ -149,9 +182,18 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
                     )}
 
                     <div style={{marginBottom: "12px"}}>
-                        <Button type="primary" onClick={() => openStartEventForm("InsuranceClaimProcessing")}>
-                            Start Process Instance
+                        <span>
+                        <Button style={{color: "blue"}}
+                                onClick={() => openStartEventDynamicForm("InsuranceClaimProcessing")}>
+                            Start Process Instance (Dynamic Form)
                         </Button>
+                            </span>
+                        <span>
+                             <Button style={{color: "red"}}
+                                     onClick={() => openStartEventStaticForm("InsuranceClaimProcessing")}>
+                            Start Process Instance (Static Form)
+                        </Button>
+                        </span>
                     </div>
 
                     {tasks == null || tasks.length === 0 ? (
@@ -168,7 +210,7 @@ export const TaskList = observer(({onSelect}: EntityListScreenProps) => {
                                         entityInstance: e,
                                         onSelect,
                                         intl,
-                                        openTaskForm
+                                        openAssessmentStaticForm
                                     })}
                                 >
                                     <Fields entity={e}/>
@@ -204,39 +246,47 @@ interface CardActionsInput {
     entityInstance: any;
     onSelect?: (entityInstance: this["entityInstance"]) => void;
     intl: IntlShape;
-    openTaskForm: (id: string) => void;
+    // openTaskDynamicForm: (id: string) => void;
+    openAssessmentStaticForm: (id: string) => void;
 }
 
 function getCardActions(input: CardActionsInput) {
-    const {screens, entityInstance, onSelect, intl, openTaskForm} = input;
+    const {screens, entityInstance, onSelect, intl, openAssessmentStaticForm} = input;
 
     if (onSelect == null) {
-        return [
-            <EnterOutlined
-                key="details"
-                title={intl.formatMessage({id: "common.viewDetails"})}
-                onClick={() => {
-                    openTaskForm(entityInstance.id);
-                }}
-            />
-        ];
-    }
+        // <EnterOutlined
+        //     key="details"
+        //     title={intl.formatMessage({id: "common.viewDetails"})}
+        //     onClick={() => {
+        //         openTaskForm(entityInstance.id);
+        //     }}
+        // />
+        return (
+            [<Button key="staticTask"
+                     style={{color: "red"}}
+                     onClick={() => {
+                         openAssessmentStaticForm(entityInstance.id);
+                     }}
+            >
+                Static Task Form
+            </Button>]);
 
-    if (onSelect != null) {
-        return [
-            <CheckOutlined
-                key="select"
-                title={intl.formatMessage({
-                    id: "EntityLookupField.selectEntityInstance"
-                })}
-                onClick={() => {
-                    if (onSelect != null) {
-                        onSelect(entityInstance);
-                        screens.closeActiveBreadcrumb();
-                    }
-                }}
-            />
-        ];
+        if (onSelect != null) {
+            return [
+                <CheckOutlined
+                    key="select"
+                    title={intl.formatMessage({
+                        id: "EntityLookupField.selectEntityInstance"
+                    })}
+                    onClick={() => {
+                        if (onSelect != null) {
+                            onSelect(entityInstance);
+                            screens.closeActiveBreadcrumb();
+                        }
+                    }}
+                />
+            ];
+        }
     }
 }
 

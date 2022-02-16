@@ -2,7 +2,7 @@
   "schemaVersion": 2,
   "components": [
     {
-      "label": "Fill the Field",
+      "label": "Fill the Field yes",
       "type": "textfield",
       "id": "Field_1ygehu5",
       "key": "simplefield"

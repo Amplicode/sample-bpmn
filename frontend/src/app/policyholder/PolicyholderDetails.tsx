@@ -7,7 +7,7 @@ import {FormattedMessage, useIntl} from "react-intl";
 import {useHistory} from "react-router-dom";
 import {EntityDetailsScreenProps, useDefaultEditorHotkeys, useScreens} from "@amplicode/react-core";
 
-import "../Details.css";
+import "../Form.css";
 import moment from "moment";
 
 interface Policyholder {

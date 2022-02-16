@@ -21,6 +21,23 @@ export async function loadTaskFormVariables(response: AxiosResponse, id: string)
     return components;
 }
 
+export async function loadTaskFormVariablesForStaticForm(id: string): Promise<any> {
+
+    const variablesObject: any = {};
+
+    const formVariables = await axios.get(`http://localhost:8080/engine-rest/task/${id}/form-variables`)
+        .then(response => {return response.data})
+        .catch(error => processError(error));
+
+    const keys = Object.keys(formVariables);
+
+    for (const key of keys) {
+        variablesObject[key] = formVariables[key].value;
+    }
+
+    return variablesObject;
+}
+
 export async function loadStartFormVariables(response: AxiosResponse, key: string): Promise<any[]> {
     const components = response.data.components;
 
@@ -79,7 +96,7 @@ export function parseComponent(component: any) {
 
     return (
         <Form.Item name={name} key={name} initialValue={initialValue} label={label}
-                   rules={rules} help={description}
+                   rules={rules} extra={description}
         >
             {maxLengthRule == undefined ? <Input/> : <TextArea rows={2}/>}
         </Form.Item>

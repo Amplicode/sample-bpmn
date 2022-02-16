@@ -4,21 +4,22 @@ import {Button, Card, Empty, Form, Row} from "antd";
 import {Screens, useScreens} from "@amplicode/react-core";
 import {useHistory} from "react-router-dom";
 import {FormattedMessage} from "react-intl";
-import {loadTaskFormVariables, parseComponent, processError} from "./FormSupport";
-import "../Details.css";
+import {loadStartFormVariables, parseComponent, processError} from "../FormSupport";
+import "../../Form.css";
+import {observer} from "mobx-react";
 
-interface FormProp {
-    id: string
+interface StartEventFormProp {
+    processDefinitionKey: string
     changeTriggerState: () => void
 }
 
-export const TaskForm = ({id, changeTriggerState}: FormProp) => {
+export const StartEventDynamicForm = observer(({processDefinitionKey, changeTriggerState}: StartEventFormProp) => {
 
     const screens: Screens = useScreens();
     const history = useHistory();
 
     const goToParentScreen = useCallback(() => {
-        history.push("."); // Remove entity id part from url
+        history.push("."); // Remove task id part from url
         screens.closeActiveBreadcrumb();
     }, [screens, history]);
 
@@ -26,12 +27,12 @@ export const TaskForm = ({id, changeTriggerState}: FormProp) => {
     const [components, setComponents] = useState<Array<any>>([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/engine-rest/task/${id}/deployed-form`)
+        axios.get(`http://localhost:8080/engine-rest/process-definition/key/${processDefinitionKey}/deployed-start-form`)
             .then(response =>
-                loadTaskFormVariables(response, id)
+                loadStartFormVariables(response, processDefinitionKey)
                     .then(components => setComponents(components)))
             .catch(error => processError(error));
-    }, [id]);
+    }, [processDefinitionKey]);
 
     function handleSubmit(values: any) {
         const formEntries = Object.entries(values);
@@ -42,7 +43,7 @@ export const TaskForm = ({id, changeTriggerState}: FormProp) => {
             variablesObject[key] = {value: value};
         }
 
-        axios.post(`http://localhost:8080/engine-rest/task/${id}/complete`, {
+        axios.post(`http://localhost:8080/engine-rest/process-definition/key/${processDefinitionKey}/submit-form`, {
             variables: variablesObject
         })
             .then(() => changeTriggerState())
@@ -60,7 +61,7 @@ export const TaskForm = ({id, changeTriggerState}: FormProp) => {
                           onFinish={handleSubmit}
                     >
                         {components.map(component => parseComponent(component))}
-                        <Form.Item style={{textAlign: "center"}} wrapperCol={{span: 12, offset: 6}}>
+                        <Form.Item style={{textAlign: "center"}} wrapperCol={{span: 12, offset: 8}}>
                             <Button htmlType="button" onClick={goToParentScreen}>
                                 <FormattedMessage id="common.cancel"/>
                             </Button>
@@ -80,4 +81,4 @@ export const TaskForm = ({id, changeTriggerState}: FormProp) => {
             </Row>
         </Card>
     );
-}
+});
