@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Is Claim accepted?",
+      "type": "checkbox",
+      "id": "Field_1lg64wu",
+      "key": "isClaimAccepted",
+      "description": "Mark as checked if the Claim must be accepted"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0mdsahn"
+}
