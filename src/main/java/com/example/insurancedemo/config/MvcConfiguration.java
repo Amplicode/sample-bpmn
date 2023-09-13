@@ -1,42 +1,38 @@
 package com.example.insurancedemo.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.util.StringUtils.trimLeadingCharacter;
 import static org.springframework.util.StringUtils.trimTrailingCharacter;
 
 @Configuration
-public class MvcConfiguration implements WebMvcConfigurer {
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOriginPattern("http://localhost:[*]");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
-        if (isConfigured(corsConfiguration)) {
-            registry.addMapping("/**").combine(corsConfiguration);
-        }
+public class MvcConfiguration {
+    private final ApplicationProperties applicationProperties;
+    public MvcConfiguration(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
     }
 
-//    @Override
-//    public void addViewControllers(ViewControllerRegistry registry) {
-//        String publicUrl = normalizeUrl(appProperties.getFrontend().getPublicUrl());
-//        registry.addViewController("/" + publicUrl).setViewName("forward:/" + publicUrl + "/index.html");
-//    }
+    @Bean
+    public WebMvcConfigurer mvcConfigurer() {
+        return new WebMvcConfigurer() {
+            @Override
+            public void addViewControllers(ViewControllerRegistry registry) {
+                String baseUrl = applicationProperties.getFrontend().getBaseUrl();
+                if (!StringUtils.hasLength(baseUrl)) {
+                    registry.addViewController("/").setViewName("forward:/index.html");
+                } else {
+                    String normalizedUrl = normalizeUrl(baseUrl);
+                    registry.addViewController("/" + normalizedUrl).setViewName("forward:/" + normalizedUrl + "/index.html");
+                }
+            }
 
-    private boolean isConfigured(CorsConfiguration corsConfiguration) {
-        return corsConfiguration.getAllowedOrigins() != null && !corsConfiguration.getAllowedOrigins().isEmpty() || corsConfiguration.getAllowedOriginPatterns() != null && !corsConfiguration.getAllowedOriginPatterns().isEmpty();
-    }
-
-    private String normalizeUrl(String url) {
-        return trimTrailingCharacter(trimLeadingCharacter(url, '/'), '/');
+            private String normalizeUrl(String url) {
+                return trimTrailingCharacter(trimLeadingCharacter(url, '/'), '/');
+            }
+        };
     }
 }

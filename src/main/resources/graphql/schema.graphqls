@@ -1,0 +1,167 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+directive @assertFalse on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @pattern(regexp: String!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @negative on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @min(value: Long!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @assertTrue on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @negativeOrZero on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @notBlank on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @futureOrPresent on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @email(regexp: String = ".*") on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @max(value: Long!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @past on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @length(max: Int = 2147483647, min: Int = 0) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @positive on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @pastOrPresent on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @url on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @positiveOrZero on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @decimalMax(inclusive: Boolean = true, value: String!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @size(max: Int = 2147483647, min: Int = 0) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @null on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @future on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @digits(fraction: Int!, integer: Int!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @notEmpty on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @decimalMin(inclusive: Boolean = true, value: String!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @javaType(name: String!) on SCALAR | OBJECT | INPUT_OBJECT
+
+"Query root"
+type Query {
+    checkAuthenticated: Void # a system query to check whether a user is authenticated or not. If not, GraphQL error is returned.
+    userInfo: UserInfo # a system query to get an authenticated user details
+    userPermissions: [String] # a system query to security roles for an authenticated user
+    claim(id: ID!): ClaimOutputDto!
+    claimList: [ClaimOutputDto]!
+    policy(id: ID!): PolicyOutputDto!
+    policyList: [PolicyOutputDto]!
+    policyType(id: ID!): PolicyTypeDto!
+    policyTypeList: [PolicyTypeDto]!
+    policyholder(id: ID!): PolicyholderDto!
+    policyholderList: [PolicyholderDto]!
+}
+
+type Mutation {
+    deleteClaim(id: ID!): Void
+    deletePolicy(id: ID!): Void
+    deletePolicyType(id: ID!): Void
+    deletePolicyholder(id: ID!): Void
+    updateClaim(input: ClaimInputDto!): ClaimOutputDto!
+    updatePolicy(input: PolicyInputDto!): PolicyOutputDto!
+    updatePolicyType(input: PolicyTypeDtoInput!): PolicyTypeDto!
+    updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
+}
+
+"Contains information about user"
+type UserInfo {
+    id: String! # user identifier
+    fullName: String # user display name, e.g. full name or username
+    avatar: String # user's profile picture as URL or Base64 string
+}
+
+type PolicyTypeDto {
+    description: String
+    id: Long
+    name: String
+}
+
+type PolicyholderDto {
+    address: String
+    dateOfBirth: String
+    id: Long
+    name: String
+}
+
+type PolicyOutputDto {
+    caseDescription: String
+    id: Long
+    insurancePremium: String
+    insuranceSum: String
+    name: String
+    policyType: PolicyTypeDto
+    policyholder: PolicyholderDto
+}
+
+type ClaimOutputDto {
+    description: String
+    id: Long
+    policy: PolicyOutputDto
+    timestamp: String
+}
+
+input ClaimInputDto {
+    description: String
+    id: Long
+    policy: Long
+    timestamp: DateTime
+}
+
+input PolicyInputDto {
+    caseDescription: String
+    id: Long
+    insurancePremium: BigDecimal
+    insuranceSum: BigDecimal
+    name: String
+    policyType: Long
+    policyholder: Long
+}
+
+input PolicyTypeDtoInput {
+    description: String
+    id: Long
+    name: String
+}
+
+input PolicyholderDtoInput {
+    address: String
+    dateOfBirth: String
+    id: Long
+    name: String
+}
+
+scalar BigDecimal @javaType(name: "java.math.BigDecimal")
+
+scalar BigInteger @javaType(name: "java.math.BigInteger")
+
+scalar Date @javaType(name: "java.time.LocalDate")
+
+scalar DateTime @javaType(name: "java.time.OffsetDateTime")
+
+scalar LocalDateTime @javaType(name: "java.time.LocalDateTime")
+
+scalar LocalTime @javaType(name: "java.time.LocalTime")
+
+scalar Long @javaType(name: "java.lang.Long")
+
+scalar Time @javaType(name: "java.time.OffsetTime")
+
+scalar Timestamp @javaType(name: "java.util.Date")
+
+scalar Url @javaType(name: "java.net.URL")
+
+scalar Void @javaType(name: "java.lang.Void")

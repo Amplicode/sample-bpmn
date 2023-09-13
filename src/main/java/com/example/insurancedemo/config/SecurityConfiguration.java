@@ -1,74 +1,104 @@
 package com.example.insurancedemo.config;
 
-import com.example.insurancedemo.security.CamundaRestAuthenticationFilter;
-import com.example.insurancedemo.security.CustomInMemoryUserDetailsService;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import com.amplicode.core.auth.AuthenticationInfoProvider;
+import com.amplicode.core.auth.UserDetailsAuthenticationInfoProvider;
+import com.amplicode.core.security.Authorities;
+import com.amplicode.core.security.UnauthorizedStatusAuthenticationEntryPoint;
+import com.amplicode.core.security.formlogin.FormLoginAuthenticationFailureHandler;
+import com.amplicode.core.security.formlogin.FormLoginAuthenticationSuccessHandler;
+import com.amplicode.core.security.formlogin.FormLoginLogoutSuccessHandler;
+import jakarta.servlet.DispatcherType;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
-import javax.servlet.http.HttpServletResponse;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+@EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
+public class SecurityConfiguration {
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService());
+    private final String adminUsername;
+    private final String adminPassword;
+
+    public SecurityConfiguration(@Value("${app.security.in-memory.admin.username}") String adminUsername,
+                                 @Value("${app.security.in-memory.admin.password}") String adminPassword) {
+        this.adminUsername = adminUsername;
+        this.adminPassword = adminPassword;
     }
 
     @Bean
-    public CustomInMemoryUserDetailsService userDetailsService() {
-        final UserDetails admin = User.withUsername("admin")
-                .password("{noop}admin")
-                .authorities("ROLE_ADMIN", "camunda-admin").build();
-        final UserDetails assessor1 = User.withUsername("homer")
-                .password("{noop}homer")
-                .authorities("ROLE_ASSESSOR").build();
-        final UserDetails assessor2 = User.withUsername("marge")
-                .password("{noop}marge")
-                .authorities("ROLE_ASSESSOR").build();
-        final UserDetails client = User.withUsername("client")
-                .password("{noop}client")
-                .authorities("ROLE_USER")
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new FormLoginAuthenticationSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationFailureHandler authenticationFailureHandler() {
+        return new FormLoginAuthenticationFailureHandler();
+    }
+
+    @Bean
+    public LogoutSuccessHandler logoutSuccessHandler() {
+        return new FormLoginLogoutSuccessHandler();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new UnauthorizedStatusAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //Form Login
+        http.formLogin(formLogin -> formLogin
+                .successHandler(authenticationSuccessHandler())
+                .failureHandler(authenticationFailureHandler())
+                .permitAll());
+        //Exception handling
+        http.exceptionHandling(exceptionHandling -> exceptionHandling
+                .authenticationEntryPoint(authenticationEntryPoint()));
+        //Logout
+        http.logout(logout -> logout
+                .logoutSuccessHandler(logoutSuccessHandler()));
+        //Authorize
+        http.authorizeHttpRequests(authorization -> authorization
+                .dispatcherTypeMatchers(DispatcherType.FORWARD, DispatcherType.ERROR).permitAll()
+                .requestMatchers("/", "/index.html", "/assets/**").permitAll()
+                .requestMatchers("/graphql").permitAll()
+                .requestMatchers("/graphql/**").permitAll());
+        //CORS
+        http.cors(withDefaults());
+        //CSRF
+        http.csrf(AbstractHttpConfigurer::disable);
+        return http.build();
+    }
+
+    @Bean
+    public InMemoryUserDetailsManager userDetailsService() {
+        UserDetails admin = User.builder()
+                .username(adminUsername)
+                .password(adminPassword)
+                .authorities("ROLE_ADMIN", Authorities.FULL_ACCESS)
                 .build();
-        return new CustomInMemoryUserDetailsService(admin, assessor1, assessor2, client);
-    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
-                .successHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK))
-                .failureHandler((request, response, exception) -> response.setStatus(HttpServletResponse.SC_UNAUTHORIZED))
-                .permitAll()
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
-                .and()
-                .authorizeRequests()
-                .antMatchers("/engine-rest/**").authenticated()
-                .antMatchers("/graphql").permitAll()
-                .antMatchers("/graphql/**").permitAll()
-                .and()
-                .cors()
-                .and()
-                .csrf().disable();
+        return new InMemoryUserDetailsManager(admin);
     }
 
     @Bean
-    public FilterRegistrationBean statelessUserAuthenticationFilter() {
-        FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
-        filterRegistration.setFilter(new CamundaRestAuthenticationFilter());
-        filterRegistration.setOrder(102); // make sure the filter is registered after the Spring Security Filter Chain
-//        filterRegistration.addUrlPatterns("/rest/*");
-        return filterRegistration;
+    public AuthenticationInfoProvider authenticationInfoProvider() {
+        return new UserDetailsAuthenticationInfoProvider();
     }
 }

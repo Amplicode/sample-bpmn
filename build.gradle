@@ -1,49 +1,53 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.2'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
+    id 'org.springframework.boot' version '3.1.3'
+    id 'io.spring.dependency-management' version '1.1.0'
 }
 
-group = 'com.example'
+group = 'com.amplicode'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+
+java {
+    sourceCompatibility = '17'
+}
 
 repositories {
     mavenCentral()
-    mavenLocal()
     maven {
         url 'https://nexus.amplicode.com/repository/public/'
     }
 }
 
-dependencyManagement {
-    imports {
-        mavenBom 'com.amplicode.bom:amplicode-bom:0.1.1-SNAPSHOT'
-    }
-}
-
 dependencies {
+    implementation platform("com.amplicode.bom:amplicode-bom:0.3.0-SNAPSHOT")
+    annotationProcessor platform("com.amplicode.bom:amplicode-bom:0.3.0-SNAPSHOT")
+
+    implementation 'com.amplicode.core:amplicode-core-starter'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-mail:2.6.3'
-
+    implementation 'org.springframework.boot:spring-boot-starter-graphql'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.liquibase:liquibase-core'
-    implementation "org.mapstruct:mapstruct"
-    implementation 'io.leangen.graphql:graphql-spqr-spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:7.16.0'
-    implementation 'org.camunda.bpm:camunda-engine-plugin-connect:7.16.0'
-    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:7.16.0'
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
-    annotationProcessor "org.mapstruct:mapstruct-processor"
+    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:7.19.0'
+    implementation 'org.camunda.bpm:camunda-engine-plugin-connect:7.19.0'
+    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:7.19.0'
 
     runtimeOnly 'org.postgresql:postgresql'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
     useJUnitPlatform()
+}
+
+tasks.named('bootJar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

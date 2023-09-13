@@ -1,13 +1,18 @@
 package com.example.insurancedemo.mapper;
 
 import com.example.insurancedemo.dto.PolicyTypeDto;
+import com.example.insurancedemo.dto.PolicyholderDto;
 import com.example.insurancedemo.entity.PolicyType;
-import org.mapstruct.Mapper;
+import com.example.insurancedemo.entity.Policyholder;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface PolicyTypeMapper {
 
-    PolicyTypeDto fromEntity(PolicyType entity);
+    PolicyTypeDto toDto(PolicyType entity);
 
-    PolicyType fromDto(PolicyTypeDto dto);
+    PolicyType toEntity(PolicyTypeDto dto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    PolicyType partialUpdate(PolicyTypeDto policyTypeDto, @MappingTarget PolicyType policyType);
 }
