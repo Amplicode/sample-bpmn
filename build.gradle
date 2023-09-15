@@ -34,9 +34,7 @@ dependencies {
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
-    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-webapp:7.19.0'
-    implementation 'org.camunda.bpm:camunda-engine-plugin-connect:7.19.0'
-    implementation 'org.camunda.bpm.springboot:camunda-bpm-spring-boot-starter-rest:7.19.0'
+    implementation 'io.camunda:spring-zeebe-starter:8.1.1'
 
     runtimeOnly 'org.postgresql:postgresql'
 
@@ -46,8 +44,4 @@ dependencies {
 
 test {
     useJUnitPlatform()
-}
-
-tasks.named('bootJar') {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
