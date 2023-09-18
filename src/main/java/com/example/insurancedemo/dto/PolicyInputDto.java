@@ -6,8 +6,8 @@ public class PolicyInputDto {
 
     private Long id;
     private String name;
-    private Long policyType;    // ID
-    private Long policyholder;  // ID
+    private PolicyTypeDto policyType;
+    private PolicyholderDto policyholder;
     private BigDecimal insurancePremium;
     private BigDecimal insuranceSum;
     private String caseDescription;
@@ -28,19 +28,19 @@ public class PolicyInputDto {
         this.name = name;
     }
 
-    public Long getPolicyType() {
+    public PolicyTypeDto getPolicyType() {
         return policyType;
     }
 
-    public void setPolicyType(Long policyType) {
+    public void setPolicyType(PolicyTypeDto policyType) {
         this.policyType = policyType;
     }
 
-    public Long getPolicyholder() {
+    public PolicyholderDto getPolicyholder() {
         return policyholder;
     }
 
-    public void setPolicyholder(Long policyholder) {
+    public void setPolicyholder(PolicyholderDto policyholder) {
         this.policyholder = policyholder;
     }
 

@@ -1,10 +1,13 @@
 package com.example.insurancedemo.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class PolicyholderDto {
 
     private Long id;
     private String name;
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
     private String address;
 
     public Long getId() {
@@ -23,11 +26,11 @@ public class PolicyholderDto {
         this.name = name;
     }
 
-    public String getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(String dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

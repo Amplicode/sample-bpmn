@@ -1,10 +1,11 @@
 package com.example.insurancedemo.dto;
 
-public class ClaimOutputDto {
+import java.time.OffsetDateTime;
 
+public class ClaimOutputDto {
     private Long id;
     private PolicyOutputDto policy;
-    private String timestamp;
+    private OffsetDateTime timestamp;
     private String description;
 
     public Long getId() {
@@ -23,11 +24,11 @@ public class ClaimOutputDto {
         this.policy = policy;
     }
 
-    public String getTimestamp() {
+    public OffsetDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(OffsetDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

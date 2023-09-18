@@ -5,7 +5,7 @@ import java.time.OffsetDateTime;
 public class ClaimInputDto {
 
     private Long id;
-    private Long policy;    // ID
+    private PolicyInputDto policy;
     private OffsetDateTime timestamp;
     private String description;
 
@@ -17,11 +17,11 @@ public class ClaimInputDto {
         this.id = id;
     }
 
-    public Long getPolicy() {
+    public PolicyInputDto getPolicy() {
         return policy;
     }
 
-    public void setPolicy(Long policy) {
+    public void setPolicy(PolicyInputDto policy) {
         this.policy = policy;
     }
 

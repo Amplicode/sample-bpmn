@@ -14,6 +14,14 @@
   <component name="AmplicodeSpringConfig">
     <option name="jpaConfigPersistentUnitInitialized" value="true" />
   </component>
+  <component name="DatabaseMigrationSettings">
+    <database-infos>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>postgres</dbms-id>
+      </database-info>
+    </database-infos>
+  </component>
   <component name="GraphQlScalarTypes" initialized="true">
     <scalar-types>
       <scalar-type name="LocalDateTime" javaType="java.time.LocalDateTime" assignExpr="com.amplicode.core.graphql.scalars.LocalDateTimeScalar#INSTANCE" />
@@ -28,5 +36,14 @@
       <scalar-type name="BigInteger" javaType="java.math.BigInteger" assignExpr="com.amplicode.core.graphql.scalars.BigIntegerScalar#INSTANCE" />
       <scalar-type name="Void" javaType="java.lang.Void" assignExpr="com.amplicode.core.graphql.scalars.VoidScalar#INSTANCE" />
     </scalar-types>
+  </component>
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit name="Default" defaultIncludeChangeLogFile="src/main/resources/db/changelog.xml">
+        <packages>
+          <package value="com.example.insurancedemo" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
   </component>
 </project>

@@ -86,22 +86,22 @@ type UserInfo {
 
 type PolicyTypeDto {
     description: String
-    id: Long
+    id: ID
     name: String
 }
 
 type PolicyholderDto {
     address: String
-    dateOfBirth: String
-    id: Long
+    dateOfBirth: Date
+    id: ID
     name: String
 }
 
 type PolicyOutputDto {
     caseDescription: String
-    id: Long
-    insurancePremium: String
-    insuranceSum: String
+    id: ID
+    insurancePremium: BigDecimal
+    insuranceSum: BigDecimal
     name: String
     policyType: PolicyTypeDto
     policyholder: PolicyholderDto
@@ -109,38 +109,38 @@ type PolicyOutputDto {
 
 type ClaimOutputDto {
     description: String
-    id: Long
+    id: ID
     policy: PolicyOutputDto
-    timestamp: String
+    timestamp: DateTime
 }
 
 input ClaimInputDto {
     description: String
-    id: Long
-    policy: Long
+    id: ID
+    policy: PolicyInputDto
     timestamp: DateTime
 }
 
 input PolicyInputDto {
     caseDescription: String
-    id: Long
+    id: ID
     insurancePremium: BigDecimal
     insuranceSum: BigDecimal
     name: String
-    policyType: Long
-    policyholder: Long
+    policyType: PolicyTypeDtoInput
+    policyholder: PolicyholderDtoInput
 }
 
 input PolicyTypeDtoInput {
     description: String
-    id: Long
+    id: ID
     name: String
 }
 
 input PolicyholderDtoInput {
     address: String
-    dateOfBirth: String
-    id: Long
+    dateOfBirth: Date
+    id: ID
     name: String
 }
 

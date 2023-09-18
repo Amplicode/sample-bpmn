@@ -1,0 +1,18 @@
+plugins {
+    id "com.github.node-gradle.node" version "5.0.0"
+}
+
+def frontContext = System.getenv('BASE_URL')?:''
+
+task buildFrontend(type: NpmTask, dependsOn: npmInstall) {
+    args = ["run", "build"]
+}
+
+task deployFrontend(type: Copy, dependsOn: buildFrontend) {
+    from "dist"
+    into "$rootDir/build/resources/main/static$frontContext"
+}
+
+if (rootProject.hasProperty("includeFrontend")) {
+    rootProject.classes.dependsOn(deployFrontend)
+}

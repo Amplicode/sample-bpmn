@@ -1,12 +1,8 @@
 package com.example.insurancedemo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.OffsetDateTime;
+import jakarta.persistence.*;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "policyholder")
@@ -20,7 +16,7 @@ public class Policyholder {
     private String name;
 
     @Column(name = "date_of_birth", nullable = false)
-    private OffsetDateTime dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "address")
     private String address;
@@ -33,11 +29,11 @@ public class Policyholder {
         this.address = address;
     }
 
-    public OffsetDateTime getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(OffsetDateTime dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
