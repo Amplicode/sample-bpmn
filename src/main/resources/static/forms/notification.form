@@ -1,36 +1,50 @@
 {
-  "schemaVersion": 2,
   "components": [
     {
       "label": "To",
       "type": "textfield",
-      "id": "Field_06crpfz",
+      "layout": {
+        "row": "Row_02k62cb",
+        "columns": null
+      },
+      "id": "Field_14nil3w",
       "key": "to",
-      "description": "Email Recipient",
       "validate": {
-        "required": true,
-        "pattern": "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$"
+        "validationType": "email",
+        "required": true
       }
     },
     {
       "label": "Subject",
       "type": "textfield",
-      "id": "Field_07p2eac",
+      "layout": {
+        "row": "Row_17e4qk6",
+        "columns": null
+      },
+      "id": "Field_0lh1kor",
       "key": "subject",
-      "description": "Subject of the Email"
+      "validate": {
+        "required": true
+      }
     },
     {
       "label": "Text",
-      "type": "textfield",
-      "id": "Field_168vdhy",
-      "key": "text",
-      "description": "Text of the Notification",
-      "validate": {
-        "required": true,
-        "maxLength": 1024
-      }
+      "type": "textarea",
+      "layout": {
+        "row": "Row_04gdzdy",
+        "columns": null
+      },
+      "id": "Field_0mzzvyb",
+      "key": "text"
     }
   ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.14.0"
+  },
+  "schemaVersion": 10,
   "type": "default",
   "id": "notification"
 }

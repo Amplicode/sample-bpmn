@@ -38,11 +38,11 @@ public class RegisterClaimJobWorker {
         Map<String, Object> variablesMap = job.getVariablesAsMap();
 
         long policyId = BPMSupport.parseLongVariable(variablesMap, "policyId");
+        long policyholderId = BPMSupport.parseLongVariable(variablesMap, "policyholderId");
 
         Policy policy = policyRepository.findById(policyId)
                 .orElseThrow(() -> new EntityNotFoundException("Policy with ID = " + policyId + " is not found"));
 
-        long policyholderId = BPMSupport.parseLongVariable(variablesMap, "policyholderId");
         if (Objects.equals(policy.getPolicyholder().getId(), policyholderId)) {
             final String description = (String) variablesMap.get("description");
 
@@ -57,11 +57,10 @@ public class RegisterClaimJobWorker {
             Map<String, Object> outputVariablesMap = new HashMap<>();
 
             outputVariablesMap.put("claimId", savedClaim.getId());
+            outputVariablesMap.put("insuranceSum", BPMSupport.formatBigDecimalVariable(policy.getInsuranceSum()));
 
             // Set the notification text
             outputVariablesMap.put("text", "Mr Insured,\n" + "Unfortunately, your insurance claim was rejected.");   // TODO: should be in another place
-
-            outputVariablesMap.put("insuranceSum", BPMSupport.formatBigDecimalVariable(policy.getInsuranceSum()));
 
             logger.info("Registration of Claim ended");
 

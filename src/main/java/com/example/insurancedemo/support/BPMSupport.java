@@ -38,7 +38,15 @@ public class BPMSupport {
     }
 
     public static long parseLongVariable(Map<String, Object> variablesMap, String variableName) {
-        return Long.parseLong((String) variablesMap.get(variableName));
+        Object value = variablesMap.get(variableName);
+        if (value instanceof Long) {
+            return (long) value;
+        } else if (value instanceof Number) {
+            return Long.parseLong(value.toString());
+        } else if (value instanceof String) {
+            return Long.parseLong((String) value);
+        }
+        throw new IllegalArgumentException("Illegal argument type");
     }
 
     public static BigDecimal parseBigDecimalVariable(Map<String, Object> variablesMap, String variableName) {

@@ -39,17 +39,6 @@ public class CalculatePremiumJobWorker {
 
         logger.info("Former Insurance Premium is " + BPMSupport.formatBigDecimal(insurancePremium));
 
-//        final BigDecimal insuranceSum = policy.getInsuranceSum();
-
-//        logger.info("Insurance Sum is " + BPMSupport.formatBigDecimal(insuranceSum));
-
-//        final BigDecimal amount = BPMSupport.parseBigDecimalVariable(execution, "amount");
-
-//        final BigDecimal unchangedPremiumLimit = insuranceSum.divide(BigDecimal.valueOf(2), new MathContext(insuranceSum.precision()));
-
-//        logger.info("Limit of unchanged Premium is " + BPMSupport.formatBigDecimal(unchangedPremiumLimit));
-
-//        if (amount.compareTo(unchangedPremiumLimit) >= 0) {
         final BigDecimal newInsurancePremium = insurancePremium.multiply(BigDecimal.valueOf(2),
                 new MathContext(insurancePremium.precision()));
 
@@ -66,10 +55,7 @@ public class CalculatePremiumJobWorker {
         outputVariablesMap.put("isPremiumChanged", true);
 
         logger.info("Premium changed and is " + BPMSupport.formatBigDecimal(newInsurancePremium) + " now.");
-//        } else {
-//            execution.setVariable("isPremiumChanged", false);
-//            logger.info("Premium did not change");
-//        }
+
         logger.info("Insurance Premium calculation ended");
         return outputVariablesMap;
     }

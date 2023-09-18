@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 public class CalculatePaymentAmountJobWorker {
@@ -32,26 +31,22 @@ public class CalculatePaymentAmountJobWorker {
 
         Map<String, Object> variablesMap = job.getVariablesAsMap();
 
-        final long claimId = (long) variablesMap.get("claimId");
+        final long claimId = BPMSupport.parseLongVariable(variablesMap, "claimId");
 
-        final Optional<Claim> claimOptional = claimRepository.findById(claimId);
+        Claim claim = claimRepository.findById(claimId)
+                .orElseThrow(() -> new ClaimNotFoundException("Claim with ID " + claimId + " is not found"));
 
-        if (claimOptional.isPresent()) {
-            final Claim claim = claimOptional.get();
-            final Policy policy = claim.getPolicy();
+        final Policy policy = claim.getPolicy();
 
-            final BigDecimal insuranceSum = policy.getInsuranceSum();
+        final BigDecimal insuranceSum = policy.getInsuranceSum();
 
-            final BigDecimal amount = BPMSupport.randomBigDecimal(insuranceSum);
+        final BigDecimal amount = BPMSupport.randomBigDecimal(insuranceSum);
 
-            final String formattedAmount = BPMSupport.formatBigDecimalVariable(amount);
+        final String formattedAmount = BPMSupport.formatBigDecimalVariable(amount);
 
-            logger.info("Calculated Payment Amount = " + BPMSupport.formatBigDecimal(amount));
-            logger.info("Payment Amount calculation ended");
+        logger.info("Calculated Payment Amount = " + BPMSupport.formatBigDecimal(amount));
+        logger.info("Payment Amount calculation ended");
 
-            return Map.of("amount", formattedAmount);
-        } else {
-            throw new ClaimNotFoundException("Claim with ID " + claimId + " is not found");
-        }
+        return Map.of("amount", formattedAmount);
     }
 }

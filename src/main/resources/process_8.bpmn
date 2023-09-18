@@ -1,7 +1,122 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0nuiu6n" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.14.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
   <bpmn:process id="InsuranceClaimProcessing" name="Insurance Claim Processing" isExecutable="true">
-    <bpmn:extensionElements />
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="userTaskForm_2vdpa05">{
+  "schemaVersion": 2,
+  "components": [
+    {
+      "label": "Is Claim accepted?",
+      "type": "checkbox",
+      "id": "Field_1lg64wu",
+      "key": "isClaimAccepted",
+      "description": "Mark as checked if the Claim must be accepted"
+    }
+  ],
+  "type": "default",
+  "id": "Form_0mdsahn"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="userTaskForm_38speeu">{
+  "components": [
+    {
+      "label": "To",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_02k62cb",
+        "columns": null
+      },
+      "id": "Field_14nil3w",
+      "key": "to",
+      "validate": {
+        "validationType": "email",
+        "required": true
+      }
+    },
+    {
+      "label": "Subject",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_17e4qk6",
+        "columns": null
+      },
+      "id": "Field_0lh1kor",
+      "key": "subject",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Text",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_04gdzdy",
+        "columns": null
+      },
+      "id": "Field_0mzzvyb",
+      "key": "text"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.14.0"
+  },
+  "schemaVersion": 10,
+  "type": "default",
+  "id": "notification"
+}</zeebe:userTaskForm>
+      <zeebe:userTaskForm id="userTaskForm_0m57eqb">{
+  "components": [
+    {
+      "label": "To",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_02k62cb",
+        "columns": null
+      },
+      "id": "Field_14nil3w",
+      "key": "to",
+      "validate": {
+        "validationType": "email",
+        "required": true
+      }
+    },
+    {
+      "label": "Subject",
+      "type": "textfield",
+      "layout": {
+        "row": "Row_17e4qk6",
+        "columns": null
+      },
+      "id": "Field_0lh1kor",
+      "key": "subject",
+      "validate": {
+        "required": true
+      }
+    },
+    {
+      "label": "Text",
+      "type": "textarea",
+      "layout": {
+        "row": "Row_04gdzdy",
+        "columns": null
+      },
+      "id": "Field_0mzzvyb",
+      "key": "text"
+    }
+  ],
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.2.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.14.0"
+  },
+  "schemaVersion": 10,
+  "type": "default",
+  "id": "notification"
+}</zeebe:userTaskForm>
+    </bpmn:extensionElements>
     <bpmn:startEvent id="StartEvent_1" name="customer claim">
       <bpmn:extensionElements />
       <bpmn:outgoing>Flow_0nkp6yq</bpmn:outgoing>
@@ -16,8 +131,8 @@
     <bpmn:sequenceFlow id="Flow_0nkp6yq" sourceRef="StartEvent_1" targetRef="Activity_1wgfft0" />
     <bpmn:userTask id="Activity_1rbpqly" name="assess claim">
       <bpmn:extensionElements>
-        <zeebe:assignmentDefinition assignee="appraiser" />
-        <zeebe:formDefinition formKey="acceptanceform" />
+        <zeebe:assignmentDefinition assignee="andrey.subbotin.smr@gmail.com" />
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_2vdpa05" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0jbc3m3</bpmn:incoming>
       <bpmn:outgoing>Flow_1t6jqdn</bpmn:outgoing>
@@ -31,7 +146,8 @@
     <bpmn:sequenceFlow id="Flow_1t6jqdn" sourceRef="Activity_1rbpqly" targetRef="Gateway_02ewwrn" />
     <bpmn:userTask id="Activity_0mwon1s" name="notify customer">
       <bpmn:extensionElements>
-        <zeebe:assignmentDefinition assignee="notifier" />
+        <zeebe:assignmentDefinition assignee="a.subbotin@haulmont.com" />
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_0m57eqb" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0atkssx</bpmn:incoming>
       <bpmn:outgoing>Flow_1swm0zi</bpmn:outgoing>
@@ -83,7 +199,8 @@
     </bpmn:sequenceFlow>
     <bpmn:userTask id="Activity_0nf27bt" name="clarify if customer wants to stay insured with new rates">
       <bpmn:extensionElements>
-        <zeebe:assignmentDefinition assignee="notifier" />
+        <zeebe:assignmentDefinition assignee="a.subbotin@haulmont.com" />
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_38speeu" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1c2fq1l</bpmn:incoming>
       <bpmn:outgoing>Flow_0bkgdmn</bpmn:outgoing>
