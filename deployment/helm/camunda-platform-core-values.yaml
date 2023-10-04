@@ -1,0 +1,65 @@
+global:
+  identity:
+    auth:
+      publicIssuerUrl: "http://keycloak.camunda.127.0.0.1.nip.io/auth/realms/camunda-platform"
+      operate:
+        redirectUrl: "http://operate.camunda.127.0.0.1.nip.io"
+      tasklist:
+        redirectUrl: "http://tasklist.camunda.127.0.0.1.nip.io"
+
+identity:
+  ingress:
+    enabled: true
+    className: traefik
+    host: "identity.camunda.127.0.0.1.nip.io"
+  fullURL: "http://identity.camunda.127.0.0.1.nip.io"
+  keycloak:
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      hostname: "keycloak.camunda.127.0.0.1.nip.io"
+
+operate:
+  ingress:
+    enabled: true
+    className: traefik
+    host: "operate.camunda.127.0.0.1.nip.io"
+
+tasklist:
+  ingress:
+    enabled: true
+    className: traefik
+    host: "tasklist.camunda.127.0.0.1.nip.io"
+
+optimize:
+  enabled: false
+
+# Reduce for Zeebe and Gateway the configured replicas and with that the required resources
+# to get it running locally
+zeebe:
+  clusterSize: 1
+  partitionCount: 1
+  replicationFactor: 1
+  pvcSize: 2Gi
+
+zeebe-gateway:
+  replicas: 1
+
+connectors:
+  enabled: false
+
+# Configure elastic search to make it running for local development
+elasticsearch:
+  replicas: 1
+  # Allow no backup for single node setups
+  clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
+
+  # Request smaller persistent volumes.
+  volumeClaimTemplate:
+    accessModes: [ "ReadWriteOnce" ]
+    storageClassName: "local-path"
+    resources:
+      requests:
+        storage: 3Gi
+
+
