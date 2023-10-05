@@ -31,6 +31,47 @@ export type Scalars = {
   Void: any;
 };
 
+export type CamundaTask = {
+  __typename?: "CamundaTask";
+  assignee?: Maybe<Scalars["String"]>;
+  candidateGroups?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  candidateUsers?: Maybe<Array<Maybe<Scalars["String"]>>>;
+  completionDate?: Maybe<Scalars["String"]>;
+  creationDate?: Maybe<Scalars["String"]>;
+  dueDate?: Maybe<Scalars["DateTime"]>;
+  followUpDate?: Maybe<Scalars["DateTime"]>;
+  formKey?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  processDefinitionKey?: Maybe<Scalars["String"]>;
+  processInstanceKey?: Maybe<Scalars["String"]>;
+  processName?: Maybe<Scalars["String"]>;
+  taskState?: Maybe<CamundaTaskState>;
+};
+
+export type CamundaTaskOrderByInput = {
+  direction?: InputMaybe<SortDirection>;
+  property?: InputMaybe<CamundaTaskOrderByProperty>;
+};
+
+export enum CamundaTaskOrderByProperty {
+  CreationDate = "CREATION_DATE",
+  DueDate = "DUE_DATE",
+  FollowUpDate = "FOLLOW_UP_DATE",
+}
+
+export type CamundaTaskResultPage = {
+  __typename?: "CamundaTaskResultPage";
+  content?: Maybe<Array<Maybe<CamundaTask>>>;
+  totalElements: Scalars["Long"];
+};
+
+export enum CamundaTaskState {
+  Canceled = "CANCELED",
+  Completed = "COMPLETED",
+  Created = "CREATED",
+}
+
 export type ClaimInputDto = {
   description?: InputMaybe<Scalars["String"]>;
   id?: InputMaybe<Scalars["ID"]>;
@@ -52,6 +93,7 @@ export type Mutation = {
   deletePolicy?: Maybe<Scalars["Void"]>;
   deletePolicyType?: Maybe<Scalars["Void"]>;
   deletePolicyholder?: Maybe<Scalars["Void"]>;
+  runClaimProcess?: Maybe<Scalars["Void"]>;
   updateClaim: ClaimOutputDto;
   updatePolicy: PolicyOutputDto;
   updatePolicyType: PolicyTypeDto;
@@ -74,6 +116,10 @@ export type MutationDeletePolicyholderArgs = {
   id: Scalars["ID"];
 };
 
+export type MutationRunClaimProcessArgs = {
+  policyId: Scalars["Long"];
+};
+
 export type MutationUpdateClaimArgs = {
   input: ClaimInputDto;
 };
@@ -88,6 +134,11 @@ export type MutationUpdatePolicyTypeArgs = {
 
 export type MutationUpdatePolicyholderArgs = {
   input: PolicyholderDtoInput;
+};
+
+export type OffsetPageInput = {
+  number: Scalars["Int"];
+  size: Scalars["Int"];
 };
 
 export type PolicyInputDto = {
@@ -141,6 +192,7 @@ export type PolicyholderDtoInput = {
 
 export type Query = {
   __typename?: "Query";
+  assignedTaskList: CamundaTaskResultPage;
   checkAuthenticated?: Maybe<Scalars["Void"]>;
   claim: ClaimOutputDto;
   claimList: Array<Maybe<ClaimOutputDto>>;
@@ -152,6 +204,11 @@ export type Query = {
   policyholderList: Array<Maybe<PolicyholderDto>>;
   userInfo?: Maybe<UserInfo>;
   userPermissions?: Maybe<Array<Maybe<Scalars["String"]>>>;
+};
+
+export type QueryAssignedTaskListArgs = {
+  page?: InputMaybe<OffsetPageInput>;
+  sort?: InputMaybe<Array<InputMaybe<CamundaTaskOrderByInput>>>;
 };
 
 export type QueryClaimArgs = {
@@ -169,6 +226,11 @@ export type QueryPolicyTypeArgs = {
 export type QueryPolicyholderArgs = {
   id: Scalars["ID"];
 };
+
+export enum SortDirection {
+  Asc = "ASC",
+  Desc = "DESC",
+}
 
 export type UserInfo = {
   __typename?: "UserInfo";
@@ -438,6 +500,15 @@ export type DeletePolicyMutation = {
   deletePolicy?: any | null;
 };
 
+export type RunClaimProcess_StartProcessButtonMutationVariables = Exact<{
+  policyId: Scalars["Long"];
+}>;
+
+export type RunClaimProcess_StartProcessButtonMutation = {
+  __typename?: "Mutation";
+  runClaimProcess?: any | null;
+};
+
 export type UpdatePolicyholderMutationVariables = Exact<{
   input: PolicyholderDtoInput;
 }>;
@@ -488,6 +559,30 @@ export type DeletePolicyholderMutationVariables = Exact<{
 export type DeletePolicyholderMutation = {
   __typename?: "Mutation";
   deletePolicyholder?: any | null;
+};
+
+export type AssignedTaskList_AssignedTaskListQueryVariables = Exact<{
+  sort?: InputMaybe<
+    | Array<InputMaybe<CamundaTaskOrderByInput>>
+    | InputMaybe<CamundaTaskOrderByInput>
+  >;
+  page?: InputMaybe<OffsetPageInput>;
+}>;
+
+export type AssignedTaskList_AssignedTaskListQuery = {
+  __typename?: "Query";
+  assignedTaskList: {
+    __typename?: "CamundaTaskResultPage";
+    totalElements: any;
+    content?: Array<{
+      __typename?: "CamundaTask";
+      assignee?: string | null;
+      creationDate?: string | null;
+      id?: string | null;
+      name?: string | null;
+      processName?: string | null;
+    } | null> | null;
+  };
 };
 
 export type UserPermissionsQueryVariables = Exact<{ [key: string]: never }>;
@@ -1313,6 +1408,51 @@ export const DeletePolicyDocument = {
   DeletePolicyMutation,
   DeletePolicyMutationVariables
 >;
+export const RunClaimProcess_StartProcessButtonDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "RunClaimProcess_StartProcessButton" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "policyId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "Long" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "runClaimProcess" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "policyId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "policyId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  RunClaimProcess_StartProcessButtonMutation,
+  RunClaimProcess_StartProcessButtonMutationVariables
+>;
 export const UpdatePolicyholderDocument = {
   kind: "Document",
   definitions: [
@@ -1490,6 +1630,99 @@ export const DeletePolicyholderDocument = {
 } as unknown as DocumentNode<
   DeletePolicyholderMutation,
   DeletePolicyholderMutationVariables
+>;
+export const AssignedTaskList_AssignedTaskListDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "AssignedTaskList_AssignedTaskList" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "sort" } },
+          type: {
+            kind: "ListType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "CamundaTaskOrderByInput" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "page" } },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "OffsetPageInput" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "assignedTaskList" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sort" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sort" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "page" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "page" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "content" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "assignee" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "creationDate" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "processName" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "totalElements" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  AssignedTaskList_AssignedTaskListQuery,
+  AssignedTaskList_AssignedTaskListQueryVariables
 >;
 export const UserPermissionsDocument = {
   kind: "Document",

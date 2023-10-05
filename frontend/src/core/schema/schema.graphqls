@@ -49,6 +49,7 @@ directive @javaType(name: String!) on SCALAR | OBJECT | INPUT_OBJECT
 
 # Query root
 type Query {
+  assignedTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput]): CamundaTaskResultPage!
   checkAuthenticated: Void
   claim(id: ID!): ClaimOutputDto!
   claimList: [ClaimOutputDto]!
@@ -67,10 +68,33 @@ type Mutation {
   deletePolicy(id: ID!): Void
   deletePolicyType(id: ID!): Void
   deletePolicyholder(id: ID!): Void
+  runClaimProcess(policyId: Long!): Void
   updateClaim(input: ClaimInputDto!): ClaimOutputDto!
   updatePolicy(input: PolicyInputDto!): PolicyOutputDto!
   updatePolicyType(input: PolicyTypeDtoInput!): PolicyTypeDto!
   updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
+}
+
+type CamundaTask {
+  assignee: String
+  candidateGroups: [String]
+  candidateUsers: [String]
+  completionDate: String
+  creationDate: String
+  dueDate: DateTime
+  followUpDate: DateTime
+  formKey: String
+  id: String
+  name: String
+  processDefinitionKey: String
+  processInstanceKey: String
+  processName: String
+  taskState: CamundaTaskState
+}
+
+type CamundaTaskResultPage {
+  content: [CamundaTask]
+  totalElements: Long!
 }
 
 type ClaimOutputDto {
@@ -110,11 +134,21 @@ type UserInfo {
   id: String!
 }
 
+input CamundaTaskOrderByInput {
+  direction: SortDirection
+  property: CamundaTaskOrderByProperty
+}
+
 input ClaimInputDto {
   description: String
   id: ID
   policy: PolicyInputDto
   timestamp: DateTime
+}
+
+input OffsetPageInput {
+  number: Int!
+  size: Int!
 }
 
 input PolicyInputDto {
@@ -138,6 +172,23 @@ input PolicyholderDtoInput {
   dateOfBirth: Date
   id: ID
   name: String
+}
+
+enum CamundaTaskOrderByProperty {
+  CREATION_DATE
+  DUE_DATE
+  FOLLOW_UP_DATE
+}
+
+enum CamundaTaskState {
+  CANCELED
+  COMPLETED
+  CREATED
+}
+
+enum SortDirection {
+  ASC
+  DESC
 }
 
 scalar BigDecimal

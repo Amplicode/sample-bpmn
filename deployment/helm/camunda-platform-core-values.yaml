@@ -14,6 +14,9 @@ identity:
     host: "identity.camunda.127.0.0.1.nip.io"
   fullURL: "http://identity.camunda.127.0.0.1.nip.io"
   keycloak:
+    auth:
+      adminUser : admin
+      existingSecret : camunda-platform-keycloak-secret
     ingress:
       enabled: true
       ingressClassName: traefik

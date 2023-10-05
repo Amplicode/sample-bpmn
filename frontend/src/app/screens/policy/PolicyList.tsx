@@ -1,6 +1,6 @@
-import { gql } from "@amplicode/gql";
-import { PolicyOutputDto } from "@amplicode/gql/graphql";
-import { ResultOf } from "@graphql-typed-document-node/core";
+import {gql} from "@amplicode/gql";
+import {PolicyOutputDto} from "@amplicode/gql/graphql";
+import {ResultOf} from "@graphql-typed-document-node/core";
 import {
   Datagrid,
   DeleteButton,
@@ -8,10 +8,17 @@ import {
   FunctionField,
   List,
   NumberField,
-  TextField,
+  TextField, useNotify,
+  useRecordContext,
 } from "react-admin";
-import { getPolicyholderDtoRecordRepresentation } from "../../../core/record-representation/getPolicyholderDtoRecordRepresentation";
-import { getPolicyTypeDtoRecordRepresentation } from "../../../core/record-representation/getPolicyTypeDtoRecordRepresentation";
+import {
+  getPolicyholderDtoRecordRepresentation
+} from "../../../core/record-representation/getPolicyholderDtoRecordRepresentation";
+import {
+  getPolicyTypeDtoRecordRepresentation
+} from "../../../core/record-representation/getPolicyTypeDtoRecordRepresentation";
+import {Button} from "@mui/material";
+import {useMutation} from "@apollo/client";
 
 const POLICY_LIST = gql(`query PolicyList {
   policyList {
@@ -49,11 +56,11 @@ export const PolicyList = () => {
   return (
     <List<ItemType> queryOptions={queryOptions} exporter={false} pagination={false}>
       <Datagrid rowClick="show" bulkActionButtons={false}>
-        <TextField source="id" sortable={false} />
-        <TextField source="name" sortable={false} />
-        <TextField source="caseDescription" sortable={false} />
-        <NumberField source="insuranceSum" sortable={false} />
-        <NumberField source="insurancePremium" sortable={false} />
+        <TextField source="id" sortable={false}/>
+        <TextField source="name" sortable={false}/>
+        <TextField source="caseDescription" sortable={false}/>
+        <NumberField source="insuranceSum" sortable={false}/>
+        <NumberField source="insurancePremium" sortable={false}/>
         <FunctionField
           source="policyType.id"
           render={(record: PolicyOutputDto) =>
@@ -68,14 +75,40 @@ export const PolicyList = () => {
           }
           sortable={false}
         />
-
-        <EditButton />
+        <StartProcessButton/>
+        <EditButton/>
         <DeleteButton
           mutationMode="pessimistic"
-          mutationOptions={{ meta: { mutation: DELETE_POLICY } }}
+          mutationOptions={{meta: {mutation: DELETE_POLICY}}}
         />
       </Datagrid>
     </List>
+  );
+};
+
+const RUN_CLAIM_PROCESS_START_PROCESS_BUTTON = gql(`
+mutation RunClaimProcess_StartProcessButton($policyId: Long!) {
+    runClaimProcess(policyId: $policyId)
+}
+`);
+
+export const StartProcessButton = () => {
+  const record = useRecordContext();
+  const notify = useNotify();
+  const [runRunClaimProcess] = useMutation(RUN_CLAIM_PROCESS_START_PROCESS_BUTTON, {});
+  return (
+    <>
+      <Button onClick={e => {
+        e.stopPropagation()
+        runRunClaimProcess({
+          variables: {
+            policyId: record.id
+          }
+        }).then(() => notify("Claim process started"))
+      }}>
+        Run Claim Process
+      </Button>
+    </>
   );
 };
 

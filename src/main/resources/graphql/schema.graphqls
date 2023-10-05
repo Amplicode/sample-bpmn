@@ -64,6 +64,7 @@ type Query {
     policyTypeList: [PolicyTypeDto]!
     policyholder(id: ID!): PolicyholderDto!
     policyholderList: [PolicyholderDto]!
+    assignedTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput]): CamundaTaskResultPage!
 }
 
 type Mutation {
@@ -75,6 +76,7 @@ type Mutation {
     updatePolicy(input: PolicyInputDto!): PolicyOutputDto!
     updatePolicyType(input: PolicyTypeDtoInput!): PolicyTypeDto!
     updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
+    runClaimProcess(policyId: Long!): Void
 }
 
 "Contains information about user"
@@ -114,6 +116,45 @@ type ClaimOutputDto {
     timestamp: DateTime
 }
 
+type CamundaTask {
+    assignee: String
+    candidateGroups: [String]
+    candidateUsers: [String]
+    completionDate: String
+    creationDate: String
+    dueDate: DateTime
+    followUpDate: DateTime
+    formKey: String
+    id: String
+    name: String
+    processDefinitionKey: String
+    processInstanceKey: String
+    processName: String
+    taskState: CamundaTaskState
+}
+
+type CamundaTaskResultPage {
+    content: [CamundaTask]
+    totalElements: Long!
+}
+
+enum CamundaTaskState {
+    CANCELED
+    COMPLETED
+    CREATED
+}
+
+enum SortDirection {
+    ASC
+    DESC
+}
+
+enum CamundaTaskOrderByProperty {
+    CREATION_DATE
+    DUE_DATE
+    FOLLOW_UP_DATE
+}
+
 input ClaimInputDto {
     description: String
     id: ID
@@ -142,6 +183,16 @@ input PolicyholderDtoInput {
     dateOfBirth: Date
     id: ID
     name: String
+}
+
+input OffsetPageInput {
+    number: Int!
+    size: Int!
+}
+
+input CamundaTaskOrderByInput {
+    direction: SortDirection
+    property: CamundaTaskOrderByProperty
 }
 
 scalar BigDecimal @javaType(name: "java.math.BigDecimal")

@@ -1,6 +1,7 @@
 import { DevSupport } from "@react-buddy/ide-toolbox";
 import { AdminContext, AdminUI, Loading, Resource } from "react-admin";
 import { useAuthProvider } from "../authProvider/useAuthProvider";
+import { getCamundaTaskRecordRepresentation } from "../core/record-representation/getCamundaTaskRecordRepresentation";
 import { getClaimOutputDtoRecordRepresentation } from "../core/record-representation/getClaimOutputDtoRecordRepresentation";
 import { getPolicyholderDtoRecordRepresentation } from "../core/record-representation/getPolicyholderDtoRecordRepresentation";
 import { getPolicyOutputDtoRecordRepresentation } from "../core/record-representation/getPolicyOutputDtoRecordRepresentation";
@@ -21,6 +22,7 @@ import { PolicyList } from "./screens/policy/PolicyList";
 import { PolicyholderCreate } from "./screens/policyholder/PolicyholderCreate";
 import { PolicyholderEdit } from "./screens/policyholder/PolicyholderEdit";
 import { PolicyholderList } from "./screens/policyholder/PolicyholderList";
+import { TaskList } from "./screens/task-list/TaskList";
 
 export const App = () => {
   const { authProvider, loading } = useAuthProvider();
@@ -69,6 +71,11 @@ export const App = () => {
             recordRepresentation={getClaimOutputDtoRecordRepresentation}
             create={ClaimCreate}
             edit={ClaimEdit}
+          />
+          <Resource
+            name="CamundaTask"
+            list={TaskList}
+            recordRepresentation={getCamundaTaskRecordRepresentation}
           />
         </AdminUI>
       </DevSupport>

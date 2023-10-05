@@ -131,7 +131,7 @@
     <bpmn:sequenceFlow id="Flow_0nkp6yq" sourceRef="StartEvent_1" targetRef="Activity_1wgfft0" />
     <bpmn:userTask id="Activity_1rbpqly" name="assess claim">
       <bpmn:extensionElements>
-        <zeebe:assignmentDefinition assignee="andrey.subbotin.smr@gmail.com" />
+        <zeebe:assignmentDefinition assignee="approver" />
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_2vdpa05" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0jbc3m3</bpmn:incoming>
@@ -146,7 +146,7 @@
     <bpmn:sequenceFlow id="Flow_1t6jqdn" sourceRef="Activity_1rbpqly" targetRef="Gateway_02ewwrn" />
     <bpmn:userTask id="Activity_0mwon1s" name="notify customer">
       <bpmn:extensionElements>
-        <zeebe:assignmentDefinition assignee="a.subbotin@haulmont.com" />
+        <zeebe:assignmentDefinition assignee="notifier" />
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_0m57eqb" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_0atkssx</bpmn:incoming>
@@ -199,7 +199,7 @@
     </bpmn:sequenceFlow>
     <bpmn:userTask id="Activity_0nf27bt" name="clarify if customer wants to stay insured with new rates">
       <bpmn:extensionElements>
-        <zeebe:assignmentDefinition assignee="a.subbotin@haulmont.com" />
+        <zeebe:assignmentDefinition assignee="notifier" />
         <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_38speeu" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1c2fq1l</bpmn:incoming>
@@ -221,6 +221,12 @@
   </bpmn:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="InsuranceClaimProcessing">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="172" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="142" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_18jo69r_di" bpmnElement="Activity_1wgfft0">
         <dc:Bounds x="270" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -234,17 +240,11 @@
           <dc:Bounds x="404" y="181" width="72" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1rcu5zm_di" bpmnElement="Event_1rcu5zm">
-        <dc:Bounds x="422" y="418" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0ds9xi4_di" bpmnElement="Activity_0mwon1s">
         <dc:Bounds x="390" y="300" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds x="172" y="99" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="153" y="142" width="74" height="14" />
-        </bpmndi:BPMNLabel>
+      <bpmndi:BPMNShape id="Event_1rcu5zm_di" bpmnElement="Event_1rcu5zm">
+        <dc:Bounds x="422" y="418" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0kzzopk_di" bpmnElement="Activity_0f4bns7">
         <dc:Bounds x="540" y="190" width="100" height="80" />
@@ -258,14 +258,14 @@
           <dc:Bounds x="835" y="174" width="49" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nbja5u_di" bpmnElement="Activity_0gp7cz0">
+        <dc:Bounds x="1020" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_04zteiy_di" bpmnElement="Activity_0nf27bt">
         <dc:Bounds x="810" y="310" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0nfhoz9_di" bpmnElement="Activity_1da9si6">
         <dc:Bounds x="810" y="440" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0nbja5u_di" bpmnElement="Activity_0gp7cz0">
-        <dc:Bounds x="1020" y="440" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1rks5ne_di" bpmnElement="Event_1rks5ne">
         <dc:Bounds x="1052" y="592" width="36" height="36" />
@@ -289,16 +289,16 @@
           <dc:Bounds x="449" y="270" width="13" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1swm0zi_di" bpmnElement="Flow_1swm0zi">
+        <di:waypoint x="440" y="380" />
+        <di:waypoint x="440" y="418" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_05f7hug_di" bpmnElement="Flow_05f7hug">
         <di:waypoint x="465" y="230" />
         <di:waypoint x="540" y="230" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="494" y="212" width="18" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1swm0zi_di" bpmnElement="Flow_1swm0zi">
-        <di:waypoint x="440" y="380" />
-        <di:waypoint x="440" y="418" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1070dwy_di" bpmnElement="Flow_1070dwy">
         <di:waypoint x="640" y="230" />

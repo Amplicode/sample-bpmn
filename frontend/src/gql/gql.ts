@@ -43,6 +43,8 @@ const documents = {
     types.PolicyListDocument,
   "mutation DeletePolicy($id: ID!) {\n  deletePolicy(id: $id) \n}":
     types.DeletePolicyDocument,
+  "\nmutation RunClaimProcess_StartProcessButton($policyId: Long!) {\n    runClaimProcess(policyId: $policyId)\n}\n":
+    types.RunClaimProcess_StartProcessButtonDocument,
   "mutation UpdatePolicyholder($input: PolicyholderDtoInput!) {\n  updatePolicyholder(input: $input) {\n    address\n    dateOfBirth\n    id\n    name\n  }\n}":
     types.UpdatePolicyholderDocument,
   "query Policyholder($id: ID!) {\n  policyholder(id: $id) {\n    address\n    dateOfBirth\n    id\n    name\n  }\n}":
@@ -51,6 +53,8 @@ const documents = {
     types.PolicyholderListDocument,
   "mutation DeletePolicyholder($id: ID!) {\n  deletePolicyholder(id: $id) \n}":
     types.DeletePolicyholderDocument,
+  "query AssignedTaskList_AssignedTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  assignedTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      assignee\n      creationDate\n      id\n      name\n      processName\n    }\n    totalElements\n  }\n}":
+    types.AssignedTaskList_AssignedTaskListDocument,
   "\n     query userPermissions {\n         userPermissions\n     }\n":
     types.UserPermissionsDocument,
 };
@@ -163,6 +167,12 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
+  source: "\nmutation RunClaimProcess_StartProcessButton($policyId: Long!) {\n    runClaimProcess(policyId: $policyId)\n}\n"
+): (typeof documents)["\nmutation RunClaimProcess_StartProcessButton($policyId: Long!) {\n    runClaimProcess(policyId: $policyId)\n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
   source: "mutation UpdatePolicyholder($input: PolicyholderDtoInput!) {\n  updatePolicyholder(input: $input) {\n    address\n    dateOfBirth\n    id\n    name\n  }\n}"
 ): (typeof documents)["mutation UpdatePolicyholder($input: PolicyholderDtoInput!) {\n  updatePolicyholder(input: $input) {\n    address\n    dateOfBirth\n    id\n    name\n  }\n}"];
 /**
@@ -183,6 +193,12 @@ export function gql(
 export function gql(
   source: "mutation DeletePolicyholder($id: ID!) {\n  deletePolicyholder(id: $id) \n}"
 ): (typeof documents)["mutation DeletePolicyholder($id: ID!) {\n  deletePolicyholder(id: $id) \n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "query AssignedTaskList_AssignedTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  assignedTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      assignee\n      creationDate\n      id\n      name\n      processName\n    }\n    totalElements\n  }\n}"
+): (typeof documents)["query AssignedTaskList_AssignedTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  assignedTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      assignee\n      creationDate\n      id\n      name\n      processName\n    }\n    totalElements\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

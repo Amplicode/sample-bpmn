@@ -6,6 +6,17 @@ const messages: TranslationMessages = {
   ...englishMessages,
 
   resources: {
+    CamundaTask: {
+      name: "Camunda Task |||| Camunda Tasks",
+
+      fields: {
+        assignee: "Assignee",
+        creationDate: "Creation Date",
+        name: "Name",
+        processName: "Process Name"
+      }
+    },
+
     ClaimOutputDto: {
       name: "Claim |||| Claims",
 
