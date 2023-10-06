@@ -21,13 +21,13 @@ class InsuranceDemoApplicationTests {
 
     @Test
     void testGetAccessToken() {
-        String accessToken = camundaTokenService.getAccessToken();
+        String accessToken = camundaTokenService.getTaskListAccessToken();
         System.out.println("Access token:" + accessToken);
     }
 
     @Test
     void testTaskApi() {
-        String accessToken = camundaTokenService.getAccessToken();
+        String accessToken = camundaTokenService.getTaskListAccessToken();
         System.out.println("Retrieved access token:" + accessToken);
 
         ApiClient apiClient = new ApiClient();

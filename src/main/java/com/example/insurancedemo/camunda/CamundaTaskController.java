@@ -11,17 +11,13 @@ import com.example.insurancedemo.external.tasklist.ApiClient;
 import com.example.insurancedemo.external.tasklist.api.TaskApi;
 import com.example.insurancedemo.external.tasklist.model.TaskSearchRequest;
 import com.example.insurancedemo.external.tasklist.model.TaskSearchResponse;
-import com.google.protobuf.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.lang.NonNull;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 public class CamundaTaskController {
@@ -53,7 +49,7 @@ public class CamundaTaskController {
 
 
     private ApiClient buildApiClient() {
-        String accessToken = camundaTokenService.getAccessToken();
+        String accessToken = camundaTokenService.getTaskListAccessToken();
 
         ApiClient apiClient = new ApiClient();
         apiClient.setBasePath("http://tasklist.camunda.127.0.0.1.nip.io");
