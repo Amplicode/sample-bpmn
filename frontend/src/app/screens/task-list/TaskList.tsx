@@ -38,7 +38,7 @@ export const TaskList = () => {
         <TextField source="creationDate" />
         <TextField source="assignee" sortable={false} />
 
-        <EditButton />
+        <EditButton label={"Open"}/>
       </Datagrid>
     </List>
   );

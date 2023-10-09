@@ -40,6 +40,7 @@ public class CamundaTask {
   private OffsetDateTime followUpDate;
   private List<String> candidateGroups;
   private List<String> candidateUsers;
+  private CamundaForm form;
 
   public String getId() {
     return id;
@@ -151,6 +152,14 @@ public class CamundaTask {
 
   public void setCandidateUsers(List<String> candidateUsers) {
     this.candidateUsers = candidateUsers;
+  }
+
+  public CamundaForm getForm() {
+    return form;
+  }
+
+  public void setForm(CamundaForm form) {
+    this.form = form;
   }
 }
 

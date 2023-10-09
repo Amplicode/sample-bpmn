@@ -65,6 +65,7 @@ type Query {
     policyholder(id: ID!): PolicyholderDto!
     policyholderList: [PolicyholderDto]!
     assignedTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput]): CamundaTaskResultPage!
+    task(id: String!): CamundaTask!
 }
 
 type Mutation {
@@ -77,6 +78,7 @@ type Mutation {
     updatePolicyType(input: PolicyTypeDtoInput!): PolicyTypeDto!
     updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
     runClaimProcess(policyId: Long!): Void
+    completeTask(id: String!, variables: String): Void
 }
 
 "Contains information about user"
@@ -131,11 +133,17 @@ type CamundaTask {
     processInstanceKey: String
     processName: String
     taskState: CamundaTaskState
+    form: CamundaForm
 }
 
 type CamundaTaskResultPage {
     content: [CamundaTask]
     totalElements: Long!
+}
+
+type CamundaForm {
+    id: String
+    schema: String
 }
 
 enum CamundaTaskState {

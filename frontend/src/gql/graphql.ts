@@ -31,6 +31,12 @@ export type Scalars = {
   Void: any;
 };
 
+export type CamundaForm = {
+  __typename?: "CamundaForm";
+  id?: Maybe<Scalars["String"]>;
+  schema?: Maybe<Scalars["String"]>;
+};
+
 export type CamundaTask = {
   __typename?: "CamundaTask";
   assignee?: Maybe<Scalars["String"]>;
@@ -40,6 +46,7 @@ export type CamundaTask = {
   creationDate?: Maybe<Scalars["String"]>;
   dueDate?: Maybe<Scalars["DateTime"]>;
   followUpDate?: Maybe<Scalars["DateTime"]>;
+  form?: Maybe<CamundaForm>;
   formKey?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
@@ -89,6 +96,7 @@ export type ClaimOutputDto = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  completeTask?: Maybe<Scalars["Void"]>;
   deleteClaim?: Maybe<Scalars["Void"]>;
   deletePolicy?: Maybe<Scalars["Void"]>;
   deletePolicyType?: Maybe<Scalars["Void"]>;
@@ -98,6 +106,11 @@ export type Mutation = {
   updatePolicy: PolicyOutputDto;
   updatePolicyType: PolicyTypeDto;
   updatePolicyholder: PolicyholderDto;
+};
+
+export type MutationCompleteTaskArgs = {
+  id: Scalars["String"];
+  variables?: InputMaybe<Scalars["String"]>;
 };
 
 export type MutationDeleteClaimArgs = {
@@ -202,6 +215,7 @@ export type Query = {
   policyTypeList: Array<Maybe<PolicyTypeDto>>;
   policyholder: PolicyholderDto;
   policyholderList: Array<Maybe<PolicyholderDto>>;
+  task: CamundaTask;
   userInfo?: Maybe<UserInfo>;
   userPermissions?: Maybe<Array<Maybe<Scalars["String"]>>>;
 };
@@ -225,6 +239,10 @@ export type QueryPolicyTypeArgs = {
 
 export type QueryPolicyholderArgs = {
   id: Scalars["ID"];
+};
+
+export type QueryTaskArgs = {
+  id: Scalars["String"];
 };
 
 export enum SortDirection {
@@ -559,6 +577,44 @@ export type DeletePolicyholderMutationVariables = Exact<{
 export type DeletePolicyholderMutation = {
   __typename?: "Mutation";
   deletePolicyholder?: any | null;
+};
+
+export type TaskQueryVariables = Exact<{
+  id: Scalars["String"];
+}>;
+
+export type TaskQuery = {
+  __typename?: "Query";
+  task: {
+    __typename?: "CamundaTask";
+    assignee?: string | null;
+    completionDate?: string | null;
+    creationDate?: string | null;
+    dueDate?: any | null;
+    followUpDate?: any | null;
+    formKey?: string | null;
+    id?: string | null;
+    name?: string | null;
+    processDefinitionKey?: string | null;
+    processInstanceKey?: string | null;
+    processName?: string | null;
+    taskState?: CamundaTaskState | null;
+    form?: {
+      __typename?: "CamundaForm";
+      id?: string | null;
+      schema?: string | null;
+    } | null;
+  };
+};
+
+export type CompleteTask_TaskFormMutationVariables = Exact<{
+  id: Scalars["String"];
+  variables?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type CompleteTask_TaskFormMutation = {
+  __typename?: "Mutation";
+  completeTask?: any | null;
 };
 
 export type AssignedTaskList_AssignedTaskListQueryVariables = Exact<{
@@ -1630,6 +1686,155 @@ export const DeletePolicyholderDocument = {
 } as unknown as DocumentNode<
   DeletePolicyholderMutation,
   DeletePolicyholderMutationVariables
+>;
+export const TaskDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "Task" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "task" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "assignee" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "completionDate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "creationDate" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "dueDate" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "followUpDate" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "form" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "schema" },
+                      },
+                    ],
+                  },
+                },
+                { kind: "Field", name: { kind: "Name", value: "formKey" } },
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "processDefinitionKey" },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "processInstanceKey" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "processName" } },
+                { kind: "Field", name: { kind: "Name", value: "taskState" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<TaskQuery, TaskQueryVariables>;
+export const CompleteTask_TaskFormDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "CompleteTask_TaskForm" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "variables" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "completeTask" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "variables" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "variables" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CompleteTask_TaskFormMutation,
+  CompleteTask_TaskFormMutationVariables
 >;
 export const AssignedTaskList_AssignedTaskListDocument = {
   kind: "Document",

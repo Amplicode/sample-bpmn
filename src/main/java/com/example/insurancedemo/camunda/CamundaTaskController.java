@@ -1,18 +1,13 @@
 package com.example.insurancedemo.camunda;
 
-import com.amplicode.core.auth.AuthenticationInfoProvider;
 import com.amplicode.core.graphql.paging.OffsetPageInput;
 import com.amplicode.core.graphql.paging.ResultPage;
 import com.amplicode.core.graphql.paging.ResultPageImpl;
-import com.example.insurancedemo.camunda.auth.CamundaTokenService;
-import com.example.insurancedemo.camunda.mapper.CamundaTaskMapper;
 import com.example.insurancedemo.camunda.model.CamundaTask;
-import com.example.insurancedemo.external.tasklist.ApiClient;
-import com.example.insurancedemo.external.tasklist.api.TaskApi;
-import com.example.insurancedemo.external.tasklist.model.TaskSearchRequest;
-import com.example.insurancedemo.external.tasklist.model.TaskSearchResponse;
+import com.example.insurancedemo.camunda.service.CamundaTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
@@ -22,40 +17,26 @@ import java.util.List;
 @Controller
 public class CamundaTaskController {
     @Autowired
-    private CamundaTokenService camundaTokenService;
-    @Autowired
-    private CamundaTaskMapper taskMapper;
-    @Autowired
-    private AuthenticationInfoProvider authenticationInfoProvider;
+    private CamundaTaskService camundaTaskService;
 
     @NonNull
     @QueryMapping(name = "assignedTaskList")
-    public ResultPage<CamundaTask> findAssignedTaskAll(@Argument List<CamundaTaskOrderByInput> sort,
-                                                       @Argument OffsetPageInput page) {
-        ApiClient apiClient = buildApiClient();
-        TaskApi taskApi = new TaskApi(apiClient);
-
-        TaskSearchRequest searchRequest = new TaskSearchRequest();
-        searchRequest.setState(TaskSearchRequest.StateEnum.CREATED);
-        searchRequest.setAssignee(authenticationInfoProvider.getPreferredUsername());
-
-        List<TaskSearchResponse> taskResponses = taskApi.searchTasks(searchRequest);
-
-        List<CamundaTask> camundaTasks = taskResponses.stream().map(it -> taskMapper.toCamundaTask(it))
-                .toList();
+    public ResultPage<CamundaTask> findAssignedTasks(@Argument List<CamundaTaskOrderByInput> sort,
+                                                     @Argument OffsetPageInput page) {
+        List<CamundaTask> camundaTasks = camundaTaskService.findAssignedTasks();
 
         return new ResultPageImpl<>(camundaTasks, camundaTasks.size());
     }
 
+    @NonNull
+    @QueryMapping(name = "task")
+    public CamundaTask findTask(@Argument @NonNull String id) {
+        return camundaTaskService.findTaskWithForm(id);
+    }
 
-    private ApiClient buildApiClient() {
-        String accessToken = camundaTokenService.getTaskListAccessToken();
-
-        ApiClient apiClient = new ApiClient();
-        apiClient.setBasePath("http://tasklist.camunda.127.0.0.1.nip.io");
-        apiClient.setBearerToken(accessToken);
-
-        return apiClient;
+    @MutationMapping(name = "completeTask")
+    public void completeTask(@Argument @NonNull String id, @Argument String variables) {
+        camundaTaskService.completeTask(id, variables);
     }
 
     static class CamundaTaskOrderByInput {

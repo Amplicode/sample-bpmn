@@ -1,4 +1,4 @@
-package com.example.insurancedemo.camunda.auth;
+package com.example.insurancedemo.camunda.service;
 
 
 import com.example.insurancedemo.camunda.TaskListClientConfigurationProperties;

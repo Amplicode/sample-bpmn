@@ -22,6 +22,7 @@ import { PolicyList } from "./screens/policy/PolicyList";
 import { PolicyholderCreate } from "./screens/policyholder/PolicyholderCreate";
 import { PolicyholderEdit } from "./screens/policyholder/PolicyholderEdit";
 import { PolicyholderList } from "./screens/policyholder/PolicyholderList";
+import { TaskForm } from "./screens/task-list/TaskForm";
 import { TaskList } from "./screens/task-list/TaskList";
 
 export const App = () => {
@@ -76,6 +77,7 @@ export const App = () => {
             name="CamundaTask"
             list={TaskList}
             recordRepresentation={getCamundaTaskRecordRepresentation}
+            edit={TaskForm}
           />
         </AdminUI>
       </DevSupport>

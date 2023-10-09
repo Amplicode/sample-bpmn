@@ -59,11 +59,13 @@ type Query {
   policyTypeList: [PolicyTypeDto]!
   policyholder(id: ID!): PolicyholderDto!
   policyholderList: [PolicyholderDto]!
+  task(id: String!): CamundaTask!
   userInfo: UserInfo
   userPermissions: [String]
 }
 
 type Mutation {
+  completeTask(id: String!, variables: String): Void
   deleteClaim(id: ID!): Void
   deletePolicy(id: ID!): Void
   deletePolicyType(id: ID!): Void
@@ -75,6 +77,11 @@ type Mutation {
   updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
 }
 
+type CamundaForm {
+  id: String
+  schema: String
+}
+
 type CamundaTask {
   assignee: String
   candidateGroups: [String]
@@ -83,6 +90,7 @@ type CamundaTask {
   creationDate: String
   dueDate: DateTime
   followUpDate: DateTime
+  form: CamundaForm
   formKey: String
   id: String
   name: String

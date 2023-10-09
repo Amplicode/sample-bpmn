@@ -53,6 +53,10 @@ const documents = {
     types.PolicyholderListDocument,
   "mutation DeletePolicyholder($id: ID!) {\n  deletePolicyholder(id: $id) \n}":
     types.DeletePolicyholderDocument,
+  "query Task($id: String!) {\n  task(id: $id) {\n    assignee\n    completionDate\n    creationDate\n    dueDate\n    followUpDate\n    form {\n      id\n      schema\n    }\n    formKey\n    id\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n    taskState\n  }\n}":
+    types.TaskDocument,
+  "\nmutation CompleteTask_TaskForm(\n    $id: String!,\n    $variables: String\n) {\n    completeTask(\n        id: $id,\n        variables: $variables)               \n}\n":
+    types.CompleteTask_TaskFormDocument,
   "query AssignedTaskList_AssignedTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  assignedTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      assignee\n      creationDate\n      id\n      name\n      processName\n    }\n    totalElements\n  }\n}":
     types.AssignedTaskList_AssignedTaskListDocument,
   "\n     query userPermissions {\n         userPermissions\n     }\n":
@@ -193,6 +197,18 @@ export function gql(
 export function gql(
   source: "mutation DeletePolicyholder($id: ID!) {\n  deletePolicyholder(id: $id) \n}"
 ): (typeof documents)["mutation DeletePolicyholder($id: ID!) {\n  deletePolicyholder(id: $id) \n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "query Task($id: String!) {\n  task(id: $id) {\n    assignee\n    completionDate\n    creationDate\n    dueDate\n    followUpDate\n    form {\n      id\n      schema\n    }\n    formKey\n    id\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n    taskState\n  }\n}"
+): (typeof documents)["query Task($id: String!) {\n  task(id: $id) {\n    assignee\n    completionDate\n    creationDate\n    dueDate\n    followUpDate\n    form {\n      id\n      schema\n    }\n    formKey\n    id\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n    taskState\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "\nmutation CompleteTask_TaskForm(\n    $id: String!,\n    $variables: String\n) {\n    completeTask(\n        id: $id,\n        variables: $variables)               \n}\n"
+): (typeof documents)["\nmutation CompleteTask_TaskForm(\n    $id: String!,\n    $variables: String\n) {\n    completeTask(\n        id: $id,\n        variables: $variables)               \n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

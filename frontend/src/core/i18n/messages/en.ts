@@ -11,9 +11,21 @@ const messages: TranslationMessages = {
 
       fields: {
         assignee: "Assignee",
+        completionDate: "Completion Date",
         creationDate: "Creation Date",
+        dueDate: "Due Date",
+        followUpDate: "Follow Up Date",
+
+        form: {
+          id: "Form"
+        },
+
+        formKey: "Form Key",
         name: "Name",
-        processName: "Process Name"
+        processDefinitionKey: "Process Definition Key",
+        processInstanceKey: "Process Instance Key",
+        processName: "Process Name",
+        taskState: "Task State"
       }
     },
 
@@ -67,6 +79,14 @@ const messages: TranslationMessages = {
         description: "Description",
         name: "Name"
       }
+    }
+  },
+
+  enums: {
+    CamundaTaskState: {
+      CANCELED: "Canceled",
+      COMPLETED: "Completed",
+      CREATED: "Created"
     }
   },
 
