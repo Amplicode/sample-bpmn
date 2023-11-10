@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@EnableZeebeClient
+//@EnableZeebeClient
 //@Deployment(resources = "classpath*:/bpmn/**/*.bpmn")
 public class InsuranceDemoApplication {
     public static void main(String[] args) {

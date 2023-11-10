@@ -26,7 +26,7 @@ public class CalculatePremiumJobWorker {
     }
 
     @JobWorker(type = "calculatePremium")
-    public Map<String, Object> calculatePremium(ActivatedJob job) throws Exception {
+    public Map<String, Object> calculatePremium(ActivatedJob job, @CustomHeaders Map<String, String> headers) throws Exception {
         logger.info("Insurance Premium calculation started");
 
         Map<String, Object> variablesMap = job.getVariablesAsMap();
