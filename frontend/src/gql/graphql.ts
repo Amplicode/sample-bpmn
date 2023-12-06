@@ -34,7 +34,37 @@ export type Scalars = {
 export type CamundaForm = {
   __typename?: "CamundaForm";
   id?: Maybe<Scalars["String"]>;
+  processDefinitionId?: Maybe<Scalars["String"]>;
   schema?: Maybe<Scalars["String"]>;
+};
+
+export type CamundaProcessDefinition = {
+  __typename?: "CamundaProcessDefinition";
+  bpmnProcessId?: Maybe<Scalars["String"]>;
+  key?: Maybe<Scalars["Long"]>;
+  name?: Maybe<Scalars["String"]>;
+  version?: Maybe<Scalars["Long"]>;
+};
+
+export type CamundaProcessDefinitionFilterInput = {
+  bpmnProcessId?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars["String"]>;
+};
+
+export type CamundaProcessDefinitionOrderByInput = {
+  direction?: InputMaybe<SortDirection>;
+  property?: InputMaybe<CamundaProcessDefinitionOrderByProperty>;
+};
+
+export enum CamundaProcessDefinitionOrderByProperty {
+  BpmnProcessId = "BPMN_PROCESS_ID",
+  Name = "NAME",
+}
+
+export type CamundaProcessDefinitionResultPage = {
+  __typename?: "CamundaProcessDefinitionResultPage";
+  content?: Maybe<Array<Maybe<CamundaProcessDefinition>>>;
+  totalElements: Scalars["Long"];
 };
 
 export type CamundaTask = {
@@ -42,17 +72,16 @@ export type CamundaTask = {
   assignee?: Maybe<Scalars["String"]>;
   candidateGroups?: Maybe<Array<Maybe<Scalars["String"]>>>;
   candidateUsers?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  completionDate?: Maybe<Scalars["String"]>;
   creationDate?: Maybe<Scalars["String"]>;
   dueDate?: Maybe<Scalars["DateTime"]>;
   followUpDate?: Maybe<Scalars["DateTime"]>;
-  form?: Maybe<CamundaForm>;
   formKey?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
   processDefinitionKey?: Maybe<Scalars["String"]>;
   processInstanceKey?: Maybe<Scalars["String"]>;
   processName?: Maybe<Scalars["String"]>;
+  taskDefinitionId?: Maybe<Scalars["String"]>;
   taskState?: Maybe<CamundaTaskState>;
 };
 
@@ -62,9 +91,12 @@ export type CamundaTaskOrderByInput = {
 };
 
 export enum CamundaTaskOrderByProperty {
+  Assignee = "ASSIGNEE",
   CreationDate = "CREATION_DATE",
   DueDate = "DUE_DATE",
   FollowUpDate = "FOLLOW_UP_DATE",
+  Name = "NAME",
+  ProcessName = "PROCESS_NAME",
 }
 
 export type CamundaTaskResultPage = {
@@ -96,20 +128,21 @@ export type ClaimOutputDto = {
 
 export type Mutation = {
   __typename?: "Mutation";
-  completeTask?: Maybe<Scalars["Void"]>;
+  completeCamundaTask?: Maybe<Scalars["Void"]>;
   deleteClaim?: Maybe<Scalars["Void"]>;
   deletePolicy?: Maybe<Scalars["Void"]>;
   deletePolicyType?: Maybe<Scalars["Void"]>;
   deletePolicyholder?: Maybe<Scalars["Void"]>;
   runClaimProcess?: Maybe<Scalars["Void"]>;
+  startCamundaProcess?: Maybe<Scalars["Void"]>;
   updateClaim: ClaimOutputDto;
   updatePolicy: PolicyOutputDto;
   updatePolicyType: PolicyTypeDto;
   updatePolicyholder: PolicyholderDto;
 };
 
-export type MutationCompleteTaskArgs = {
-  id: Scalars["String"];
+export type MutationCompleteCamundaTaskArgs = {
+  taskId: Scalars["String"];
   variables?: InputMaybe<Scalars["String"]>;
 };
 
@@ -131,6 +164,11 @@ export type MutationDeletePolicyholderArgs = {
 
 export type MutationRunClaimProcessArgs = {
   policyId: Scalars["Long"];
+};
+
+export type MutationStartCamundaProcessArgs = {
+  bpmnProcessId: Scalars["String"];
+  variables?: InputMaybe<Scalars["String"]>;
 };
 
 export type MutationUpdateClaimArgs = {
@@ -205,7 +243,10 @@ export type PolicyholderDtoInput = {
 
 export type Query = {
   __typename?: "Query";
-  assignedTaskList: CamundaTaskResultPage;
+  camundaForm: CamundaForm;
+  camundaProcessDefinitionList: CamundaProcessDefinitionResultPage;
+  camundaTask: CamundaTask;
+  camundaTaskList: CamundaTaskResultPage;
   checkAuthenticated?: Maybe<Scalars["Void"]>;
   claim: ClaimOutputDto;
   claimList: Array<Maybe<ClaimOutputDto>>;
@@ -215,12 +256,27 @@ export type Query = {
   policyTypeList: Array<Maybe<PolicyTypeDto>>;
   policyholder: PolicyholderDto;
   policyholderList: Array<Maybe<PolicyholderDto>>;
-  task: CamundaTask;
   userInfo?: Maybe<UserInfo>;
   userPermissions?: Maybe<Array<Maybe<Scalars["String"]>>>;
 };
 
-export type QueryAssignedTaskListArgs = {
+export type QueryCamundaFormArgs = {
+  formId?: InputMaybe<Scalars["String"]>;
+  processDefinitionId?: InputMaybe<Scalars["String"]>;
+};
+
+export type QueryCamundaProcessDefinitionListArgs = {
+  filter?: InputMaybe<CamundaProcessDefinitionFilterInput>;
+  page?: InputMaybe<OffsetPageInput>;
+  sort?: InputMaybe<Array<InputMaybe<CamundaProcessDefinitionOrderByInput>>>;
+};
+
+export type QueryCamundaTaskArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryCamundaTaskListArgs = {
+  filterId?: InputMaybe<Scalars["String"]>;
   page?: InputMaybe<OffsetPageInput>;
   sort?: InputMaybe<Array<InputMaybe<CamundaTaskOrderByInput>>>;
 };
@@ -239,10 +295,6 @@ export type QueryPolicyTypeArgs = {
 
 export type QueryPolicyholderArgs = {
   id: Scalars["ID"];
-};
-
-export type QueryTaskArgs = {
-  id: Scalars["String"];
 };
 
 export enum SortDirection {
@@ -585,39 +637,32 @@ export type TaskQueryVariables = Exact<{
 
 export type TaskQuery = {
   __typename?: "Query";
-  task: {
+  camundaTask: {
     __typename?: "CamundaTask";
+    id?: string | null;
     assignee?: string | null;
-    completionDate?: string | null;
     creationDate?: string | null;
     dueDate?: any | null;
     followUpDate?: any | null;
     formKey?: string | null;
-    id?: string | null;
     name?: string | null;
     processDefinitionKey?: string | null;
     processInstanceKey?: string | null;
     processName?: string | null;
-    taskState?: CamundaTaskState | null;
-    form?: {
-      __typename?: "CamundaForm";
-      id?: string | null;
-      schema?: string | null;
-    } | null;
   };
 };
 
-export type CompleteTask_TaskFormMutationVariables = Exact<{
+export type CompleteCamundaTask_TaskFormMutationVariables = Exact<{
   id: Scalars["String"];
   variables?: InputMaybe<Scalars["String"]>;
 }>;
 
-export type CompleteTask_TaskFormMutation = {
+export type CompleteCamundaTask_TaskFormMutation = {
   __typename?: "Mutation";
-  completeTask?: any | null;
+  completeCamundaTask?: any | null;
 };
 
-export type AssignedTaskList_AssignedTaskListQueryVariables = Exact<{
+export type CamundaTaskList_CamundaTaskListQueryVariables = Exact<{
   sort?: InputMaybe<
     | Array<InputMaybe<CamundaTaskOrderByInput>>
     | InputMaybe<CamundaTaskOrderByInput>
@@ -625,16 +670,16 @@ export type AssignedTaskList_AssignedTaskListQueryVariables = Exact<{
   page?: InputMaybe<OffsetPageInput>;
 }>;
 
-export type AssignedTaskList_AssignedTaskListQuery = {
+export type CamundaTaskList_CamundaTaskListQuery = {
   __typename?: "Query";
-  assignedTaskList: {
+  camundaTaskList: {
     __typename?: "CamundaTaskResultPage";
     totalElements: any;
     content?: Array<{
       __typename?: "CamundaTask";
+      id?: string | null;
       assignee?: string | null;
       creationDate?: string | null;
-      id?: string | null;
       name?: string | null;
       processName?: string | null;
     } | null> | null;
@@ -1712,7 +1757,7 @@ export const TaskDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "task" },
+            name: { kind: "Name", value: "camundaTask" },
             arguments: [
               {
                 kind: "Argument",
@@ -1726,11 +1771,8 @@ export const TaskDocument = {
             selectionSet: {
               kind: "SelectionSet",
               selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "assignee" } },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "completionDate" },
-                },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "creationDate" },
@@ -1740,22 +1782,7 @@ export const TaskDocument = {
                   kind: "Field",
                   name: { kind: "Name", value: "followUpDate" },
                 },
-                {
-                  kind: "Field",
-                  name: { kind: "Name", value: "form" },
-                  selectionSet: {
-                    kind: "SelectionSet",
-                    selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
-                      {
-                        kind: "Field",
-                        name: { kind: "Name", value: "schema" },
-                      },
-                    ],
-                  },
-                },
                 { kind: "Field", name: { kind: "Name", value: "formKey" } },
-                { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
                 {
                   kind: "Field",
@@ -1766,7 +1793,6 @@ export const TaskDocument = {
                   name: { kind: "Name", value: "processInstanceKey" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "processName" } },
-                { kind: "Field", name: { kind: "Name", value: "taskState" } },
               ],
             },
           },
@@ -1775,13 +1801,13 @@ export const TaskDocument = {
     },
   ],
 } as unknown as DocumentNode<TaskQuery, TaskQueryVariables>;
-export const CompleteTask_TaskFormDocument = {
+export const CompleteCamundaTask_TaskFormDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "mutation",
-      name: { kind: "Name", value: "CompleteTask_TaskForm" },
+      name: { kind: "Name", value: "CompleteCamundaTask_TaskForm" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1808,11 +1834,11 @@ export const CompleteTask_TaskFormDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "completeTask" },
+            name: { kind: "Name", value: "completeCamundaTask" },
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "id" },
+                name: { kind: "Name", value: "taskId" },
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "id" },
@@ -1833,16 +1859,16 @@ export const CompleteTask_TaskFormDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  CompleteTask_TaskFormMutation,
-  CompleteTask_TaskFormMutationVariables
+  CompleteCamundaTask_TaskFormMutation,
+  CompleteCamundaTask_TaskFormMutationVariables
 >;
-export const AssignedTaskList_AssignedTaskListDocument = {
+export const CamundaTaskList_CamundaTaskListDocument = {
   kind: "Document",
   definitions: [
     {
       kind: "OperationDefinition",
       operation: "query",
-      name: { kind: "Name", value: "AssignedTaskList_AssignedTaskList" },
+      name: { kind: "Name", value: "CamundaTaskList_CamundaTaskList" },
       variableDefinitions: [
         {
           kind: "VariableDefinition",
@@ -1869,7 +1895,7 @@ export const AssignedTaskList_AssignedTaskListDocument = {
         selections: [
           {
             kind: "Field",
-            name: { kind: "Name", value: "assignedTaskList" },
+            name: { kind: "Name", value: "camundaTaskList" },
             arguments: [
               {
                 kind: "Argument",
@@ -1897,6 +1923,7 @@ export const AssignedTaskList_AssignedTaskListDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "assignee" },
@@ -1905,7 +1932,6 @@ export const AssignedTaskList_AssignedTaskListDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "creationDate" },
                       },
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
                       {
                         kind: "Field",
@@ -1926,8 +1952,8 @@ export const AssignedTaskList_AssignedTaskListDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  AssignedTaskList_AssignedTaskListQuery,
-  AssignedTaskList_AssignedTaskListQueryVariables
+  CamundaTaskList_CamundaTaskListQuery,
+  CamundaTaskList_CamundaTaskListQueryVariables
 >;
 export const UserPermissionsDocument = {
   kind: "Document",

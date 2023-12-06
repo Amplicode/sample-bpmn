@@ -1,0 +1,89 @@
+type CamundaProcessDefinition {
+    key: Long
+    name: String
+    version: Long
+    bpmnProcessId: String
+}
+
+type CamundaProcessDefinitionResultPage {
+    content: [CamundaProcessDefinition]
+    totalElements: Long!
+}
+
+type CamundaForm {
+    id: String
+    processDefinitionId: String
+    schema: String
+}
+
+type CamundaTask {
+    id: String
+    name: String
+    processName: String
+    processDefinitionKey: String
+    processInstanceKey: String
+    assignee: String
+    creationDate: String
+    taskState: CamundaTaskState
+    candidateUsers: [String]
+    candidateGroups: [String]
+    followUpDate: DateTime
+    dueDate: DateTime
+    formKey: String
+    taskDefinitionId: String
+}
+
+type CamundaTaskResultPage {
+    content: [CamundaTask]
+    totalElements: Long!
+}
+
+extend type Mutation {
+    startCamundaProcess(bpmnProcessId: String!, variables: String): Void
+    completeCamundaTask(taskId: String!, variables: String): Void
+}
+
+extend type Query {
+    camundaProcessDefinitionList(page: OffsetPageInput, sort: [CamundaProcessDefinitionOrderByInput], filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
+    camundaForm(formId: String, processDefinitionId: String): CamundaForm!
+    camundaTask(id: String!): CamundaTask!
+    camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filterId: String): CamundaTaskResultPage!
+}
+
+
+input CamundaProcessDefinitionFilterInput {
+    name: String
+    bpmnProcessId: String
+}
+
+input CamundaProcessDefinitionOrderByInput {
+    property: CamundaProcessDefinitionOrderByProperty
+    direction: SortDirection
+}
+
+input CamundaTaskOrderByInput {
+    property: CamundaTaskOrderByProperty
+    direction: SortDirection
+}
+
+enum CamundaProcessDefinitionOrderByProperty {
+    NAME
+    BPMN_PROCESS_ID
+}
+
+enum CamundaTaskOrderByProperty {
+    NAME
+    PROCESS_NAME
+    ASSIGNEE
+    CREATION_DATE
+    FOLLOW_UP_DATE
+    DUE_DATE
+}
+
+enum CamundaTaskState {
+    CREATED
+    COMPLETED
+    CANCELED
+}
+
+

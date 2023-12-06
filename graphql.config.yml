@@ -1,4 +1,6 @@
-schema: src/main/resources/graphql/schema.graphqls
+schema:
+  - src/main/resources/graphql/schema.graphqls
+  - src/main/resources/graphql/camunda/camunda.graphqls
 include:
   - frontend/src/**/*.{ts,tsx}
   - src/test/resources/graphql-test/**/*.graphql

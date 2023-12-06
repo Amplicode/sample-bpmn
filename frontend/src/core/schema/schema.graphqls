@@ -49,55 +49,70 @@ directive @javaType(name: String!) on SCALAR | OBJECT | INPUT_OBJECT
 
 # Query root
 type Query {
-  assignedTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput]): CamundaTaskResultPage!
-  checkAuthenticated: Void
-  claim(id: ID!): ClaimOutputDto!
-  claimList: [ClaimOutputDto]!
-  policy(id: ID!): PolicyOutputDto!
-  policyList: [PolicyOutputDto]!
-  policyType(id: ID!): PolicyTypeDto!
-  policyTypeList: [PolicyTypeDto]!
-  policyholder(id: ID!): PolicyholderDto!
-  policyholderList: [PolicyholderDto]!
-  task(id: String!): CamundaTask!
   userInfo: UserInfo
+  policyholder(id: ID!): PolicyholderDto!
+  checkAuthenticated: Void
+  policyTypeList: [PolicyTypeDto]!
+  policyType(id: ID!): PolicyTypeDto!
+  policyList: [PolicyOutputDto]!
+  claimList: [ClaimOutputDto]!
+  claim(id: ID!): ClaimOutputDto!
   userPermissions: [String]
+  policyholderList: [PolicyholderDto]!
+  policy(id: ID!): PolicyOutputDto!
+  camundaProcessDefinitionList(page: OffsetPageInput, sort: [CamundaProcessDefinitionOrderByInput], filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
+  camundaForm(formId: String, processDefinitionId: String): CamundaForm!
+  camundaTask(id: String!): CamundaTask!
+  camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filterId: String): CamundaTaskResultPage!
 }
 
 type Mutation {
-  completeTask(id: String!, variables: String): Void
-  deleteClaim(id: ID!): Void
-  deletePolicy(id: ID!): Void
-  deletePolicyType(id: ID!): Void
-  deletePolicyholder(id: ID!): Void
-  runClaimProcess(policyId: Long!): Void
   updateClaim(input: ClaimInputDto!): ClaimOutputDto!
-  updatePolicy(input: PolicyInputDto!): PolicyOutputDto!
-  updatePolicyType(input: PolicyTypeDtoInput!): PolicyTypeDto!
+  deletePolicyType(id: ID!): Void
   updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
+  deleteClaim(id: ID!): Void
+  updatePolicy(input: PolicyInputDto!): PolicyOutputDto!
+  deletePolicy(id: ID!): Void
+  runClaimProcess(policyId: Long!): Void
+  deletePolicyholder(id: ID!): Void
+  updatePolicyType(input: PolicyTypeDtoInput!): PolicyTypeDto!
+  startCamundaProcess(bpmnProcessId: String!, variables: String): Void
+  completeCamundaTask(taskId: String!, variables: String): Void
 }
 
 type CamundaForm {
   id: String
+  processDefinitionId: String
   schema: String
 }
 
+type CamundaProcessDefinition {
+  key: Long
+  name: String
+  version: Long
+  bpmnProcessId: String
+}
+
+type CamundaProcessDefinitionResultPage {
+  content: [CamundaProcessDefinition]
+  totalElements: Long!
+}
+
 type CamundaTask {
-  assignee: String
-  candidateGroups: [String]
-  candidateUsers: [String]
-  completionDate: String
-  creationDate: String
-  dueDate: DateTime
-  followUpDate: DateTime
-  form: CamundaForm
-  formKey: String
   id: String
   name: String
+  processName: String
   processDefinitionKey: String
   processInstanceKey: String
-  processName: String
+  assignee: String
+  creationDate: String
   taskState: CamundaTaskState
+  candidateUsers: [String]
+  candidateGroups: [String]
+  followUpDate: DateTime
+  dueDate: DateTime
+  formKey: String
+  taskDefinitionId: String
 }
 
 type CamundaTaskResultPage {
@@ -137,14 +152,24 @@ type PolicyholderDto {
 
 # Contains information about user
 type UserInfo {
-  avatar: String
-  fullName: String
   id: String!
+  fullName: String
+  avatar: String
+}
+
+input CamundaProcessDefinitionFilterInput {
+  name: String
+  bpmnProcessId: String
+}
+
+input CamundaProcessDefinitionOrderByInput {
+  property: CamundaProcessDefinitionOrderByProperty
+  direction: SortDirection
 }
 
 input CamundaTaskOrderByInput {
-  direction: SortDirection
   property: CamundaTaskOrderByProperty
+  direction: SortDirection
 }
 
 input ClaimInputDto {
@@ -182,16 +207,24 @@ input PolicyholderDtoInput {
   name: String
 }
 
+enum CamundaProcessDefinitionOrderByProperty {
+  NAME
+  BPMN_PROCESS_ID
+}
+
 enum CamundaTaskOrderByProperty {
+  NAME
+  PROCESS_NAME
+  ASSIGNEE
   CREATION_DATE
-  DUE_DATE
   FOLLOW_UP_DATE
+  DUE_DATE
 }
 
 enum CamundaTaskState {
-  CANCELED
-  COMPLETED
   CREATED
+  COMPLETED
+  CANCELED
 }
 
 enum SortDirection {

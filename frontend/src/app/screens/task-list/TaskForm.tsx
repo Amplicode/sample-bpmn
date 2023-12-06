@@ -8,34 +8,28 @@ import {useParams} from "react-router";
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 import {createFormComponent} from "./FormSupport";
 
-const TASK_TASK_FORM = gql(`query Task($id: String!) {
-  task(id: $id) {
+const CAMUNDA_TASK_TASK_TASK_FORM = gql(`query Task($id: String!) {
+  camundaTask(id: $id) {
+    id
     assignee
-    completionDate
     creationDate
     dueDate
     followUpDate
-    form {
-      id
-      schema
-    }
     formKey
-    id
     name
     processDefinitionKey
     processInstanceKey
     processName
-    taskState
   }
 }`);
 
-const COMPLETE_TASK_TASK_FORM = gql(`
-mutation CompleteTask_TaskForm(
+const COMPLETE_CAMUNDA_TASK_TASK_FORM = gql(`
+mutation CompleteCamundaTask_TaskForm(
     $id: String!,
     $variables: String
 ) {
-    completeTask(
-        id: $id,
+    completeCamundaTask(
+        taskId: $id,
         variables: $variables)               
 }
 `);
@@ -45,12 +39,12 @@ mutation CompleteTask_TaskForm(
 export const TaskForm = () => {
     const {id} = useParams();
 
-    const {loading: taskLoading, error: taskError, data: taskData} = useQuery(TASK_TASK_FORM, {
+    const {loading: taskLoading, error: taskError, data: taskData} = useQuery(CAMUNDA_TASK_TASK_TASK_FORM, {
         variables: {
             id: id!!
         }
     });
-    const [runCompleteTask] = useMutation(COMPLETE_TASK_TASK_FORM, {});
+    const [runCompleteCamundaTask] = useMutation(COMPLETE_CAMUNDA_TASK_TASK_FORM, {});
 
     const redirect = useRedirect();
     const notify = useNotify();
@@ -60,7 +54,7 @@ export const TaskForm = () => {
             try {
                 const variablesStr = JSON.stringify(data)
 
-                await runCompleteTask({
+                await runCompleteCamundaTask({
                     variables: {
                         id: id!!,
                         variables: variablesStr
@@ -74,14 +68,14 @@ export const TaskForm = () => {
                 return checkServerValidationErrors(response, notify);
             }
         },
-        [notify, redirect, runCompleteTask]
+        [notify, redirect, runCompleteCamundaTask]
     );
 
     if (taskLoading) {
         return (<div>Loading...</div>)
     }
 
-    const task = taskData?.task!!
+    const task = taskData?.camundaTask!!
     const form = task.form == null ? null : JSON.parse(task.form?.schema!!)
     const components = form == null? [] : form?.components
 
