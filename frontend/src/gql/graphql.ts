@@ -662,6 +662,21 @@ export type CompleteCamundaTask_TaskFormMutation = {
   completeCamundaTask?: any | null;
 };
 
+export type CamundaForm_TaskFormQueryVariables = Exact<{
+  processDefinitionId?: InputMaybe<Scalars["String"]>;
+  formId?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type CamundaForm_TaskFormQuery = {
+  __typename?: "Query";
+  camundaForm: {
+    __typename?: "CamundaForm";
+    id?: string | null;
+    processDefinitionId?: string | null;
+    schema?: string | null;
+  };
+};
+
 export type CamundaTaskList_CamundaTaskListQueryVariables = Exact<{
   sort?: InputMaybe<
     | Array<InputMaybe<CamundaTaskOrderByInput>>
@@ -1861,6 +1876,75 @@ export const CompleteCamundaTask_TaskFormDocument = {
 } as unknown as DocumentNode<
   CompleteCamundaTask_TaskFormMutation,
   CompleteCamundaTask_TaskFormMutationVariables
+>;
+export const CamundaForm_TaskFormDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CamundaForm_TaskForm" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "processDefinitionId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "formId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "camundaForm" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "formId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "formId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "processDefinitionId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "processDefinitionId" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "processDefinitionId" },
+                },
+                { kind: "Field", name: { kind: "Name", value: "schema" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CamundaForm_TaskFormQuery,
+  CamundaForm_TaskFormQueryVariables
 >;
 export const CamundaTaskList_CamundaTaskListDocument = {
   kind: "Document",

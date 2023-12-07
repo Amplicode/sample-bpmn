@@ -57,6 +57,8 @@ const documents = {
     types.TaskDocument,
   "\nmutation CompleteCamundaTask_TaskForm(\n    $id: String!,\n    $variables: String\n) {\n    completeCamundaTask(\n        taskId: $id,\n        variables: $variables)               \n}\n":
     types.CompleteCamundaTask_TaskFormDocument,
+  "\nquery CamundaForm_TaskForm(\n    $processDefinitionId: String,\n    $formId: String\n) {\n    camundaForm(\n        formId: $formId,\n        processDefinitionId: $processDefinitionId\n) {\n        id\n        processDefinitionId\n        schema\n    }\n}\n":
+    types.CamundaForm_TaskFormDocument,
   "query CamundaTaskList_CamundaTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  camundaTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      id\n      assignee\n      creationDate\n      name\n      processName\n    }\n    totalElements\n  }\n}":
     types.CamundaTaskList_CamundaTaskListDocument,
   "\n     query userPermissions {\n         userPermissions\n     }\n":
@@ -209,6 +211,12 @@ export function gql(
 export function gql(
   source: "\nmutation CompleteCamundaTask_TaskForm(\n    $id: String!,\n    $variables: String\n) {\n    completeCamundaTask(\n        taskId: $id,\n        variables: $variables)               \n}\n"
 ): (typeof documents)["\nmutation CompleteCamundaTask_TaskForm(\n    $id: String!,\n    $variables: String\n) {\n    completeCamundaTask(\n        taskId: $id,\n        variables: $variables)               \n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "\nquery CamundaForm_TaskForm(\n    $processDefinitionId: String,\n    $formId: String\n) {\n    camundaForm(\n        formId: $formId,\n        processDefinitionId: $processDefinitionId\n) {\n        id\n        processDefinitionId\n        schema\n    }\n}\n"
+): (typeof documents)["\nquery CamundaForm_TaskForm(\n    $processDefinitionId: String,\n    $formId: String\n) {\n    camundaForm(\n        formId: $formId,\n        processDefinitionId: $processDefinitionId\n) {\n        id\n        processDefinitionId\n        schema\n    }\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
