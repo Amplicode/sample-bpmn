@@ -1,5 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AmplicodeDatabaseMigrationSettings">
+    <database-infos>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>mysql</dbms-id>
+      </database-info>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>maria</dbms-id>
+      </database-info>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>postgres</dbms-id>
+      </database-info>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>mssql</dbms-id>
+      </database-info>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>oracle</dbms-id>
+      </database-info>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>h2</dbms-id>
+      </database-info>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>db2</dbms-id>
+      </database-info>
+      <database-info>
+        <option name="enabled" value="true" />
+        <dbms-id>hsql</dbms-id>
+      </database-info>
+    </database-infos>
+  </component>
+  <component name="AmplicodeLiquibaseChangesConfig">
+    <exclude-change idName="policyholder#date_of_birth" tagName="dropColumn" />
+    <exclude-change idName="policyholder#date_of_birth" tagName="addColumn" />
+  </component>
+  <component name="AmplicodePersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit name="Default" defaultIncludeChangeLogFile="src/main/resources/db/changelog.xml">
+        <packages>
+          <package value="com.example.insurancedemo" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
   <component name="AmplicodeProjectState">
     <option name="data">
       <map>
@@ -11,9 +60,7 @@
       </map>
     </option>
   </component>
-  <component name="AmplicodeSpringConfig">
-    <option name="jpaConfigPersistentUnitInitialized" value="true" />
-  </component>
+  <component name="AmplicodeSpringConfig" isAmplicodeImported="true" />
   <component name="DatabaseMigrationSettings">
     <database-infos>
       <database-info>

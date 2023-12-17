@@ -1,8 +1,8 @@
 type CamundaProcessDefinition {
     key: Long
     name: String
-    version: Long
     bpmnProcessId: String
+    resource: String
 }
 
 type CamundaProcessDefinitionResultPage {
@@ -23,7 +23,7 @@ type CamundaTask {
     processDefinitionKey: String
     processInstanceKey: String
     assignee: String
-    creationDate: String
+    creationDate: DateTime
     taskState: CamundaTaskState
     candidateUsers: [String]
     candidateGroups: [String]
@@ -44,7 +44,7 @@ extend type Mutation {
 }
 
 extend type Query {
-    camundaProcessDefinitionList(page: OffsetPageInput, sort: [CamundaProcessDefinitionOrderByInput], filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
+    camundaProcessDefinitionList(page: OffsetPageInput, filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
     camundaForm(formId: String, processDefinitionId: String): CamundaForm!
     camundaTask(id: String!): CamundaTask!
     camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filterId: String): CamundaTaskResultPage!
@@ -56,19 +56,9 @@ input CamundaProcessDefinitionFilterInput {
     bpmnProcessId: String
 }
 
-input CamundaProcessDefinitionOrderByInput {
-    property: CamundaProcessDefinitionOrderByProperty
-    direction: SortDirection
-}
-
 input CamundaTaskOrderByInput {
     property: CamundaTaskOrderByProperty
     direction: SortDirection
-}
-
-enum CamundaProcessDefinitionOrderByProperty {
-    NAME
-    BPMN_PROCESS_ID
 }
 
 enum CamundaTaskOrderByProperty {

@@ -82,4 +82,5 @@
                                  referencedTableName="policy_type"/>
     </changeSet>
 
+    <include file="camunda/liquibase/changelog.xml"/>
 </databaseChangeLog>
