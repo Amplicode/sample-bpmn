@@ -46,6 +46,7 @@ extend type Mutation {
 extend type Query {
     camundaProcessDefinitionList(page: OffsetPageInput, filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
     camundaForm(formId: String, processDefinitionId: String): CamundaForm!
+    camundaVariables(taskId: String): String
     camundaTask(id: String!): CamundaTask!
     camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filterId: String): CamundaTaskResultPage!
 }
