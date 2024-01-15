@@ -43,23 +43,13 @@ export type CamundaProcessDefinition = {
   bpmnProcessId?: Maybe<Scalars["String"]>;
   key?: Maybe<Scalars["Long"]>;
   name?: Maybe<Scalars["String"]>;
-  version?: Maybe<Scalars["Long"]>;
+  resource?: Maybe<Scalars["String"]>;
 };
 
 export type CamundaProcessDefinitionFilterInput = {
   bpmnProcessId?: InputMaybe<Scalars["String"]>;
   name?: InputMaybe<Scalars["String"]>;
 };
-
-export type CamundaProcessDefinitionOrderByInput = {
-  direction?: InputMaybe<SortDirection>;
-  property?: InputMaybe<CamundaProcessDefinitionOrderByProperty>;
-};
-
-export enum CamundaProcessDefinitionOrderByProperty {
-  BpmnProcessId = "BPMN_PROCESS_ID",
-  Name = "NAME",
-}
 
 export type CamundaProcessDefinitionResultPage = {
   __typename?: "CamundaProcessDefinitionResultPage";
@@ -72,7 +62,7 @@ export type CamundaTask = {
   assignee?: Maybe<Scalars["String"]>;
   candidateGroups?: Maybe<Array<Maybe<Scalars["String"]>>>;
   candidateUsers?: Maybe<Array<Maybe<Scalars["String"]>>>;
-  creationDate?: Maybe<Scalars["String"]>;
+  creationDate?: Maybe<Scalars["DateTime"]>;
   dueDate?: Maybe<Scalars["DateTime"]>;
   followUpDate?: Maybe<Scalars["DateTime"]>;
   formKey?: Maybe<Scalars["String"]>;
@@ -247,6 +237,7 @@ export type Query = {
   camundaProcessDefinitionList: CamundaProcessDefinitionResultPage;
   camundaTask: CamundaTask;
   camundaTaskList: CamundaTaskResultPage;
+  camundaVariables?: Maybe<Scalars["String"]>;
   checkAuthenticated?: Maybe<Scalars["Void"]>;
   claim: ClaimOutputDto;
   claimList: Array<Maybe<ClaimOutputDto>>;
@@ -268,7 +259,6 @@ export type QueryCamundaFormArgs = {
 export type QueryCamundaProcessDefinitionListArgs = {
   filter?: InputMaybe<CamundaProcessDefinitionFilterInput>;
   page?: InputMaybe<OffsetPageInput>;
-  sort?: InputMaybe<Array<InputMaybe<CamundaProcessDefinitionOrderByInput>>>;
 };
 
 export type QueryCamundaTaskArgs = {
@@ -279,6 +269,10 @@ export type QueryCamundaTaskListArgs = {
   filterId?: InputMaybe<Scalars["String"]>;
   page?: InputMaybe<OffsetPageInput>;
   sort?: InputMaybe<Array<InputMaybe<CamundaTaskOrderByInput>>>;
+};
+
+export type QueryCamundaVariablesArgs = {
+  taskId?: InputMaybe<Scalars["String"]>;
 };
 
 export type QueryClaimArgs = {
@@ -641,7 +635,7 @@ export type TaskQuery = {
     __typename?: "CamundaTask";
     id?: string | null;
     assignee?: string | null;
-    creationDate?: string | null;
+    creationDate?: any | null;
     dueDate?: any | null;
     followUpDate?: any | null;
     formKey?: string | null;
@@ -694,7 +688,7 @@ export type CamundaTaskList_CamundaTaskListQuery = {
       __typename?: "CamundaTask";
       id?: string | null;
       assignee?: string | null;
-      creationDate?: string | null;
+      creationDate?: any | null;
       name?: string | null;
       processName?: string | null;
     } | null> | null;

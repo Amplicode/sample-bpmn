@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <changeSet id="1705302714649-1" author="subbotin">
+        <insert tableName="policy_type">
+            <column name="name" value="ОСАГО"/>
+        </insert>
+    </changeSet>
+    <changeSet id="1705302736002-1" author="subbotin">
+        <insert tableName="policy_type">
+            <column name="name" value="КАСКО"/>
+        </insert>
+    </changeSet>
+    <changeSet id="1705302774208-1" author="subbotin">
+        <insert tableName="policyholder">
+            <column name="name" value="Иванов"/>
+            <column name="date_of_birth" valueDate="now()"/>
+            <column name="address" value="Гастелло 43а"/>
+        </insert>
+    </changeSet>
+    <changeSet id="1705302860845-1" author="subbotin">
+        <insert tableName="policy">
+            <column name="name" value=""/>
+            <column name="policy_type_id" valueNumeric="1"/>
+            <column name="policy_holder_id" valueNumeric="1"/>
+            <column name="insurance_premium" valueNumeric="20"/>
+            <column name="insurance_sum" valueNumeric="100"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

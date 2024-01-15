@@ -83,4 +83,6 @@
     </changeSet>
 
     <include file="camunda/liquibase/changelog.xml"/>
+
+    <include file="db/changelog/2024/01/15-01-changelog.xml"/>
 </databaseChangeLog>

@@ -49,6 +49,14 @@
       <bpmn:signalEventDefinition id="SignalEventDefinition_171npba" signalRef="Signal_n0TTFc8" />
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0wvey1q" sourceRef="Event_1qbcqwn" targetRef="Activity_1tbbrsj" />
+    <bpmn:intermediateThrowEvent id="Event_0rzv3jj">
+      <bpmn:signalEventDefinition id="SignalEventDefinition_1mxz5gf" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:serviceTask id="Activity_05aojtv">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="" />
+      </bpmn:extensionElements>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_5bqc45u" name="StartMessage" />
   <bpmn:message id="Message_DYq2FdY" name="OrderPlaced" />
@@ -79,6 +87,12 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0eh81ap_di" bpmnElement="Event_18f9399">
         <dc:Bounds x="179" y="292" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1p43w4p_di" bpmnElement="Event_0rzv3jj">
+        <dc:Bounds x="612" y="222" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0u5l87f_di" bpmnElement="Activity_05aojtv">
+        <dc:Bounds x="190" y="410" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0cmzvyg_di" bpmnElement="Event_1qbcqwn">
         <dc:Bounds x="382" y="199" width="36" height="36" />

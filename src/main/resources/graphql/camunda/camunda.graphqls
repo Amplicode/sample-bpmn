@@ -38,17 +38,39 @@ type CamundaTaskResultPage {
     totalElements: Long!
 }
 
+type CamundaTaskCondition {
+    id: ID
+    type: CamundaTaskConditionType!
+    values: [String]
+    valueExpression: String
+}
+
+type CamundaTaskFilter {
+    id: ID
+    name: String!
+    conditions: [CamundaTaskCondition]
+}
+
+type CamundaTaskFilterResultPage {
+    content: [CamundaTaskFilter]
+    totalElements: Long!
+}
+
 extend type Mutation {
     startCamundaProcess(bpmnProcessId: String!, variables: String): Void
     completeCamundaTask(taskId: String!, variables: String): Void
+    updateTaskFilter(input: CamundaTaskFilterInput!): CamundaTaskFilter!
+    deleteCamundaTaskFilter(id: ID!): Void
 }
 
 extend type Query {
     camundaProcessDefinitionList(page: OffsetPageInput, filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
     camundaForm(formId: String, processDefinitionId: String): CamundaForm!
-    camundaVariables(taskId: String): String
     camundaTask(id: String!): CamundaTask!
+    camundaVariables(taskId: String): String
     camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filterId: String): CamundaTaskResultPage!
+    camundaTaskFilter(id: ID!): CamundaTaskFilter!
+    camundaTaskFilterList(page: OffsetPageInput): CamundaTaskFilterResultPage!
 }
 
 
@@ -60,6 +82,19 @@ input CamundaProcessDefinitionFilterInput {
 input CamundaTaskOrderByInput {
     property: CamundaTaskOrderByProperty
     direction: SortDirection
+}
+
+input CamundaTaskConditionInput {
+    id: ID
+    type: CamundaTaskConditionType!
+    values: [String]
+    valueExpression: String
+}
+
+input CamundaTaskFilterInput {
+    id: ID
+    name: String!
+    conditions: [CamundaTaskConditionInput]
 }
 
 enum CamundaTaskOrderByProperty {
@@ -74,7 +109,21 @@ enum CamundaTaskOrderByProperty {
 enum CamundaTaskState {
     CREATED
     COMPLETED
-    CANCELED
+}
+
+enum CamundaTaskConditionType {
+    PROCESS_DEFINITION_KEY
+    PROCESS_DEFINITION_BPMN_PROCESS_ID
+    TASK_DEFINITION_KEY
+    TASK_STATE
+    UNASSIGNED_TASKS
+    TASK_ASSIGNEE
+    TASK_CANDIDATE_GROUPS
+    TASK_CANDIDATE_USERS
+    TASK_DUE_DATE_BEFORE
+    TASK_DUE_DATE_AFTER
+    TASK_FOLLOW_UP_DATE_BEFORE
+    TASK_FOLLOW_UP_DATE_AFTER
 }
 
 

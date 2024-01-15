@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.amplicode.bom</groupId>
         <artifactId>amplicode-bom</artifactId>
-        <version>0.3.0-SNAPSHOT</version>
+        <version>0.5.0-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.amplicode</groupId>
@@ -17,7 +17,7 @@
         <java.version>17</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <spring-boot-maven-plugin.version>3.1.3</spring-boot-maven-plugin.version>
+        <spring-boot-maven-plugin.version>3.2.1</spring-boot-maven-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     </properties>
 
@@ -67,15 +67,8 @@
         <dependency>
             <groupId>io.camunda.spring</groupId>
             <artifactId>spring-boot-starter-camunda</artifactId>
-            <version>8.2.4</version>
+            <version>8.3.4</version>
         </dependency>
-
-
-<!--        <dependency>-->
-<!--            <groupId>io.camunda</groupId>-->
-<!--            <artifactId>camunda-tasklist-client-java</artifactId>-->
-<!--            <version>8.3.1.2</version>-->
-<!--        </dependency>-->
 
         <dependency>
             <groupId>com.amplicode.camunda</groupId>
@@ -116,6 +109,7 @@
                 <configuration>
                     <source>17</source>
                     <target>17</target>
+                    <parameters>true</parameters>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>
@@ -123,9 +117,6 @@
                             <version>${mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
                 </configuration>
             </plugin>
         </plugins>

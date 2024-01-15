@@ -15,6 +15,8 @@ directive @future on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
 directive @futureOrPresent on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
+directive @javaType(name: String!) on SCALAR | OBJECT | INPUT_OBJECT
+
 directive @length(max: Int = 2147483647, min: Int = 0) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
 directive @max(value: Long!) on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
@@ -45,39 +47,42 @@ directive @size(max: Int = 2147483647, min: Int = 0) on ARGUMENT_DEFINITION | IN
 
 directive @url on ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
 
-directive @javaType(name: String!) on SCALAR | OBJECT | INPUT_OBJECT
-
 # Query root
 type Query {
-  userInfo: UserInfo
-  policyholder(id: ID!): PolicyholderDto!
   checkAuthenticated: Void
-  policyTypeList: [PolicyTypeDto]!
-  policyType(id: ID!): PolicyTypeDto!
-  policyList: [PolicyOutputDto]!
-  claimList: [ClaimOutputDto]!
-  claim(id: ID!): ClaimOutputDto!
+  userInfo: UserInfo
   userPermissions: [String]
-  policyholderList: [PolicyholderDto]!
+  claim(id: ID!): ClaimOutputDto!
+  claimList: [ClaimOutputDto]!
   policy(id: ID!): PolicyOutputDto!
-  camundaProcessDefinitionList(page: OffsetPageInput, sort: [CamundaProcessDefinitionOrderByInput], filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
+  policyList: [PolicyOutputDto]!
+  policyType(id: ID!): PolicyTypeDto!
+  policyTypeList: [PolicyTypeDto]!
+  policyholder(id: ID!): PolicyholderDto!
+  policyholderList: [PolicyholderDto]!
+  camundaProcessDefinitionList(page: OffsetPageInput, filter: CamundaProcessDefinitionFilterInput): CamundaProcessDefinitionResultPage!
   camundaForm(formId: String, processDefinitionId: String): CamundaForm!
   camundaTask(id: String!): CamundaTask!
+  camundaVariables(taskId: String): String
   camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filterId: String): CamundaTaskResultPage!
+  camundaTaskFilter(id: ID!): CamundaTaskFilter!
+  camundaTaskFilterList(page: OffsetPageInput): CamundaTaskFilterResultPage!
 }
 
 type Mutation {
-  updateClaim(input: ClaimInputDto!): ClaimOutputDto!
-  deletePolicyType(id: ID!): Void
-  updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
   deleteClaim(id: ID!): Void
-  updatePolicy(input: PolicyInputDto!): PolicyOutputDto!
   deletePolicy(id: ID!): Void
-  runClaimProcess(policyId: Long!): Void
+  deletePolicyType(id: ID!): Void
   deletePolicyholder(id: ID!): Void
+  updateClaim(input: ClaimInputDto!): ClaimOutputDto!
+  updatePolicy(input: PolicyInputDto!): PolicyOutputDto!
   updatePolicyType(input: PolicyTypeDtoInput!): PolicyTypeDto!
+  updatePolicyholder(input: PolicyholderDtoInput!): PolicyholderDto!
+  runClaimProcess(policyId: Long!): Void
   startCamundaProcess(bpmnProcessId: String!, variables: String): Void
   completeCamundaTask(taskId: String!, variables: String): Void
+  updateTaskFilter(input: CamundaTaskFilterInput!): CamundaTaskFilter!
+  deleteCamundaTaskFilter(id: ID!): Void
 }
 
 type CamundaForm {
@@ -89,8 +94,8 @@ type CamundaForm {
 type CamundaProcessDefinition {
   key: Long
   name: String
-  version: Long
   bpmnProcessId: String
+  resource: String
 }
 
 type CamundaProcessDefinitionResultPage {
@@ -105,7 +110,7 @@ type CamundaTask {
   processDefinitionKey: String
   processInstanceKey: String
   assignee: String
-  creationDate: String
+  creationDate: DateTime
   taskState: CamundaTaskState
   candidateUsers: [String]
   candidateGroups: [String]
@@ -113,6 +118,24 @@ type CamundaTask {
   dueDate: DateTime
   formKey: String
   taskDefinitionId: String
+}
+
+type CamundaTaskCondition {
+  id: ID
+  type: CamundaTaskConditionType!
+  values: [String]
+  valueExpression: String
+}
+
+type CamundaTaskFilter {
+  id: ID
+  name: String!
+  conditions: [CamundaTaskCondition]
+}
+
+type CamundaTaskFilterResultPage {
+  content: [CamundaTaskFilter]
+  totalElements: Long!
 }
 
 type CamundaTaskResultPage {
@@ -162,9 +185,17 @@ input CamundaProcessDefinitionFilterInput {
   bpmnProcessId: String
 }
 
-input CamundaProcessDefinitionOrderByInput {
-  property: CamundaProcessDefinitionOrderByProperty
-  direction: SortDirection
+input CamundaTaskConditionInput {
+  id: ID
+  type: CamundaTaskConditionType!
+  values: [String]
+  valueExpression: String
+}
+
+input CamundaTaskFilterInput {
+  id: ID
+  name: String!
+  conditions: [CamundaTaskConditionInput]
 }
 
 input CamundaTaskOrderByInput {
@@ -207,9 +238,19 @@ input PolicyholderDtoInput {
   name: String
 }
 
-enum CamundaProcessDefinitionOrderByProperty {
-  NAME
-  BPMN_PROCESS_ID
+enum CamundaTaskConditionType {
+  PROCESS_DEFINITION_KEY
+  PROCESS_DEFINITION_BPMN_PROCESS_ID
+  TASK_DEFINITION_KEY
+  TASK_STATE
+  UNASSIGNED_TASKS
+  TASK_ASSIGNEE
+  TASK_CANDIDATE_GROUPS
+  TASK_CANDIDATE_USERS
+  TASK_DUE_DATE_BEFORE
+  TASK_DUE_DATE_AFTER
+  TASK_FOLLOW_UP_DATE_BEFORE
+  TASK_FOLLOW_UP_DATE_AFTER
 }
 
 enum CamundaTaskOrderByProperty {
@@ -224,7 +265,6 @@ enum CamundaTaskOrderByProperty {
 enum CamundaTaskState {
   CREATED
   COMPLETED
-  CANCELED
 }
 
 enum SortDirection {

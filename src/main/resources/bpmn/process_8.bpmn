@@ -164,7 +164,7 @@
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_0f4bns7" name="calculate payment amount">
       <bpmn:extensionElements>
-        <zeebe:taskDefinition type="calculatePaymentAmount" />
+        <zeebe:taskDefinition type="calculatePaymentAmount" retries="" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_05f7hug</bpmn:incoming>
       <bpmn:outgoing>Flow_1070dwy</bpmn:outgoing>
