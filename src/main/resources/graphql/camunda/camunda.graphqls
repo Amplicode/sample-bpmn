@@ -1,4 +1,5 @@
 type CamundaProcessDefinition {
+    id: ID
     key: Long
     name: String
     bpmnProcessId: String
@@ -125,5 +126,3 @@ enum CamundaTaskConditionType {
     TASK_FOLLOW_UP_DATE_BEFORE
     TASK_FOLLOW_UP_DATE_AFTER
 }
-
-
