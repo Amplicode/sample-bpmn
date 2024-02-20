@@ -92,6 +92,7 @@ type CamundaForm {
 }
 
 type CamundaProcessDefinition {
+  id: ID
   key: Long
   name: String
   bpmnProcessId: String

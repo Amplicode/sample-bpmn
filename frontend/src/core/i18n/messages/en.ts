@@ -29,6 +29,17 @@ const messages: TranslationMessages = {
       }
     },
 
+    CamundaProcessDefinition: {
+      name: "Process Definition |||| Processes Definition",
+
+      fields: {
+        key: 'Key',
+        name: 'Name',
+        bpmnProcessId: 'BPMN Process Id',
+        resource: 'Resource'
+      }
+    },
+
     ClaimOutputDto: {
       name: "Claim |||| Claims",
 
@@ -91,7 +102,17 @@ const messages: TranslationMessages = {
   },
 
   amplicode: {
-    not_set: "Not set"
+    not_set: "Not set",
+  },
+
+  camunda: {
+    startProcess: {
+      startProcessButton: "Start Process",
+      startProcessLabel: "Start Process",
+      startProcessErrorMessage: "Error occurred while starting camunda process",
+      startProcessSuccessMessage: "Camunda process has started successfully",
+      startProcessVariableJson: "Variables json",
+    }    
   }
 };
 

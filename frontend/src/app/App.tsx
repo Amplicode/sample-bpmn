@@ -24,6 +24,8 @@ import { PolicyholderEdit } from "./screens/policyholder/PolicyholderEdit";
 import { PolicyholderList } from "./screens/policyholder/PolicyholderList";
 import { TaskForm } from "./screens/task-list/TaskForm";
 import { TaskList } from "./screens/task-list/TaskList";
+import { CamundaProcessDefinitionList } from "./screens/process/CamundaProcessDefinitionList";
+import { getCamundaProcessDefinitionRecordRepresentation } from "../core/record-representation/getCamundaProcessDefinitionRecordRepresentation";
 
 export const App = () => {
   const { authProvider, loading } = useAuthProvider();
@@ -78,6 +80,11 @@ export const App = () => {
             list={TaskList}
             recordRepresentation={getCamundaTaskRecordRepresentation}
             edit={TaskForm}
+          />
+          <Resource
+            name="CamundaProcessDefinition"
+            list={CamundaProcessDefinitionList}
+            recordRepresentation={getCamundaProcessDefinitionRecordRepresentation}
           />
         </AdminUI>
       </DevSupport>

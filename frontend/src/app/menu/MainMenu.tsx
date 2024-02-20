@@ -9,6 +9,7 @@ export const MainMenu = () => {
       <Menu.ResourceItem name="PolicyOutputDto" />
       <Menu.ResourceItem name="ClaimOutputDto" />
       <Menu.ResourceItem name="CamundaTask" />
+      <Menu.ResourceItem name="CamundaProcessDefinition" />
     </Menu>
   );
 };

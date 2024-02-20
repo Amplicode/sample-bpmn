@@ -41,6 +41,7 @@ export type CamundaForm = {
 export type CamundaProcessDefinition = {
   __typename?: "CamundaProcessDefinition";
   bpmnProcessId?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["ID"]>;
   key?: Maybe<Scalars["Long"]>;
   name?: Maybe<Scalars["String"]>;
   resource?: Maybe<Scalars["String"]>;
@@ -75,6 +76,55 @@ export type CamundaTask = {
   taskState?: Maybe<CamundaTaskState>;
 };
 
+export type CamundaTaskCondition = {
+  __typename?: "CamundaTaskCondition";
+  id?: Maybe<Scalars["ID"]>;
+  type: CamundaTaskConditionType;
+  valueExpression?: Maybe<Scalars["String"]>;
+  values?: Maybe<Array<Maybe<Scalars["String"]>>>;
+};
+
+export type CamundaTaskConditionInput = {
+  id?: InputMaybe<Scalars["ID"]>;
+  type: CamundaTaskConditionType;
+  valueExpression?: InputMaybe<Scalars["String"]>;
+  values?: InputMaybe<Array<InputMaybe<Scalars["String"]>>>;
+};
+
+export enum CamundaTaskConditionType {
+  ProcessDefinitionBpmnProcessId = "PROCESS_DEFINITION_BPMN_PROCESS_ID",
+  ProcessDefinitionKey = "PROCESS_DEFINITION_KEY",
+  TaskAssignee = "TASK_ASSIGNEE",
+  TaskCandidateGroups = "TASK_CANDIDATE_GROUPS",
+  TaskCandidateUsers = "TASK_CANDIDATE_USERS",
+  TaskDefinitionKey = "TASK_DEFINITION_KEY",
+  TaskDueDateAfter = "TASK_DUE_DATE_AFTER",
+  TaskDueDateBefore = "TASK_DUE_DATE_BEFORE",
+  TaskFollowUpDateAfter = "TASK_FOLLOW_UP_DATE_AFTER",
+  TaskFollowUpDateBefore = "TASK_FOLLOW_UP_DATE_BEFORE",
+  TaskState = "TASK_STATE",
+  UnassignedTasks = "UNASSIGNED_TASKS",
+}
+
+export type CamundaTaskFilter = {
+  __typename?: "CamundaTaskFilter";
+  conditions?: Maybe<Array<Maybe<CamundaTaskCondition>>>;
+  id?: Maybe<Scalars["ID"]>;
+  name: Scalars["String"];
+};
+
+export type CamundaTaskFilterInput = {
+  conditions?: InputMaybe<Array<InputMaybe<CamundaTaskConditionInput>>>;
+  id?: InputMaybe<Scalars["ID"]>;
+  name: Scalars["String"];
+};
+
+export type CamundaTaskFilterResultPage = {
+  __typename?: "CamundaTaskFilterResultPage";
+  content?: Maybe<Array<Maybe<CamundaTaskFilter>>>;
+  totalElements: Scalars["Long"];
+};
+
 export type CamundaTaskOrderByInput = {
   direction?: InputMaybe<SortDirection>;
   property?: InputMaybe<CamundaTaskOrderByProperty>;
@@ -96,7 +146,6 @@ export type CamundaTaskResultPage = {
 };
 
 export enum CamundaTaskState {
-  Canceled = "CANCELED",
   Completed = "COMPLETED",
   Created = "CREATED",
 }
@@ -119,6 +168,7 @@ export type ClaimOutputDto = {
 export type Mutation = {
   __typename?: "Mutation";
   completeCamundaTask?: Maybe<Scalars["Void"]>;
+  deleteCamundaTaskFilter?: Maybe<Scalars["Void"]>;
   deleteClaim?: Maybe<Scalars["Void"]>;
   deletePolicy?: Maybe<Scalars["Void"]>;
   deletePolicyType?: Maybe<Scalars["Void"]>;
@@ -129,11 +179,16 @@ export type Mutation = {
   updatePolicy: PolicyOutputDto;
   updatePolicyType: PolicyTypeDto;
   updatePolicyholder: PolicyholderDto;
+  updateTaskFilter: CamundaTaskFilter;
 };
 
 export type MutationCompleteCamundaTaskArgs = {
   taskId: Scalars["String"];
   variables?: InputMaybe<Scalars["String"]>;
+};
+
+export type MutationDeleteCamundaTaskFilterArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationDeleteClaimArgs = {
@@ -175,6 +230,10 @@ export type MutationUpdatePolicyTypeArgs = {
 
 export type MutationUpdatePolicyholderArgs = {
   input: PolicyholderDtoInput;
+};
+
+export type MutationUpdateTaskFilterArgs = {
+  input: CamundaTaskFilterInput;
 };
 
 export type OffsetPageInput = {
@@ -236,6 +295,8 @@ export type Query = {
   camundaForm: CamundaForm;
   camundaProcessDefinitionList: CamundaProcessDefinitionResultPage;
   camundaTask: CamundaTask;
+  camundaTaskFilter: CamundaTaskFilter;
+  camundaTaskFilterList: CamundaTaskFilterResultPage;
   camundaTaskList: CamundaTaskResultPage;
   camundaVariables?: Maybe<Scalars["String"]>;
   checkAuthenticated?: Maybe<Scalars["Void"]>;
@@ -263,6 +324,14 @@ export type QueryCamundaProcessDefinitionListArgs = {
 
 export type QueryCamundaTaskArgs = {
   id: Scalars["String"];
+};
+
+export type QueryCamundaTaskFilterArgs = {
+  id: Scalars["ID"];
+};
+
+export type QueryCamundaTaskFilterListArgs = {
+  page?: InputMaybe<OffsetPageInput>;
 };
 
 export type QueryCamundaTaskListArgs = {
@@ -623,6 +692,36 @@ export type DeletePolicyholderMutationVariables = Exact<{
 export type DeletePolicyholderMutation = {
   __typename?: "Mutation";
   deletePolicyholder?: any | null;
+};
+
+export type CamundaProcessDefinitionListQueryVariables = Exact<{
+  page?: InputMaybe<OffsetPageInput>;
+  filter?: InputMaybe<CamundaProcessDefinitionFilterInput>;
+}>;
+
+export type CamundaProcessDefinitionListQuery = {
+  __typename?: "Query";
+  camundaProcessDefinitionList: {
+    __typename?: "CamundaProcessDefinitionResultPage";
+    totalElements: any;
+    content?: Array<{
+      __typename?: "CamundaProcessDefinition";
+      key?: any | null;
+      name?: string | null;
+      bpmnProcessId?: string | null;
+      resource?: string | null;
+    } | null> | null;
+  };
+};
+
+export type StartCamundaProcessMutationVariables = Exact<{
+  bpmnProcessId: Scalars["String"];
+  variables?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type StartCamundaProcessMutation = {
+  __typename?: "Mutation";
+  startCamundaProcess?: any | null;
 };
 
 export type TaskQueryVariables = Exact<{
@@ -1740,6 +1839,162 @@ export const DeletePolicyholderDocument = {
 } as unknown as DocumentNode<
   DeletePolicyholderMutation,
   DeletePolicyholderMutationVariables
+>;
+export const CamundaProcessDefinitionListDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CamundaProcessDefinitionList" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "page" } },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "OffsetPageInput" },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "filter" },
+          },
+          type: {
+            kind: "NamedType",
+            name: {
+              kind: "Name",
+              value: "CamundaProcessDefinitionFilterInput",
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "camundaProcessDefinitionList" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "page" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "page" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "filter" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "content" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "key" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "bpmnProcessId" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "resource" },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "totalElements" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CamundaProcessDefinitionListQuery,
+  CamundaProcessDefinitionListQueryVariables
+>;
+export const StartCamundaProcessDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "StartCamundaProcess" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "bpmnProcessId" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "String" },
+            },
+          },
+        },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "variables" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "startCamundaProcess" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "bpmnProcessId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "bpmnProcessId" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "variables" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "variables" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  StartCamundaProcessMutation,
+  StartCamundaProcessMutationVariables
 >;
 export const TaskDocument = {
   kind: "Document",
