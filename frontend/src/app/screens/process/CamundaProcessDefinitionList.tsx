@@ -7,12 +7,12 @@ import {
   List,
   TextField,
   TextInput,
-  FunctionField,
   Form,
   useTranslate,
   CreateBase,
+  WrapperField,
   useNotify,
-  useRecordContext
+  useRecordContext,
 } from "react-admin";
 import {
   Dialog,
@@ -46,18 +46,21 @@ export const ResourceFileField = (props: ResourceFileFieldProps) => {
   const translate = useTranslate();
 
   const fileHref = useMemo(() => {
-    const resourceBlob = new Blob([record.resource], {type: 'text/xml'});
-      return window.URL.createObjectURL(resourceBlob);
+    const resourceBlob = new Blob([record.resource], { type: "text/xml" });
+    return window.URL.createObjectURL(resourceBlob);
   }, [record.resource]);
 
   return (
-    <Link style={{ cursor: "pointer" }} target="_blank" href={fileHref} {...props}>
-    {/* <Link style={{ cursor: "pointer" }} download href={fileHref} {...props}> */}
+    <Link
+      style={{ cursor: "pointer" }}
+      target="_blank"
+      href={fileHref}
+      {...props}
+    >
       {translate("ra.action.open")}
     </Link>
   );
 };
-
 
 const START_CAMUNDA_PROCESS = gql(`
 mutation StartCamundaProcess($bpmnProcessId: String!, $variables: String) {
@@ -68,20 +71,16 @@ mutation StartCamundaProcess($bpmnProcessId: String!, $variables: String) {
 interface StartProcessDialogProps {
   open: boolean;
   onClose: () => void;
-  bpmnProcessId: string;
 }
 
-const StartProcessDialog = ({
-  onClose,
-  open,
-  bpmnProcessId,
-}: StartProcessDialogProps) => {
+const StartProcessDialog = ({ onClose, open }: StartProcessDialogProps) => {
   const apolloClient = useApolloClient();
   const { mutate } = useMutation(
     (variables: { bpmnProcessId: string; variables?: string }) =>
       apolloClient.mutate({ mutation: START_CAMUNDA_PROCESS, variables })
   );
 
+  const record = useRecordContext();
   const translate = useTranslate();
   const notify = useNotify();
 
@@ -89,7 +88,7 @@ const StartProcessDialog = ({
     mutate(
       {
         variables: data.variables,
-        bpmnProcessId,
+        bpmnProcessId: record.bpmnProcessId,
       },
       {
         onSuccess: () => {
@@ -109,7 +108,9 @@ const StartProcessDialog = ({
 
   return (
     <Dialog onClose={onClose} open={open} fullWidth>
-      <DialogTitle>{translate("camunda.startProcess.startProcessLabel")}</DialogTitle>
+      <DialogTitle>
+        {translate("camunda.startProcess.startProcessLabel")}
+      </DialogTitle>
       <DialogContent>
         <CreateBase>
           <Form onSubmit={onStart} id="start_process_form">
@@ -171,27 +172,21 @@ export const CamundaProcessDefinitionList = (
         <TextField source="key" sortable={false} />
         <TextField source="name" sortable={false} />
         <TextField source="bpmnProcessId" sortable={false} />
-        <FunctionField
-          source="resource"
-          render={() => <ResourceFileField />}
-          sortable={false}
-        />
-        <FunctionField
+        <WrapperField source="resource" sortable={false}>
+          <ResourceFileField />
+        </WrapperField>
+        <WrapperField
           label="camunda.startProcess.startProcessLabel"
-          render={(record) => (
-            <>
-              <Button variant="outlined" onClick={handleOpenStartProcessDialog}>
-                {translate("camunda.startProcess.startProcessButton")}
-              </Button>
-              <StartProcessDialog
-                bpmnProcessId={record.bpmnProcessId}
-                open={openStartProcessDialog}
-                onClose={handleCloseStartProcessDialog}
-              />
-            </>
-          )}
           sortable={false}
-        />
+        >
+          <Button variant="outlined" onClick={handleOpenStartProcessDialog}>
+            {translate("camunda.startProcess.startProcessButton")}
+          </Button>
+          <StartProcessDialog
+            open={openStartProcessDialog}
+            onClose={handleCloseStartProcessDialog}
+          />
+        </WrapperField>
       </Datagrid>
     </List>
   );
