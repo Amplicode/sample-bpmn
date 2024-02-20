@@ -53,7 +53,7 @@ const documents = {
     types.PolicyholderListDocument,
   "mutation DeletePolicyholder($id: ID!) {\n  deletePolicyholder(id: $id) \n}":
     types.DeletePolicyholderDocument,
-  "query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {\n    camundaProcessDefinitionList(page: $page, filter: $filter) {\n      content {\n        key\n        name\n        bpmnProcessId\n        resource\n      }\n      totalElements\n    }\n  }":
+  "query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {\n    camundaProcessDefinitionList(page: $page, filter: $filter) {\n      content {\n        id\n        key\n        name\n        bpmnProcessId\n        resource\n      }\n      totalElements\n    }\n  }":
     types.CamundaProcessDefinitionListDocument,
   "\nmutation StartCamundaProcess($bpmnProcessId: String!, $variables: String) {\n  startCamundaProcess(bpmnProcessId: $bpmnProcessId, variables: $variables)\n}\n":
     types.StartCamundaProcessDocument,
@@ -207,8 +207,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {\n    camundaProcessDefinitionList(page: $page, filter: $filter) {\n      content {\n        key\n        name\n        bpmnProcessId\n        resource\n      }\n      totalElements\n    }\n  }"
-): (typeof documents)["query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {\n    camundaProcessDefinitionList(page: $page, filter: $filter) {\n      content {\n        key\n        name\n        bpmnProcessId\n        resource\n      }\n      totalElements\n    }\n  }"];
+  source: "query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {\n    camundaProcessDefinitionList(page: $page, filter: $filter) {\n      content {\n        id\n        key\n        name\n        bpmnProcessId\n        resource\n      }\n      totalElements\n    }\n  }"
+): (typeof documents)["query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {\n    camundaProcessDefinitionList(page: $page, filter: $filter) {\n      content {\n        id\n        key\n        name\n        bpmnProcessId\n        resource\n      }\n      totalElements\n    }\n  }"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

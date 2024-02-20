@@ -87,8 +87,7 @@ export const dataProvider: DataProvider = {
           ? Number(result.data[selectionSetName].totalElements)
           : data?.length ?? 0;
 
-      // TODO remove mapping execution
-      return { data: data.map((dataKek) => ({...dataKek , id: dataKek.key || dataKek.id})), total };
+      return { data, total };
     }
 
     const operation: string = getListOperationName(resource);
@@ -313,6 +312,7 @@ export const dataProvider: DataProvider = {
 };
 
 const getSelectionSetName = (query: Record<string, any>): string => {
+  console.log(query)
   return query.definitions[0].selectionSet.selections[0].name.value;
 };
 

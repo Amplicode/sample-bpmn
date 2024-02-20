@@ -706,6 +706,7 @@ export type CamundaProcessDefinitionListQuery = {
     totalElements: any;
     content?: Array<{
       __typename?: "CamundaProcessDefinition";
+      id?: string | null;
       key?: any | null;
       name?: string | null;
       bpmnProcessId?: string | null;
@@ -1904,6 +1905,7 @@ export const CamundaProcessDefinitionListDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "key" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
                       {

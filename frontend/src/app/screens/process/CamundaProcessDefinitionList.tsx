@@ -29,6 +29,7 @@ const CAMUNDA_PROCESS_DEFINITION_LIST =
   gql(`query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {
     camundaProcessDefinitionList(page: $page, filter: $filter) {
       content {
+        id
         key
         name
         bpmnProcessId
