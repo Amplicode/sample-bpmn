@@ -19,11 +19,10 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
-  Button,
+  Button
 } from "@mui/material";
 import { useMutation } from "react-query";
 import { useApolloClient } from "@apollo/client";
-import { Link, LinkBaseProps } from "@mui/material";
 
 const CAMUNDA_PROCESS_DEFINITION_LIST =
   gql(`query CamundaProcessDefinitionList($page: OffsetPageInput, $filter: CamundaProcessDefinitionFilterInput) {
@@ -39,9 +38,7 @@ const CAMUNDA_PROCESS_DEFINITION_LIST =
     }
   }`);
 
-export interface ResourceFileFieldProps extends LinkBaseProps {}
-
-export const ResourceFileField = (props: ResourceFileFieldProps) => {
+export const ResourceFileField = () => {
   const record = useRecordContext();
   const translate = useTranslate();
 
@@ -51,14 +48,13 @@ export const ResourceFileField = (props: ResourceFileFieldProps) => {
   }, [record.resource]);
 
   return (
-    <Link
-      style={{ cursor: "pointer" }}
+    <Button
+      variant="outlined"
       target="_blank"
       href={fileHref}
-      {...props}
     >
       {translate("ra.action.open")}
-    </Link>
+    </Button>
   );
 };
 
@@ -92,13 +88,13 @@ const StartProcessDialog = ({ onClose, open }: StartProcessDialogProps) => {
       },
       {
         onSuccess: () => {
-          notify("success", {
+          notify("camunda.startProcess.startProcessSuccessMessage", {
             type: "success",
           });
           onClose();
         },
         onError: () => {
-          notify("error", {
+          notify("camunda.startProcess.startProcessErrorMessage", {
             type: "error",
           });
         },

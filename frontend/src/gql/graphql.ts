@@ -372,6 +372,79 @@ export type UserInfo = {
   id: Scalars["String"];
 };
 
+export type UpdateTaskFilterMutationVariables = Exact<{
+  input: CamundaTaskFilterInput;
+}>;
+
+export type UpdateTaskFilterMutation = {
+  __typename?: "Mutation";
+  updateTaskFilter: {
+    __typename?: "CamundaTaskFilter";
+    id?: string | null;
+    name: string;
+    conditions?: Array<{
+      __typename?: "CamundaTaskCondition";
+      id?: string | null;
+      type: CamundaTaskConditionType;
+      values?: Array<string | null> | null;
+      valueExpression?: string | null;
+    } | null> | null;
+  };
+};
+
+export type CamundaTaskFilterQueryVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type CamundaTaskFilterQuery = {
+  __typename?: "Query";
+  camundaTaskFilter: {
+    __typename?: "CamundaTaskFilter";
+    id?: string | null;
+    name: string;
+    conditions?: Array<{
+      __typename?: "CamundaTaskCondition";
+      id?: string | null;
+      type: CamundaTaskConditionType;
+      values?: Array<string | null> | null;
+      valueExpression?: string | null;
+    } | null> | null;
+  };
+};
+
+export type CamundaTaskFilterListQueryVariables = Exact<{
+  page?: InputMaybe<OffsetPageInput>;
+}>;
+
+export type CamundaTaskFilterListQuery = {
+  __typename?: "Query";
+  camundaTaskFilterList: {
+    __typename?: "CamundaTaskFilterResultPage";
+    totalElements: any;
+    content?: Array<{
+      __typename?: "CamundaTaskFilter";
+      id?: string | null;
+      name: string;
+      conditions?: Array<{
+        __typename?: "CamundaTaskCondition";
+        id?: string | null;
+        type: CamundaTaskConditionType;
+        values?: Array<string | null> | null;
+        valueExpression?: string | null;
+      } | null> | null;
+    } | null> | null;
+  };
+};
+
+export type DeleteCamundaTaskFilterMutationVariables = Exact<{
+  id: Scalars["ID"];
+}>;
+
+export type DeleteCamundaTaskFilterMutation = {
+  __typename?: "Mutation";
+  deleteCamundaTaskFilter?: any | null;
+};
+
 export type UpdateClaimMutationVariables = Exact<{
   input: ClaimInputDto;
 }>;
@@ -802,6 +875,277 @@ export type UserPermissionsQuery = {
   userPermissions?: Array<string | null> | null;
 };
 
+export const UpdateTaskFilterDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "UpdateTaskFilter" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "input" },
+          },
+          type: {
+            kind: "NonNullType",
+            type: {
+              kind: "NamedType",
+              name: { kind: "Name", value: "CamundaTaskFilterInput" },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "updateTaskFilter" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "input" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "input" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "conditions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "type" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "values" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "valueExpression" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  UpdateTaskFilterMutation,
+  UpdateTaskFilterMutationVariables
+>;
+export const CamundaTaskFilterDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CamundaTaskFilter" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "camundaTaskFilter" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "name" } },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "conditions" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "type" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "values" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "valueExpression" },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CamundaTaskFilterQuery,
+  CamundaTaskFilterQueryVariables
+>;
+export const CamundaTaskFilterListDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "CamundaTaskFilterList" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "page" } },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "OffsetPageInput" },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "camundaTaskFilterList" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "page" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "page" },
+                },
+              },
+            ],
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "content" },
+                  selectionSet: {
+                    kind: "SelectionSet",
+                    selections: [
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
+                      { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "conditions" },
+                        selectionSet: {
+                          kind: "SelectionSet",
+                          selections: [
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "id" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "type" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "values" },
+                            },
+                            {
+                              kind: "Field",
+                              name: { kind: "Name", value: "valueExpression" },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                {
+                  kind: "Field",
+                  name: { kind: "Name", value: "totalElements" },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CamundaTaskFilterListQuery,
+  CamundaTaskFilterListQueryVariables
+>;
+export const DeleteCamundaTaskFilterDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "mutation",
+      name: { kind: "Name", value: "DeleteCamundaTaskFilter" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: { kind: "Variable", name: { kind: "Name", value: "id" } },
+          type: {
+            kind: "NonNullType",
+            type: { kind: "NamedType", name: { kind: "Name", value: "ID" } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "deleteCamundaTaskFilter" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "id" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "id" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  DeleteCamundaTaskFilterMutation,
+  DeleteCamundaTaskFilterMutationVariables
+>;
 export const UpdateClaimDocument = {
   kind: "Document",
   definitions: [

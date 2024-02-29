@@ -13,6 +13,14 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+  "mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}":
+    types.UpdateTaskFilterDocument,
+  "query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}":
+    types.CamundaTaskFilterDocument,
+  "query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }":
+    types.CamundaTaskFilterListDocument,
+  "\nmutation DeleteCamundaTaskFilter($id: ID!) {\n  deleteCamundaTaskFilter(id: $id)\n}\n":
+    types.DeleteCamundaTaskFilterDocument,
   "mutation UpdateClaim($input: ClaimInputDto!) {\n  updateClaim(input: $input) {\n    description\n    id\n    policy {\n      caseDescription\n      id\n      insurancePremium\n      insuranceSum\n      name\n    }\n    timestamp\n  }\n}":
     types.UpdateClaimDocument,
   "\nquery PolicyList_ClaimCreate {\n    policyList {\n        caseDescription\n        id\n        insurancePremium\n        insuranceSum\n        name\n    }\n}\n":
@@ -83,6 +91,30 @@ const documents = {
  */
 export function gql(source: string): unknown;
 
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"
+): (typeof documents)["mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"
+): (typeof documents)["query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }"
+): (typeof documents)["query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "\nmutation DeleteCamundaTaskFilter($id: ID!) {\n  deleteCamundaTaskFilter(id: $id)\n}\n"
+): (typeof documents)["\nmutation DeleteCamundaTaskFilter($id: ID!) {\n  deleteCamundaTaskFilter(id: $id)\n}\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

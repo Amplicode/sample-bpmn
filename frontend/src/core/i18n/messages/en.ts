@@ -30,13 +30,23 @@ const messages: TranslationMessages = {
     },
 
     CamundaProcessDefinition: {
-      name: "Process Definition |||| Processes Definition",
+      name: "Process Definition |||| Process Definitions",
 
       fields: {
         key: 'Key',
         name: 'Name',
         bpmnProcessId: 'BPMN Process Id',
         resource: 'Resource'
+      }
+    },
+
+    CamundaTaskFilter: {
+      name: "Camunda Task Filter |||| Camunda Task Filters",
+
+      fields: {
+        id: 'id',
+        name: 'Name',
+        conditions: 'Conditions'
       }
     },
 
@@ -55,7 +65,7 @@ const messages: TranslationMessages = {
     },
 
     PolicyOutputDto: {
-      name: "Policy |||| Policies ",
+      name: "Policy |||| Policies",
 
       fields: {
         caseDescription: "Case Description",
@@ -98,6 +108,20 @@ const messages: TranslationMessages = {
       CANCELED: "Canceled",
       COMPLETED: "Completed",
       CREATED: "Created"
+    },
+    CamundaTaskConditionType: {
+      PROCESS_DEFINITION_BPMN_PROCESS_ID: 'Process definition bpmn process id',
+      PROCESS_DEFINITION_KEY: 'Process definition key',
+      TASK_ASSIGNEE: 'Task assignee',
+      TASK_CANDIDATE_GROUPS: 'Task candidate groups',
+      TASK_CANDIDATE_USERS: 'Task candidate users',
+      TASK_DEFINITION_KEY: 'Task definition key',
+      TASK_DUE_DATE_AFTER: 'Task due date after',
+      TASK_DUE_DATE_BEFORE: 'Task due date before',
+      TASK_FOLLOW_UP_DATE_AFTER: 'Task follow up date after',
+      TASK_FOLLOW_UP_DATE_BEFORE: 'Task follow up date before',
+      TASK_STATE: 'Task state',
+      UNASSIGNED_TASKS: 'Unassigned tasks',
     }
   },
 
@@ -109,10 +133,20 @@ const messages: TranslationMessages = {
     startProcess: {
       startProcessButton: "Start Process",
       startProcessLabel: "Start Process",
-      startProcessErrorMessage: "Error occurred while starting camunda process",
-      startProcessSuccessMessage: "Camunda process has started successfully",
+      startProcessErrorMessage: "Error occurred while starting process",
+      startProcessSuccessMessage: "Process has started successfully",
       startProcessVariableJson: "Variables json",
-    }    
+    },
+    taskFilter: {
+      condition: {
+        addCondition: 'Add condition',
+        removeCondition: 'Remove condition',
+        valueExpression: 'Value expression',
+        valueExpressionValidationError: 'Not FEEL grammar',
+        values: 'Values',
+        type: 'Type',
+      }
+    }
   }
 };
 

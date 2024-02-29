@@ -24,8 +24,11 @@ import { PolicyholderEdit } from "./screens/policyholder/PolicyholderEdit";
 import { PolicyholderList } from "./screens/policyholder/PolicyholderList";
 import { TaskForm } from "./screens/task-list/TaskForm";
 import { TaskList } from "./screens/task-list/TaskList";
-import { CamundaProcessDefinitionList } from "./screens/process/CamundaProcessDefinitionList";
+import { CamundaTaskFilterList } from "./screens/camundaTaskFilter/CamundaTaskFilterList";
 import { getCamundaProcessDefinitionRecordRepresentation } from "../core/record-representation/getCamundaProcessDefinitionRecordRepresentation";
+import { CamundaProcessDefinitionList } from "./screens/process/CamundaProcessDefinitionList";
+import { CamundaTaskFilterCreate } from "./screens/camundaTaskFilter/CamundaTaskFilterCreate";
+import { CamundaTaskFilterEdit } from "./screens/camundaTaskFilter/CamundaTaskFilterEdit";
 
 export const App = () => {
   const { authProvider, loading } = useAuthProvider();
@@ -85,6 +88,12 @@ export const App = () => {
             name="CamundaProcessDefinition"
             list={CamundaProcessDefinitionList}
             recordRepresentation={getCamundaProcessDefinitionRecordRepresentation}
+          />
+          <Resource
+            name="CamundaTaskFilter"
+            create={CamundaTaskFilterCreate}
+            edit={CamundaTaskFilterEdit}
+            list={CamundaTaskFilterList}
           />
         </AdminUI>
       </DevSupport>
