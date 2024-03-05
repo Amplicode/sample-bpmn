@@ -125,6 +125,10 @@ export type CamundaTaskFilterResultPage = {
   totalElements: Scalars["Long"];
 };
 
+export type CamundaTaskListFilterInput = {
+  filterId?: InputMaybe<Scalars["String"]>;
+};
+
 export type CamundaTaskOrderByInput = {
   direction?: InputMaybe<SortDirection>;
   property?: InputMaybe<CamundaTaskOrderByProperty>;
@@ -136,6 +140,8 @@ export enum CamundaTaskOrderByProperty {
   DueDate = "DUE_DATE",
   FollowUpDate = "FOLLOW_UP_DATE",
   Name = "NAME",
+  ProcessDefinitionKey = "PROCESS_DEFINITION_KEY",
+  ProcessInstanceKey = "PROCESS_INSTANCE_KEY",
   ProcessName = "PROCESS_NAME",
   TaskState = "TASK_STATE",
 }
@@ -336,7 +342,7 @@ export type QueryCamundaTaskFilterListArgs = {
 };
 
 export type QueryCamundaTaskListArgs = {
-  filterId?: InputMaybe<Scalars["String"]>;
+  filter?: InputMaybe<CamundaTaskListFilterInput>;
   page?: InputMaybe<OffsetPageInput>;
   sort?: InputMaybe<Array<InputMaybe<CamundaTaskOrderByInput>>>;
 };
@@ -877,6 +883,7 @@ export type CamundaTaskList_CamundaTaskListQuery = {
       id?: string | null;
       name?: string | null;
       processName?: string | null;
+      processInstanceKey?: string | null;
       taskState?: CamundaTaskState | null;
     } | null> | null;
   };
@@ -2680,6 +2687,10 @@ export const CamundaTaskList_CamundaTaskListDocument = {
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "processName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "processInstanceKey" },
                       },
                       {
                         kind: "Field",

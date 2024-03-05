@@ -29,6 +29,11 @@ import { stripTypename } from "./stripTypename";
 
 const MAX_ENTITY_UPLOAD_LIMIT = 5000;
 
+export const DATE_FORMAT = "YYYY-MM-DD";
+export const OFFSET_DATE_TIME_FORMAT = "YYYY-MM-DDTHH:mmZ";
+export const OFFSET_TIME_FORMAT = "HH:mm:ssZ";
+
+
 export const dataProvider: DataProvider = {
   getList: async (resource, params): Promise<GetListResult> => {
     const { meta, sort, filter, pagination }: GetListParams = params;

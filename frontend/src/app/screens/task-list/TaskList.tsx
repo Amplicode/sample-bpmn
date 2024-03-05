@@ -1,9 +1,10 @@
 import {gql} from "@amplicode/gql";
 import {ResultOf} from "@graphql-typed-document-node/core";
-import {Datagrid, EditButton, FunctionField, List, TextField} from "react-admin";
+import {Button, Datagrid, EditButton, FunctionField, Link, List, TextField} from "react-admin";
 import {OffsetDateTimeField} from "../../../core/components/datetime/OffsetDateTimeField";
-import {EnumField} from "../../../core/fields/EnumField";
+import {EnumField} from "../../../core/components/enum/EnumField";
 import {CamundaTaskState} from "@amplicode/gql/graphql";
+import EditIcon from '@mui/icons-material/Edit';
 
 const CAMUNDA_TASK_LIST = gql(`query CamundaTaskList_CamundaTaskList(
     $sort: [CamundaTaskOrderByInput],
@@ -21,6 +22,7 @@ const CAMUNDA_TASK_LIST = gql(`query CamundaTaskList_CamundaTaskList(
             id
             name
             processName
+            processInstanceKey
             taskState
         }
         totalElements
@@ -41,6 +43,7 @@ export const TaskList = () => {
       <Datagrid rowClick="show" bulkActionButtons={false}>
         <TextField source="name"/>
         <TextField source="processName"/>
+        <TextField source="processInstanceKey"/>
         <OffsetDateTimeField source="creationDate"/>
         <TextField source="assignee"/>
         <EnumField source="taskState" enum={CamundaTaskState} enumTypeName="CamundaTaskState"/>

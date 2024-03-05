@@ -105,6 +105,8 @@ input CamundaTaskFilterInput {
 enum CamundaTaskOrderByProperty {
     NAME
     PROCESS_NAME
+    PROCESS_INSTANCE_KEY
+    PROCESS_DEFINITION_KEY
     ASSIGNEE
     CREATION_DATE
     FOLLOW_UP_DATE

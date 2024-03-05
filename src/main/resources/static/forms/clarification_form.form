@@ -1,0 +1,31 @@
+{
+    "components": [
+        {
+            "label": "Would customer like to stay insured with new rates?",
+            "type": "checkbox",
+            "layout": {
+                "row": "Row_0m7nuf4",
+                "columns": null
+            },
+            "id": "Field_1kn6gyc",
+            "key": "newRatesAccepted"
+        },
+        {
+            "label": "New rates",
+            "type": "number",
+            "layout": {
+                "row": "Row_06r38bg",
+                "columns": null
+            },
+            "id": "Field_14jg057",
+            "key": "insurancePremium",
+            "readonly": true,
+            "disabled": true
+        }
+    ],
+    "type": "default",
+    "id": "Form_W63UKTn",
+    "executionPlatform": "Camunda Cloud",
+    "executionPlatformVersion": "8.3.0",
+    "schemaVersion": 11
+}

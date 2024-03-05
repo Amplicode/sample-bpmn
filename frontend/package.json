@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "~3.7.7",
     "@haulmont/ra-language-russian": "^4.0.0",
+    "@mui/x-date-pickers": "^6.14.0",
     "@react-buddy/ide-toolbox": "^2.4.0",
     "@react-buddy/palette-mui": "^5.0.2",
     "@testing-library/jest-dom": "^5.16.5",

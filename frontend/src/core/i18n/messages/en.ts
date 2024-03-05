@@ -149,6 +149,14 @@ const messages: TranslationMessages = {
     },
     taskList: {
       open: "Open"
+    },
+    taskForm: {
+      title: "User Task %{taskName}",
+      process: "Process",
+      complete: {
+        button: "Complete"
+      },
+      taskDetails: "Task Details"
     }
   }
 };
