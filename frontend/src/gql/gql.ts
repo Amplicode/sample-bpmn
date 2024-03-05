@@ -65,13 +65,15 @@ const documents = {
     types.CamundaProcessDefinitionListDocument,
   "\nmutation StartCamundaProcess($bpmnProcessId: String!, $variables: String) {\n  startCamundaProcess(bpmnProcessId: $bpmnProcessId, variables: $variables)\n}\n":
     types.StartCamundaProcessDocument,
-  "query Task($id: String!) {\n  camundaTask(id: $id) {\n    id\n    assignee\n    creationDate\n    dueDate\n    followUpDate\n    formKey\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n  }\n}":
+  "query Task($id: String!) {\n  camundaTask(id: $id) {\n    id\n    assignee\n    creationDate\n    dueDate\n    followUpDate\n    formKey\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n    taskState\n  }\n}":
     types.TaskDocument,
   "\nmutation CompleteCamundaTask_TaskForm(\n    $id: String!,\n    $variables: String\n) {\n    completeCamundaTask(\n        taskId: $id,\n        variables: $variables)               \n}\n":
     types.CompleteCamundaTask_TaskFormDocument,
   "\nquery CamundaForm_TaskForm(\n    $processDefinitionId: String,\n    $formId: String\n) {\n    camundaForm(\n        formId: $formId,\n        processDefinitionId: $processDefinitionId\n) {\n        id\n        processDefinitionId\n        schema\n    }\n}\n":
     types.CamundaForm_TaskFormDocument,
-  "query CamundaTaskList_CamundaTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  camundaTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      id\n      assignee\n      creationDate\n      name\n      processName\n    }\n    totalElements\n  }\n}":
+  "\nquery camundaVariables(\n    $taskId: String\n) {\n    camundaVariables(\n        taskId: $taskId) \n}\n":
+    types.CamundaVariablesDocument,
+  "query CamundaTaskList_CamundaTaskList(\n    $sort: [CamundaTaskOrderByInput],\n    $page: OffsetPageInput\n) {\n    camundaTaskList(\n        page: $page,\n        sort: $sort\n) {\n        content {\n            assignee\n            creationDate\n            dueDate\n            followUpDate\n            id\n            name\n            processName\n            taskState\n        }\n        totalElements\n    }\n}":
     types.CamundaTaskList_CamundaTaskListDocument,
   "\n     query userPermissions {\n         userPermissions\n     }\n":
     types.UserPermissionsDocument,
@@ -251,8 +253,8 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "query Task($id: String!) {\n  camundaTask(id: $id) {\n    id\n    assignee\n    creationDate\n    dueDate\n    followUpDate\n    formKey\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n  }\n}"
-): (typeof documents)["query Task($id: String!) {\n  camundaTask(id: $id) {\n    id\n    assignee\n    creationDate\n    dueDate\n    followUpDate\n    formKey\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n  }\n}"];
+  source: "query Task($id: String!) {\n  camundaTask(id: $id) {\n    id\n    assignee\n    creationDate\n    dueDate\n    followUpDate\n    formKey\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n    taskState\n  }\n}"
+): (typeof documents)["query Task($id: String!) {\n  camundaTask(id: $id) {\n    id\n    assignee\n    creationDate\n    dueDate\n    followUpDate\n    formKey\n    name\n    processDefinitionKey\n    processInstanceKey\n    processName\n    taskState\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -269,8 +271,14 @@ export function gql(
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "query CamundaTaskList_CamundaTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  camundaTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      id\n      assignee\n      creationDate\n      name\n      processName\n    }\n    totalElements\n  }\n}"
-): (typeof documents)["query CamundaTaskList_CamundaTaskList(\n  $sort: [CamundaTaskOrderByInput]\n  $page: OffsetPageInput\n) {\n  camundaTaskList(\n    sort: $sort\n    page: $page\n  ) {\n    content {\n      id\n      assignee\n      creationDate\n      name\n      processName\n    }\n    totalElements\n  }\n}"];
+  source: "\nquery camundaVariables(\n    $taskId: String\n) {\n    camundaVariables(\n        taskId: $taskId) \n}\n"
+): (typeof documents)["\nquery camundaVariables(\n    $taskId: String\n) {\n    camundaVariables(\n        taskId: $taskId) \n}\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "query CamundaTaskList_CamundaTaskList(\n    $sort: [CamundaTaskOrderByInput],\n    $page: OffsetPageInput\n) {\n    camundaTaskList(\n        page: $page,\n        sort: $sort\n) {\n        content {\n            assignee\n            creationDate\n            dueDate\n            followUpDate\n            id\n            name\n            processName\n            taskState\n        }\n        totalElements\n    }\n}"
+): (typeof documents)["query CamundaTaskList_CamundaTaskList(\n    $sort: [CamundaTaskOrderByInput],\n    $page: OffsetPageInput\n) {\n    camundaTaskList(\n        page: $page,\n        sort: $sort\n) {\n        content {\n            assignee\n            creationDate\n            dueDate\n            followUpDate\n            id\n            name\n            processName\n            taskState\n        }\n        totalElements\n    }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -72,7 +72,7 @@
 
         <dependency>
             <groupId>com.amplicode.camunda</groupId>
-            <artifactId>camunda-starter</artifactId>
+            <artifactId>amplicode-camunda-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
 

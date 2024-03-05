@@ -7,7 +7,7 @@ const messages: TranslationMessages = {
 
   resources: {
     CamundaTask: {
-      name: "Camunda Task |||| Camunda Tasks",
+      name: "User Task |||| User Tasks",
 
       fields: {
         assignee: "Assignee",
@@ -146,6 +146,9 @@ const messages: TranslationMessages = {
         values: 'Values',
         type: 'Type',
       }
+    },
+    taskList: {
+      open: "Open"
     }
   }
 };

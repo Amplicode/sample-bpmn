@@ -261,6 +261,7 @@ enum CamundaTaskOrderByProperty {
   CREATION_DATE
   FOLLOW_UP_DATE
   DUE_DATE
+  TASK_STATE
 }
 
 enum CamundaTaskState {

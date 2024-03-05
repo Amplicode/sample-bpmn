@@ -69,7 +69,7 @@ extend type Query {
     camundaForm(formId: String, processDefinitionId: String): CamundaForm!
     camundaTask(id: String!): CamundaTask!
     camundaVariables(taskId: String): String
-    camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filterId: String): CamundaTaskResultPage!
+    camundaTaskList(page: OffsetPageInput, sort: [CamundaTaskOrderByInput], filter: CamundaTaskListFilterInput): CamundaTaskResultPage!
     camundaTaskFilter(id: ID!): CamundaTaskFilter!
     camundaTaskFilterList(page: OffsetPageInput): CamundaTaskFilterResultPage!
 }
@@ -78,6 +78,10 @@ extend type Query {
 input CamundaProcessDefinitionFilterInput {
     name: String
     bpmnProcessId: String
+}
+
+input CamundaTaskListFilterInput {
+    filterId: String
 }
 
 input CamundaTaskOrderByInput {
@@ -105,6 +109,7 @@ enum CamundaTaskOrderByProperty {
     CREATION_DATE
     FOLLOW_UP_DATE
     DUE_DATE
+    TASK_STATE
 }
 
 enum CamundaTaskState {

@@ -1,24 +1,30 @@
-import { gql } from "@amplicode/gql";
-import { ResultOf } from "@graphql-typed-document-node/core";
-import { Datagrid, EditButton, List, TextField } from "react-admin";
+import {gql} from "@amplicode/gql";
+import {ResultOf} from "@graphql-typed-document-node/core";
+import {Datagrid, EditButton, FunctionField, List, TextField} from "react-admin";
+import {OffsetDateTimeField} from "../../../core/components/datetime/OffsetDateTimeField";
+import {EnumField} from "../../../core/fields/EnumField";
+import {CamundaTaskState} from "@amplicode/gql/graphql";
 
 const CAMUNDA_TASK_LIST = gql(`query CamundaTaskList_CamundaTaskList(
-  $sort: [CamundaTaskOrderByInput]
-  $page: OffsetPageInput
+    $sort: [CamundaTaskOrderByInput],
+    $page: OffsetPageInput
 ) {
-  camundaTaskList(
-    sort: $sort
-    page: $page
-  ) {
-    content {
-      id
-      assignee
-      creationDate
-      name
-      processName
+    camundaTaskList(
+        page: $page,
+        sort: $sort
+) {
+        content {
+            assignee
+            creationDate
+            dueDate
+            followUpDate
+            id
+            name
+            processName
+            taskState
+        }
+        totalElements
     }
-    totalElements
-  }
 }`);
 
 export const TaskList = () => {
@@ -33,12 +39,14 @@ export const TaskList = () => {
   return (
     <List<ItemType> queryOptions={queryOptions} exporter={false}>
       <Datagrid rowClick="show" bulkActionButtons={false}>
-        <TextField source="name" sortable={false} />
-        <TextField source="processName" sortable={false} />
-        <TextField source="creationDate" />
-        <TextField source="assignee" sortable={false} />
+        <TextField source="name"/>
+        <TextField source="processName"/>
+        <OffsetDateTimeField source="creationDate"/>
+        <TextField source="assignee"/>
+        <EnumField source="taskState" enum={CamundaTaskState} enumTypeName="CamundaTaskState"/>
+        <OffsetDateTimeField source="dueDate"/>
 
-        <EditButton label={"Open"}/>
+        <FunctionField render={() => <EditButton label="camunda.taskList.open"/>}/>
       </Datagrid>
     </List>
   );

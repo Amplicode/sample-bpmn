@@ -18,7 +18,7 @@
       "label": "Subject",
       "type": "textfield",
       "layout": {
-        "row": "Row_17e4qk6",
+        "row": "Row_1wtzd9c",
         "columns": null
       },
       "id": "Field_0lh1kor",
@@ -35,7 +35,79 @@
         "columns": null
       },
       "id": "Field_0mzzvyb",
-      "key": "text"
+      "key": "text",
+      "disabled": false
+    },
+    {
+      "components": [
+        {
+          "subtype": "datetime",
+          "dateLabel": "Notification date and time",
+          "label": "Date time",
+          "type": "datetime",
+          "layout": {
+            "row": "Row_0v721i9",
+            "columns": null
+          },
+          "id": "Field_1tmvjse",
+          "key": "notification_date_time",
+          "disallowPassedDates": true,
+          "timeInterval": 30,
+          "timeSerializingFormat": "utc_offset",
+          "readonly": "=",
+          "use24h": true
+        },
+        {
+          "label": "Retries count",
+          "type": "number",
+          "layout": {
+            "row": "Row_18buy6d",
+            "columns": null
+          },
+          "id": "Field_1uw4mqx",
+          "key": "retires_number",
+          "description": "Count of retries to send an email",
+          "defaultValue": 1,
+          "increment": "1",
+          "validate": {
+            "min": 1,
+            "max": 5
+          }
+        },
+        {
+          "values": [
+            {
+              "label": "12 hours",
+              "value": "12_hours"
+            },
+            {
+              "label": "1 day",
+              "value": "1_day"
+            },
+            {
+              "label": "3 days",
+              "value": "3_days"
+            }
+          ],
+          "label": "Remind after",
+          "type": "checklist",
+          "layout": {
+            "row": "Row_04gdzdt",
+            "columns": null
+          },
+          "id": "Field_1918zkp",
+          "key": "remind_after"
+        }
+      ],
+      "showOutline": true,
+      "label": "Notification settings",
+      "type": "group",
+      "layout": {
+        "row": "Row_1hurdx0",
+        "columns": 12
+      },
+      "id": "Field_07bf9tw",
+      "path": "notification_settings"
     }
   ],
   "executionPlatform": "Camunda Cloud",
@@ -44,7 +116,7 @@
     "name": "Camunda Modeler",
     "version": "5.14.0"
   },
-  "schemaVersion": 10,
+  "schemaVersion": 11,
   "type": "default",
   "id": "notification"
 }

@@ -1,5 +1,4 @@
 {
-  "schemaVersion": 2,
   "components": [
     {
       "label": "Policyholder",
@@ -31,9 +30,13 @@
       "description": "Claim Description",
       "validate": {
         "maxLength": 1024
+      },
+      "layout": {
+        "row": "Row_1dn4jku"
       }
     }
   ],
   "type": "default",
-  "id": "initial"
+  "id": "initial",
+  "schemaVersion": 11
 }

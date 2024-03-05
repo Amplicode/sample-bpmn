@@ -5,6 +5,11 @@ import { mergeMessages } from "./mergeMessages";
 const messages: TranslationMessages = {
   ...russianMessages,
   resources: {},
+  camunda: {
+    taskList: {
+      open: "Открыть"
+    }
+  }
 };
 
 export const ru = mergeMessages(

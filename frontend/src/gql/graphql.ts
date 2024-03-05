@@ -137,6 +137,7 @@ export enum CamundaTaskOrderByProperty {
   FollowUpDate = "FOLLOW_UP_DATE",
   Name = "NAME",
   ProcessName = "PROCESS_NAME",
+  TaskState = "TASK_STATE",
 }
 
 export type CamundaTaskResultPage = {
@@ -816,6 +817,7 @@ export type TaskQuery = {
     processDefinitionKey?: string | null;
     processInstanceKey?: string | null;
     processName?: string | null;
+    taskState?: CamundaTaskState | null;
   };
 };
 
@@ -844,6 +846,15 @@ export type CamundaForm_TaskFormQuery = {
   };
 };
 
+export type CamundaVariablesQueryVariables = Exact<{
+  taskId?: InputMaybe<Scalars["String"]>;
+}>;
+
+export type CamundaVariablesQuery = {
+  __typename?: "Query";
+  camundaVariables?: string | null;
+};
+
 export type CamundaTaskList_CamundaTaskListQueryVariables = Exact<{
   sort?: InputMaybe<
     | Array<InputMaybe<CamundaTaskOrderByInput>>
@@ -859,11 +870,14 @@ export type CamundaTaskList_CamundaTaskListQuery = {
     totalElements: any;
     content?: Array<{
       __typename?: "CamundaTask";
-      id?: string | null;
       assignee?: string | null;
       creationDate?: any | null;
+      dueDate?: any | null;
+      followUpDate?: any | null;
+      id?: string | null;
       name?: string | null;
       processName?: string | null;
+      taskState?: CamundaTaskState | null;
     } | null> | null;
   };
 };
@@ -2403,6 +2417,7 @@ export const TaskDocument = {
                   name: { kind: "Name", value: "processInstanceKey" },
                 },
                 { kind: "Field", name: { kind: "Name", value: "processName" } },
+                { kind: "Field", name: { kind: "Name", value: "taskState" } },
               ],
             },
           },
@@ -2541,6 +2556,48 @@ export const CamundaForm_TaskFormDocument = {
   CamundaForm_TaskFormQuery,
   CamundaForm_TaskFormQueryVariables
 >;
+export const CamundaVariablesDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "camundaVariables" },
+      variableDefinitions: [
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "taskId" },
+          },
+          type: { kind: "NamedType", name: { kind: "Name", value: "String" } },
+        },
+      ],
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "camundaVariables" },
+            arguments: [
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "taskId" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "taskId" },
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CamundaVariablesQuery,
+  CamundaVariablesQueryVariables
+>;
 export const CamundaTaskList_CamundaTaskListDocument = {
   kind: "Document",
   definitions: [
@@ -2578,18 +2635,18 @@ export const CamundaTaskList_CamundaTaskListDocument = {
             arguments: [
               {
                 kind: "Argument",
-                name: { kind: "Name", value: "sort" },
-                value: {
-                  kind: "Variable",
-                  name: { kind: "Name", value: "sort" },
-                },
-              },
-              {
-                kind: "Argument",
                 name: { kind: "Name", value: "page" },
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "page" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "sort" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "sort" },
                 },
               },
             ],
@@ -2602,7 +2659,6 @@ export const CamundaTaskList_CamundaTaskListDocument = {
                   selectionSet: {
                     kind: "SelectionSet",
                     selections: [
-                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "assignee" },
@@ -2611,10 +2667,23 @@ export const CamundaTaskList_CamundaTaskListDocument = {
                         kind: "Field",
                         name: { kind: "Name", value: "creationDate" },
                       },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "dueDate" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "followUpDate" },
+                      },
+                      { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "processName" },
+                      },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "taskState" },
                       },
                     ],
                   },
