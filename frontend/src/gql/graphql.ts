@@ -867,6 +867,7 @@ export type CamundaTaskList_CamundaTaskListQueryVariables = Exact<{
     | InputMaybe<CamundaTaskOrderByInput>
   >;
   page?: InputMaybe<OffsetPageInput>;
+  filter?: InputMaybe<CamundaTaskListFilterInput>;
 }>;
 
 export type CamundaTaskList_CamundaTaskListQuery = {
@@ -2632,6 +2633,17 @@ export const CamundaTaskList_CamundaTaskListDocument = {
             name: { kind: "Name", value: "OffsetPageInput" },
           },
         },
+        {
+          kind: "VariableDefinition",
+          variable: {
+            kind: "Variable",
+            name: { kind: "Name", value: "filter" },
+          },
+          type: {
+            kind: "NamedType",
+            name: { kind: "Name", value: "CamundaTaskListFilterInput" },
+          },
+        },
       ],
       selectionSet: {
         kind: "SelectionSet",
@@ -2654,6 +2666,14 @@ export const CamundaTaskList_CamundaTaskListDocument = {
                 value: {
                   kind: "Variable",
                   name: { kind: "Name", value: "sort" },
+                },
+              },
+              {
+                kind: "Argument",
+                name: { kind: "Name", value: "filter" },
+                value: {
+                  kind: "Variable",
+                  name: { kind: "Name", value: "filter" },
                 },
               },
             ],

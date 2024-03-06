@@ -29,6 +29,7 @@ import { getCamundaProcessDefinitionRecordRepresentation } from "../core/record-
 import { CamundaProcessDefinitionList } from "./screens/process/CamundaProcessDefinitionList";
 import { CamundaTaskFilterCreate } from "./screens/camundaTaskFilter/CamundaTaskFilterCreate";
 import { CamundaTaskFilterEdit } from "./screens/camundaTaskFilter/CamundaTaskFilterEdit";
+import { getCamundaTaskFilterRecordRepresentation } from "../core/record-representation/getCamundaTaskFilterRecordRepresentation";
 
 export const App = () => {
   const { authProvider, loading } = useAuthProvider();
@@ -94,6 +95,7 @@ export const App = () => {
             create={CamundaTaskFilterCreate}
             edit={CamundaTaskFilterEdit}
             list={CamundaTaskFilterList}
+            recordRepresentation={getCamundaTaskFilterRecordRepresentation}
           />
         </AdminUI>
       </DevSupport>

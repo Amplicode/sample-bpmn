@@ -1,7 +1,7 @@
-import { CamundaProcessDefinition } from "@amplicode/gql/graphql";
+import { CamundaTaskFilter } from "../../gql/graphql";
 
-export function getCamundaProcessDefinitionRecordRepresentation(
-  entityInstance?: Partial<CamundaProcessDefinition> | null
+export function getCamundaTaskFilterRecordRepresentation(
+  entityInstance?: Partial<CamundaTaskFilter> | null
 ): string {
   if (entityInstance == null) {
     return "";
