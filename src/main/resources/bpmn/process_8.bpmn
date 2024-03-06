@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
-                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0"
-                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-                  xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0nuiu6n"
-                  targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.14.0"
-                  modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
-    <bpmn:process id="InsuranceClaimProcessing" name="Insurance Claim Processing" isExecutable="true">
-        <bpmn:extensionElements>
-            <zeebe:userTaskForm id="userTaskForm_2vdpa05">{
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0nuiu6n" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.14.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.2.0">
+  <bpmn:process id="InsuranceClaimProcessing" name="Insurance Claim Processing" isExecutable="true">
+    <bpmn:extensionElements>
+      <zeebe:userTaskForm id="userTaskForm_2vdpa05">{
                 "components": [
                 {
                 "label": "Is Claim accepted?",
@@ -20,26 +13,6 @@
                 "layout": {
                 "row": "Row_1n2k5bm"
                 }
-                },
-                {
-                "action": "submit",
-                "label": "OK",
-                "type": "button",
-                "layout": {
-                "row": "Row_0qhw2y5",
-                "columns": 2
-                },
-                "id": "Field_0nb0r9c"
-                },
-                {
-                "action": "reset",
-                "label": "Clear",
-                "type": "button",
-                "layout": {
-                "row": "Row_0qhw2y5",
-                "columns": 4
-                },
-                "id": "Field_1r4jcof"
                 }
                 ],
                 "executionPlatform": "Camunda Cloud",
@@ -53,7 +26,7 @@
                 "id": "Form_0mdsahn"
                 }
             </zeebe:userTaskForm>
-            <zeebe:userTaskForm id="userTaskForm_0m57eqb">{
+      <zeebe:userTaskForm id="userTaskForm_0m57eqb">{
                 "components": [
                 {
                 "label": "To",
@@ -163,6 +136,26 @@
                 },
                 "id": "Field_07bf9tw",
                 "path": "notification_settings"
+                },
+                {
+                "action": "submit",
+                "label": "Send Email",
+                "type": "button",
+                "layout": {
+                "row": "Row_0n00edf",
+                "columns": 2
+                },
+                "id": "Field_0r6hy6r"
+                },
+                {
+                "action": "reset",
+                "label": "Clear values",
+                "type": "button",
+                "layout": {
+                "row": "Row_0n00edf",
+                "columns": 13
+                },
+                "id": "Field_15rbi1s"
                 }
                 ],
                 "executionPlatform": "Camunda Cloud",
@@ -176,7 +169,7 @@
                 "id": "notification"
                 }
             </zeebe:userTaskForm>
-            <zeebe:userTaskForm id="userTaskForm_38speeu">{
+      <zeebe:userTaskForm id="userTaskForm_38speeu">{
                 "components": [
                 {
                 "label": "Would customer like to stay insured with new rates?",
@@ -208,249 +201,249 @@
                 "schemaVersion": 11
                 }
             </zeebe:userTaskForm>
-        </bpmn:extensionElements>
-        <bpmn:startEvent id="StartEvent_1" name="customer claim">
-            <bpmn:extensionElements/>
-            <bpmn:outgoing>Flow_0nkp6yq</bpmn:outgoing>
-        </bpmn:startEvent>
-        <bpmn:serviceTask id="Activity_1wgfft0" name="Register claim">
-            <bpmn:extensionElements>
-                <zeebe:taskDefinition type="registerClaim"/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_0nkp6yq</bpmn:incoming>
-            <bpmn:outgoing>Flow_0jbc3m3</bpmn:outgoing>
-        </bpmn:serviceTask>
-        <bpmn:sequenceFlow id="Flow_0nkp6yq" sourceRef="StartEvent_1" targetRef="Activity_1wgfft0"/>
-        <bpmn:userTask id="Activity_1rbpqly" name="Access claim">
-            <bpmn:extensionElements>
-                <zeebe:assignmentDefinition assignee="approver"/>
-                <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_2vdpa05"/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_0jbc3m3</bpmn:incoming>
-            <bpmn:outgoing>Flow_1t6jqdn</bpmn:outgoing>
-        </bpmn:userTask>
-        <bpmn:sequenceFlow id="Flow_0jbc3m3" sourceRef="Activity_1wgfft0" targetRef="Activity_1rbpqly"/>
-        <bpmn:exclusiveGateway id="Gateway_02ewwrn" name="Received event">
-            <bpmn:incoming>Flow_1t6jqdn</bpmn:incoming>
-            <bpmn:outgoing>Flow_0atkssx</bpmn:outgoing>
-            <bpmn:outgoing>Flow_05f7hug</bpmn:outgoing>
-        </bpmn:exclusiveGateway>
-        <bpmn:sequenceFlow id="Flow_1t6jqdn" sourceRef="Activity_1rbpqly" targetRef="Gateway_02ewwrn"/>
-        <bpmn:userTask id="Activity_0mwon1s" name="Notify customer">
-            <bpmn:extensionElements>
-                <zeebe:assignmentDefinition assignee="notifier"/>
-                <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_0m57eqb"/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_0atkssx</bpmn:incoming>
-            <bpmn:outgoing>Flow_1qopd8n</bpmn:outgoing>
-        </bpmn:userTask>
-        <bpmn:sequenceFlow id="Flow_0atkssx" name="no" sourceRef="Gateway_02ewwrn" targetRef="Activity_0mwon1s">
-            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(isClaimAccepted)</bpmn:conditionExpression>
-        </bpmn:sequenceFlow>
-        <bpmn:sequenceFlow id="Flow_05f7hug" name="yes" sourceRef="Gateway_02ewwrn" targetRef="Activity_0f4bns7">
-            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isClaimAccepted</bpmn:conditionExpression>
-        </bpmn:sequenceFlow>
-        <bpmn:serviceTask id="Activity_0f4bns7" name="Calculate payment amount">
-            <bpmn:extensionElements>
-                <zeebe:taskDefinition type="calculatePaymentAmount" retries=""/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_05f7hug</bpmn:incoming>
-            <bpmn:outgoing>Flow_1070dwy</bpmn:outgoing>
-        </bpmn:serviceTask>
-        <bpmn:serviceTask id="Activity_1loiu72" name="Calculate new premiums">
-            <bpmn:extensionElements>
-                <zeebe:taskDefinition type="calculatePremium"/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_1070dwy</bpmn:incoming>
-            <bpmn:outgoing>Flow_0r55qfg</bpmn:outgoing>
-        </bpmn:serviceTask>
-        <bpmn:sequenceFlow id="Flow_1070dwy" sourceRef="Activity_0f4bns7" targetRef="Activity_1loiu72"/>
-        <bpmn:exclusiveGateway id="Gateway_0ccnprs" name="Premiums changed?">
-            <bpmn:incoming>Flow_0r55qfg</bpmn:incoming>
-            <bpmn:outgoing>Flow_0c4hl8j</bpmn:outgoing>
-            <bpmn:outgoing>Flow_1c2fq1l</bpmn:outgoing>
-        </bpmn:exclusiveGateway>
-        <bpmn:sequenceFlow id="Flow_0r55qfg" sourceRef="Activity_1loiu72" targetRef="Gateway_0ccnprs"/>
-        <bpmn:serviceTask id="Activity_0gp7cz0" name="Perform payment">
-            <bpmn:extensionElements>
-                <zeebe:taskDefinition type="performPayment"/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_0c4hl8j</bpmn:incoming>
-            <bpmn:incoming>Flow_1j7vmb5</bpmn:incoming>
-            <bpmn:outgoing>Flow_157u166</bpmn:outgoing>
-        </bpmn:serviceTask>
-        <bpmn:sequenceFlow id="Flow_0c4hl8j" name="no" sourceRef="Gateway_0ccnprs" targetRef="Activity_0gp7cz0">
-            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(isPremiumChanged)
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1" name="customer claim">
+      <bpmn:extensionElements />
+      <bpmn:outgoing>Flow_0nkp6yq</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_1wgfft0" name="Register claim">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="registerClaim" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0nkp6yq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0jbc3m3</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0nkp6yq" sourceRef="StartEvent_1" targetRef="Activity_1wgfft0" />
+    <bpmn:userTask id="Activity_1rbpqly" name="Access claim">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_2vdpa05" />
+        <zeebe:assignmentDefinition assignee="approver" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0jbc3m3</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t6jqdn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0jbc3m3" sourceRef="Activity_1wgfft0" targetRef="Activity_1rbpqly" />
+    <bpmn:exclusiveGateway id="Gateway_02ewwrn" name="Received event">
+      <bpmn:incoming>Flow_1t6jqdn</bpmn:incoming>
+      <bpmn:outgoing>Flow_0atkssx</bpmn:outgoing>
+      <bpmn:outgoing>Flow_05f7hug</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1t6jqdn" sourceRef="Activity_1rbpqly" targetRef="Gateway_02ewwrn" />
+    <bpmn:userTask id="Activity_0mwon1s" name="Notify customer">
+      <bpmn:extensionElements>
+        <zeebe:assignmentDefinition assignee="notifier" />
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_0m57eqb" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0atkssx</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qopd8n</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0atkssx" name="no" sourceRef="Gateway_02ewwrn" targetRef="Activity_0mwon1s">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(isClaimAccepted)</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_05f7hug" name="yes" sourceRef="Gateway_02ewwrn" targetRef="Activity_0f4bns7">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isClaimAccepted</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:serviceTask id="Activity_0f4bns7" name="Calculate payment amount">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="calculatePaymentAmount" retries="" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_05f7hug</bpmn:incoming>
+      <bpmn:outgoing>Flow_1070dwy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1loiu72" name="Calculate new premiums">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="calculatePremium" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1070dwy</bpmn:incoming>
+      <bpmn:outgoing>Flow_0r55qfg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1070dwy" sourceRef="Activity_0f4bns7" targetRef="Activity_1loiu72" />
+    <bpmn:exclusiveGateway id="Gateway_0ccnprs" name="Premiums changed?">
+      <bpmn:incoming>Flow_0r55qfg</bpmn:incoming>
+      <bpmn:outgoing>Flow_0c4hl8j</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1c2fq1l</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0r55qfg" sourceRef="Activity_1loiu72" targetRef="Gateway_0ccnprs" />
+    <bpmn:serviceTask id="Activity_0gp7cz0" name="Perform payment">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="performPayment" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0c4hl8j</bpmn:incoming>
+      <bpmn:incoming>Flow_1j7vmb5</bpmn:incoming>
+      <bpmn:outgoing>Flow_157u166</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0c4hl8j" name="no" sourceRef="Gateway_0ccnprs" targetRef="Activity_0gp7cz0">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=not(isPremiumChanged)
             </bpmn:conditionExpression>
-        </bpmn:sequenceFlow>
-        <bpmn:sequenceFlow id="Flow_1c2fq1l" name="yes" sourceRef="Gateway_0ccnprs" targetRef="Activity_0nf27bt">
-            <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isPremiumChanged</bpmn:conditionExpression>
-        </bpmn:sequenceFlow>
-        <bpmn:userTask id="Activity_0nf27bt" name="Clarify if customer wants to stay insured with new rates">
-            <bpmn:extensionElements>
-                <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_38speeu"/>
-                <zeebe:assignmentDefinition assignee="approver"/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_1c2fq1l</bpmn:incoming>
-            <bpmn:outgoing>Flow_0bkgdmn</bpmn:outgoing>
-        </bpmn:userTask>
-        <bpmn:serviceTask id="Activity_1da9si6" name="Raise future insurance premiums">
-            <bpmn:extensionElements>
-                <zeebe:taskDefinition type="raisePremium"/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_0bkgdmn</bpmn:incoming>
-            <bpmn:outgoing>Flow_1j7vmb5</bpmn:outgoing>
-        </bpmn:serviceTask>
-        <bpmn:sequenceFlow id="Flow_0bkgdmn" sourceRef="Activity_0nf27bt" targetRef="Activity_1da9si6"/>
-        <bpmn:sequenceFlow id="Flow_1j7vmb5" sourceRef="Activity_1da9si6" targetRef="Activity_0gp7cz0"/>
-        <bpmn:endEvent id="Event_1rks5ne">
-            <bpmn:incoming>Flow_157u166</bpmn:incoming>
-        </bpmn:endEvent>
-        <bpmn:sequenceFlow id="Flow_157u166" sourceRef="Activity_0gp7cz0" targetRef="Event_1rks5ne"/>
-        <bpmn:sequenceFlow id="Flow_1qopd8n" sourceRef="Activity_0mwon1s" targetRef="Activity_1283b2n"/>
-        <bpmn:serviceTask id="Activity_1283b2n" name="Send email">
-            <bpmn:extensionElements>
-                <zeebe:taskDefinition type="sendEmailNotification" retries=""/>
-            </bpmn:extensionElements>
-            <bpmn:incoming>Flow_1qopd8n</bpmn:incoming>
-            <bpmn:outgoing>Flow_1v9ikex</bpmn:outgoing>
-        </bpmn:serviceTask>
-        <bpmn:endEvent id="Event_0orowc0">
-            <bpmn:incoming>Flow_1v9ikex</bpmn:incoming>
-        </bpmn:endEvent>
-        <bpmn:sequenceFlow id="Flow_1v9ikex" sourceRef="Activity_1283b2n" targetRef="Event_0orowc0"/>
-        <bpmn:sequenceFlow id="Flow_0s6u10v" sourceRef="Activity_0nf27bt" targetRef="Activity_1da9si6"/>
-    </bpmn:process>
-    <bpmndi:BPMNDiagram id="BPMNDiagram_1">
-        <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="InsuranceClaimProcessing">
-            <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-                <dc:Bounds x="172" y="99" width="36" height="36"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="153" y="142" width="74" height="14"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_18jo69r_di" bpmnElement="Activity_1wgfft0">
-                <dc:Bounds x="270" y="77" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0gv08ea_di" bpmnElement="Activity_1rbpqly">
-                <dc:Bounds x="270" y="190" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Gateway_02ewwrn_di" bpmnElement="Gateway_02ewwrn" isMarkerVisible="true">
-                <dc:Bounds x="415" y="205" width="50" height="50"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="402" y="181" width="77" height="14"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0ds9xi4_di" bpmnElement="Activity_0mwon1s">
-                <dc:Bounds x="390" y="300" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0kzzopk_di" bpmnElement="Activity_0f4bns7">
-                <dc:Bounds x="540" y="190" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0cpnvew_di" bpmnElement="Activity_1loiu72">
-                <dc:Bounds x="690" y="190" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Gateway_0ccnprs_di" bpmnElement="Gateway_0ccnprs" isMarkerVisible="true">
-                <dc:Bounds x="835" y="205" width="50" height="50"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="834" y="174" width="51" height="27"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0nbja5u_di" bpmnElement="Activity_0gp7cz0">
-                <dc:Bounds x="1020" y="540" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_04zteiy_di" bpmnElement="Activity_0nf27bt">
-                <dc:Bounds x="810" y="310" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_0nfhoz9_di" bpmnElement="Activity_1da9si6">
-                <dc:Bounds x="810" y="540" width="100" height="80"/>
-                <bpmndi:BPMNLabel/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Event_1rks5ne_di" bpmnElement="Event_1rks5ne">
-                <dc:Bounds x="1052" y="692" width="36" height="36"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Activity_1far8p3_di" bpmnElement="Activity_1283b2n">
-                <dc:Bounds x="540" y="300" width="100" height="80"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNShape id="Event_0orowc0_di" bpmnElement="Event_0orowc0">
-                <dc:Bounds x="572" y="432" width="36" height="36"/>
-            </bpmndi:BPMNShape>
-            <bpmndi:BPMNEdge id="Flow_0nkp6yq_di" bpmnElement="Flow_0nkp6yq">
-                <di:waypoint x="208" y="117"/>
-                <di:waypoint x="270" y="117"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_0jbc3m3_di" bpmnElement="Flow_0jbc3m3">
-                <di:waypoint x="320" y="157"/>
-                <di:waypoint x="320" y="190"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1t6jqdn_di" bpmnElement="Flow_1t6jqdn">
-                <di:waypoint x="370" y="230"/>
-                <di:waypoint x="415" y="230"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_0atkssx_di" bpmnElement="Flow_0atkssx">
-                <di:waypoint x="440" y="255"/>
-                <di:waypoint x="440" y="300"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="449" y="270" width="13" height="14"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_05f7hug_di" bpmnElement="Flow_05f7hug">
-                <di:waypoint x="465" y="230"/>
-                <di:waypoint x="540" y="230"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="494" y="212" width="18" height="14"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1070dwy_di" bpmnElement="Flow_1070dwy">
-                <di:waypoint x="640" y="230"/>
-                <di:waypoint x="690" y="230"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_0r55qfg_di" bpmnElement="Flow_0r55qfg">
-                <di:waypoint x="790" y="230"/>
-                <di:waypoint x="835" y="230"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_0c4hl8j_di" bpmnElement="Flow_0c4hl8j">
-                <di:waypoint x="885" y="230"/>
-                <di:waypoint x="1070" y="230"/>
-                <di:waypoint x="1070" y="540"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="963" y="212" width="13" height="14"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1c2fq1l_di" bpmnElement="Flow_1c2fq1l">
-                <di:waypoint x="860" y="255"/>
-                <di:waypoint x="860" y="310"/>
-                <bpmndi:BPMNLabel>
-                    <dc:Bounds x="866" y="270" width="18" height="14"/>
-                </bpmndi:BPMNLabel>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1j7vmb5_di" bpmnElement="Flow_1j7vmb5">
-                <di:waypoint x="910" y="580"/>
-                <di:waypoint x="1020" y="580"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_157u166_di" bpmnElement="Flow_157u166">
-                <di:waypoint x="1070" y="620"/>
-                <di:waypoint x="1070" y="692"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1qopd8n_di" bpmnElement="Flow_1qopd8n">
-                <di:waypoint x="490" y="340"/>
-                <di:waypoint x="540" y="340"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_1v9ikex_di" bpmnElement="Flow_1v9ikex">
-                <di:waypoint x="590" y="380"/>
-                <di:waypoint x="590" y="432"/>
-            </bpmndi:BPMNEdge>
-            <bpmndi:BPMNEdge id="Flow_0s6u10v_di" bpmnElement="Flow_0s6u10v">
-                <di:waypoint x="860" y="390"/>
-                <di:waypoint x="860" y="540"/>
-            </bpmndi:BPMNEdge>
-        </bpmndi:BPMNPlane>
-    </bpmndi:BPMNDiagram>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1c2fq1l" name="yes" sourceRef="Gateway_0ccnprs" targetRef="Activity_0nf27bt">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isPremiumChanged</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:userTask id="Activity_0nf27bt" name="Clarify if customer wants to stay insured with new rates">
+      <bpmn:extensionElements>
+        <zeebe:formDefinition formKey="camunda-forms:bpmn:userTaskForm_38speeu" />
+        <zeebe:assignmentDefinition assignee="approver" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1c2fq1l</bpmn:incoming>
+      <bpmn:outgoing>Flow_0bkgdmn</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Activity_1da9si6" name="Raise future insurance premiums">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="raisePremium" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0bkgdmn</bpmn:incoming>
+      <bpmn:outgoing>Flow_1j7vmb5</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0bkgdmn" sourceRef="Activity_0nf27bt" targetRef="Activity_1da9si6" />
+    <bpmn:sequenceFlow id="Flow_1j7vmb5" sourceRef="Activity_1da9si6" targetRef="Activity_0gp7cz0" />
+    <bpmn:endEvent id="Event_1rks5ne">
+      <bpmn:incoming>Flow_157u166</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_157u166" sourceRef="Activity_0gp7cz0" targetRef="Event_1rks5ne" />
+    <bpmn:sequenceFlow id="Flow_1qopd8n" sourceRef="Activity_0mwon1s" targetRef="Activity_1283b2n" />
+    <bpmn:serviceTask id="Activity_1283b2n" name="Send email">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="sendEmailNotification" retries="" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qopd8n</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v9ikex</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0orowc0">
+      <bpmn:incoming>Flow_1v9ikex</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1v9ikex" sourceRef="Activity_1283b2n" targetRef="Event_0orowc0" />
+    <bpmn:sequenceFlow id="Flow_0s6u10v" sourceRef="Activity_0nf27bt" targetRef="Activity_1da9si6" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="InsuranceClaimProcessing">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="172" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="142" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_18jo69r_di" bpmnElement="Activity_1wgfft0">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0gv08ea_di" bpmnElement="Activity_1rbpqly">
+        <dc:Bounds x="270" y="190" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_02ewwrn_di" bpmnElement="Gateway_02ewwrn" isMarkerVisible="true">
+        <dc:Bounds x="415" y="205" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="402" y="181" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ds9xi4_di" bpmnElement="Activity_0mwon1s">
+        <dc:Bounds x="390" y="300" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0kzzopk_di" bpmnElement="Activity_0f4bns7">
+        <dc:Bounds x="540" y="190" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cpnvew_di" bpmnElement="Activity_1loiu72">
+        <dc:Bounds x="690" y="190" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0ccnprs_di" bpmnElement="Gateway_0ccnprs" isMarkerVisible="true">
+        <dc:Bounds x="835" y="205" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="834" y="174" width="51" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nbja5u_di" bpmnElement="Activity_0gp7cz0">
+        <dc:Bounds x="1020" y="540" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04zteiy_di" bpmnElement="Activity_0nf27bt">
+        <dc:Bounds x="810" y="310" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nfhoz9_di" bpmnElement="Activity_1da9si6">
+        <dc:Bounds x="810" y="540" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rks5ne_di" bpmnElement="Event_1rks5ne">
+        <dc:Bounds x="1052" y="692" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1far8p3_di" bpmnElement="Activity_1283b2n">
+        <dc:Bounds x="540" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0orowc0_di" bpmnElement="Event_0orowc0">
+        <dc:Bounds x="572" y="432" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0nkp6yq_di" bpmnElement="Flow_0nkp6yq">
+        <di:waypoint x="208" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jbc3m3_di" bpmnElement="Flow_0jbc3m3">
+        <di:waypoint x="320" y="157" />
+        <di:waypoint x="320" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t6jqdn_di" bpmnElement="Flow_1t6jqdn">
+        <di:waypoint x="370" y="230" />
+        <di:waypoint x="415" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0atkssx_di" bpmnElement="Flow_0atkssx">
+        <di:waypoint x="440" y="255" />
+        <di:waypoint x="440" y="300" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="449" y="270" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05f7hug_di" bpmnElement="Flow_05f7hug">
+        <di:waypoint x="465" y="230" />
+        <di:waypoint x="540" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="494" y="212" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1070dwy_di" bpmnElement="Flow_1070dwy">
+        <di:waypoint x="640" y="230" />
+        <di:waypoint x="690" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0r55qfg_di" bpmnElement="Flow_0r55qfg">
+        <di:waypoint x="790" y="230" />
+        <di:waypoint x="835" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0c4hl8j_di" bpmnElement="Flow_0c4hl8j">
+        <di:waypoint x="885" y="230" />
+        <di:waypoint x="1070" y="230" />
+        <di:waypoint x="1070" y="540" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="963" y="212" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c2fq1l_di" bpmnElement="Flow_1c2fq1l">
+        <di:waypoint x="860" y="255" />
+        <di:waypoint x="860" y="310" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="866" y="270" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j7vmb5_di" bpmnElement="Flow_1j7vmb5">
+        <di:waypoint x="910" y="580" />
+        <di:waypoint x="1020" y="580" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_157u166_di" bpmnElement="Flow_157u166">
+        <di:waypoint x="1070" y="620" />
+        <di:waypoint x="1070" y="692" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qopd8n_di" bpmnElement="Flow_1qopd8n">
+        <di:waypoint x="490" y="340" />
+        <di:waypoint x="540" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v9ikex_di" bpmnElement="Flow_1v9ikex">
+        <di:waypoint x="590" y="380" />
+        <di:waypoint x="590" y="432" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0s6u10v_di" bpmnElement="Flow_0s6u10v">
+        <di:waypoint x="860" y="390" />
+        <di:waypoint x="860" y="540" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </bpmn:definitions>

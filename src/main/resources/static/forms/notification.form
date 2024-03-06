@@ -106,8 +106,27 @@
         "row": "Row_1hurdx0",
         "columns": 12
       },
-      "id": "Field_07bf9tw",
-      "path": "notification_settings"
+      "id": "Field_07bf9tw"
+    },
+    {
+      "action": "submit",
+      "label": "Send Email",
+      "type": "button",
+      "layout": {
+        "row": "Row_0n00edf",
+        "columns": 2
+      },
+      "id": "Field_0r6hy6r"
+    },
+    {
+      "action": "reset",
+      "label": "Clear values",
+      "type": "button",
+      "layout": {
+        "row": "Row_0n00edf",
+        "columns": 13
+      },
+      "id": "Field_15rbi1s"
     }
   ],
   "executionPlatform": "Camunda Cloud",

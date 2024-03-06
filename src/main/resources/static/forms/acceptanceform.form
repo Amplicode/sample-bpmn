@@ -9,26 +9,6 @@
       "layout": {
         "row": "Row_1n2k5bm"
       }
-    },
-    {
-      "action": "submit",
-      "label": "OK",
-      "type": "button",
-      "layout": {
-        "row": "Row_0qhw2y5",
-        "columns": 2
-      },
-      "id": "Field_0nb0r9c"
-    },
-    {
-      "action": "reset",
-      "label": "Clear",
-      "type": "button",
-      "layout": {
-        "row": "Row_0qhw2y5",
-        "columns": 4
-      },
-      "id": "Field_1r4jcof"
     }
   ],
   "executionPlatform": "Camunda Cloud",
