@@ -1,13 +1,11 @@
 import {gql} from "@amplicode/gql";
 import {useCallback} from "react";
 import {
-  Button,
   Error,
   Form,
   FunctionField,
   Labeled,
   Loading,
-  SaveButton,
   TextField,
   Title,
   useNotify,
@@ -22,9 +20,9 @@ import {Card, CardContent, Grid, Stack, Typography} from "@mui/material";
 import {CamundaComponent} from "./dynamic-form/camundaFormTypes";
 import {CamundaTask, CamundaTaskState} from "@amplicode/gql/graphql";
 import {CamundaFormComponent} from "./dynamic-form/CamundaFormComponent";
-import CancelIcon from "@mui/icons-material/Cancel";
 import {EnumField} from "../../../core/components/enum/EnumField";
 import {OffsetDateTimeField} from "../../../core/components/datetime/OffsetDateTimeField";
+import {ButtonsGroup} from "./dynamic-form/button/ButtonsGroup";
 
 const CAMUNDA_TASK_TASK_TASK_FORM = gql(`query Task($id: String!) {
   camundaTask(id: $id) {
@@ -137,7 +135,7 @@ export const TaskForm = () => {
     },
     [notify, redirect, apolloClient, id]
   );
-  const onClose = useCallback(() => {
+  const handleClose = useCallback(() => {
     redirect("list", "CamundaTask");
   }, [redirect]);
 
@@ -169,20 +167,15 @@ export const TaskForm = () => {
             <Card variant="outlined" sx={{marginTop: "0.5em"}}>
               <CardContent>
                 <Grid container spacing={2}>
-                  {components.map((component, index) => <Grid container={component.type === CamundaComponent.Group} item
-                                                              xs={12} key={index}>
+                  {components.map((component, index) =>
+                    <Grid container={component.type === CamundaComponent.Group} item
+                          xs={12} key={index}>
                       <CamundaFormComponent camundaComponent={component} readonly={readonly}/>
                     </Grid>
                   )
                   }
                   <Grid item xs={12} md={12}>
-                    <div style={{display: "flex"}}>
-                      {!readonly && <SaveButton label="camunda.taskForm.complete.button" alwaysEnable={true}/>}
-                      <Button size="medium" label="ra.action.close"
-                              sx={{marginLeft: "auto"}}
-                              startIcon={<CancelIcon/>}
-                              onClick={onClose}/>
-                    </div>
+                    <ButtonsGroup components={components} readonly={readonly} handleClose={handleClose}/>
                   </Grid>
                 </Grid>
               </CardContent>

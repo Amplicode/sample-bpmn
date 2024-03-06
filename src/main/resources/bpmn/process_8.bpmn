@@ -10,16 +10,45 @@
     <bpmn:process id="InsuranceClaimProcessing" name="Insurance Claim Processing" isExecutable="true">
         <bpmn:extensionElements>
             <zeebe:userTaskForm id="userTaskForm_2vdpa05">{
-                "schemaVersion": 2,
                 "components": [
                 {
                 "label": "Is Claim accepted?",
                 "type": "checkbox",
                 "id": "Field_1lg64wu",
                 "key": "isClaimAccepted",
-                "description": "Mark as checked if the Claim must be accepted"
+                "description": "Mark as checked if the Claim must be accepted",
+                "layout": {
+                "row": "Row_1n2k5bm"
+                }
+                },
+                {
+                "action": "submit",
+                "label": "OK",
+                "type": "button",
+                "layout": {
+                "row": "Row_0qhw2y5",
+                "columns": 2
+                },
+                "id": "Field_0nb0r9c"
+                },
+                {
+                "action": "reset",
+                "label": "Clear",
+                "type": "button",
+                "layout": {
+                "row": "Row_0qhw2y5",
+                "columns": 4
+                },
+                "id": "Field_1r4jcof"
                 }
                 ],
+                "executionPlatform": "Camunda Cloud",
+                "executionPlatformVersion": "8.2.0",
+                "exporter": {
+                "name": "Camunda Web Modeler",
+                "version": "cbae99f"
+                },
+                "schemaVersion": 11,
                 "type": "default",
                 "id": "Form_0mdsahn"
                 }
