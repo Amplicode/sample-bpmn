@@ -110,12 +110,14 @@ export type CamundaTaskFilter = {
   __typename?: "CamundaTaskFilter";
   conditions?: Maybe<Array<Maybe<CamundaTaskCondition>>>;
   id?: Maybe<Scalars["ID"]>;
+  isDefault?: Maybe<Scalars["Boolean"]>;
   name: Scalars["String"];
 };
 
 export type CamundaTaskFilterInput = {
   conditions?: InputMaybe<Array<InputMaybe<CamundaTaskConditionInput>>>;
   id?: InputMaybe<Scalars["ID"]>;
+  isDefault?: InputMaybe<Scalars["Boolean"]>;
   name: Scalars["String"];
 };
 
@@ -389,6 +391,7 @@ export type UpdateTaskFilterMutation = {
     __typename?: "CamundaTaskFilter";
     id?: string | null;
     name: string;
+    isDefault?: boolean | null;
     conditions?: Array<{
       __typename?: "CamundaTaskCondition";
       id?: string | null;
@@ -409,6 +412,7 @@ export type CamundaTaskFilterQuery = {
     __typename?: "CamundaTaskFilter";
     id?: string | null;
     name: string;
+    isDefault?: boolean | null;
     conditions?: Array<{
       __typename?: "CamundaTaskCondition";
       id?: string | null;
@@ -432,6 +436,7 @@ export type CamundaTaskFilterListQuery = {
       __typename?: "CamundaTaskFilter";
       id?: string | null;
       name: string;
+      isDefault?: boolean | null;
       conditions?: Array<{
         __typename?: "CamundaTaskCondition";
         id?: string | null;
@@ -890,6 +895,18 @@ export type CamundaTaskList_CamundaTaskListQuery = {
   };
 };
 
+export type UserInfoQueryVariables = Exact<{ [key: string]: never }>;
+
+export type UserInfoQuery = {
+  __typename?: "Query";
+  userInfo?: {
+    __typename?: "UserInfo";
+    id: string;
+    fullName?: string | null;
+    avatar?: string | null;
+  } | null;
+};
+
 export type UserPermissionsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type UserPermissionsQuery = {
@@ -941,6 +958,7 @@ export const UpdateTaskFilterDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "isDefault" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "conditions" },
@@ -1009,6 +1027,7 @@ export const CamundaTaskFilterDocument = {
               selections: [
                 { kind: "Field", name: { kind: "Name", value: "id" } },
                 { kind: "Field", name: { kind: "Name", value: "name" } },
+                { kind: "Field", name: { kind: "Name", value: "isDefault" } },
                 {
                   kind: "Field",
                   name: { kind: "Name", value: "conditions" },
@@ -1083,6 +1102,10 @@ export const CamundaTaskFilterListDocument = {
                     selections: [
                       { kind: "Field", name: { kind: "Name", value: "id" } },
                       { kind: "Field", name: { kind: "Name", value: "name" } },
+                      {
+                        kind: "Field",
+                        name: { kind: "Name", value: "isDefault" },
+                      },
                       {
                         kind: "Field",
                         name: { kind: "Name", value: "conditions" },
@@ -2734,6 +2757,33 @@ export const CamundaTaskList_CamundaTaskListDocument = {
   CamundaTaskList_CamundaTaskListQuery,
   CamundaTaskList_CamundaTaskListQueryVariables
 >;
+export const UserInfoDocument = {
+  kind: "Document",
+  definitions: [
+    {
+      kind: "OperationDefinition",
+      operation: "query",
+      name: { kind: "Name", value: "userInfo" },
+      selectionSet: {
+        kind: "SelectionSet",
+        selections: [
+          {
+            kind: "Field",
+            name: { kind: "Name", value: "userInfo" },
+            selectionSet: {
+              kind: "SelectionSet",
+              selections: [
+                { kind: "Field", name: { kind: "Name", value: "id" } },
+                { kind: "Field", name: { kind: "Name", value: "fullName" } },
+                { kind: "Field", name: { kind: "Name", value: "avatar" } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UserInfoQuery, UserInfoQueryVariables>;
 export const UserPermissionsDocument = {
   kind: "Document",
   definitions: [

@@ -35,5 +35,10 @@ export const checkServerValidationErrors = (response: any, notify: NotifyFunctio
       const message = errors[0].message;
       notify(message, { type: "error" });
     }
+
+    if (errors[0]?.extensions?.classification === "CompleteUserTaskError") {
+      const message = errors[0].message;
+      notify(message, { type: "error" });
+    }
   }
 };

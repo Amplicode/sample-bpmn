@@ -8,7 +8,7 @@ import {
   DeleteButton,
   EditButton,
   FunctionField,
-  useTranslate,
+  useTranslate, BooleanField,
 } from "react-admin";
 
 const CAMUNDA_TASK_FILTER_LIST =
@@ -17,6 +17,7 @@ const CAMUNDA_TASK_FILTER_LIST =
       content {
         id
         name
+        isDefault
         conditions {
           id
           type
@@ -48,6 +49,7 @@ export const CamundaTaskFilterList = (props: Omit<ListProps, "children">) => {
     <List<ItemType> queryOptions={queryOptions} exporter={false} {...props}>
       <Datagrid bulkActionButtons={false}>
         <TextField source="name" sortable={false} />
+        <BooleanField source="isDefault" sortable={false}/>
         <FunctionField
           source="conditions"
           sortable={false}

@@ -131,6 +131,7 @@ type CamundaTaskCondition {
 type CamundaTaskFilter {
   id: ID
   name: String!
+  isDefault: Boolean
   conditions: [CamundaTaskCondition]
 }
 
@@ -196,6 +197,7 @@ input CamundaTaskConditionInput {
 input CamundaTaskFilterInput {
   id: ID
   name: String!
+  isDefault: Boolean
   conditions: [CamundaTaskConditionInput]
 }
 

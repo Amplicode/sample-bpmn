@@ -1,6 +1,6 @@
 import russianMessages from "@haulmont/ra-language-russian";
-import { TranslationMessages } from "ra-core";
-import { mergeMessages } from "./mergeMessages";
+import {TranslationMessages} from "ra-core";
+import {mergeMessages} from "./mergeMessages";
 
 const messages: TranslationMessages = {
   ...russianMessages,
@@ -27,6 +27,17 @@ const messages: TranslationMessages = {
         taskState: "Состояние"
       }
     },
+
+    CamundaTaskFilter: {
+      name: "Фильтр задач |||| Фильтры задач",
+
+      fields: {
+        id: 'ID',
+        name: 'Наименование',
+        isDefault: 'Использовать по умолчанию',
+        conditions: 'Условия'
+      }
+    },
   },
   enums: {
     CamundaTaskState: {
@@ -34,19 +45,33 @@ const messages: TranslationMessages = {
       COMPLETED: "Завершена",
       CREATED: "Создана"
     },
+    CamundaTaskConditionType: {
+      TASK_ASSIGNEE: 'Исполнитель задачи',
+      TASK_STATE: 'Статус задачи',
+    }
   },
   camunda: {
-      taskList: {
-          open: "Открыть"
-      },
-      taskForm: {
-        title: "Пользовательская задача %{taskName}",
-        process: "Процесс",
-        complete: {
-          button: "Завершить"
-        },
-        taskDetails: "Информация о задаче"
+    taskList: {
+      filter: "Фильтр",
+      open: "Открыть"
+    },
+    taskFilter: {
+      condition: {
+        addCondition: 'Добавить условие',
+        removeCondition: 'Удалить условие',
+        valueExpression: 'Выражение значения',
+        values: 'Значения',
+        type: 'Тип',
       }
+    },
+    taskForm: {
+      title: "Пользовательская задача %{taskName}",
+      process: "Процесс",
+      complete: {
+        button: "Завершить"
+      },
+      taskDetails: "Информация о задаче"
+    }
   }
 };
 

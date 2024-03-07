@@ -13,7 +13,7 @@ import {
   useRedirect,
   Edit,
   ArrayInput,
-  useTranslate,
+  useTranslate, BooleanInput,
 } from "react-admin";
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import { checkServerValidationErrors } from "../../../core/error/checkServerValidationError";
@@ -23,6 +23,7 @@ const CAMUNDA_TASK_FILTER = gql(`query CamundaTaskFilter($id: ID!) {
   camundaTaskFilter(id: $id) {
     id
     name
+    isDefault
     conditions {
       id
       type
@@ -36,6 +37,7 @@ const UPDATE_TASK_FILTER =
   updateTaskFilter(input: $input) {
     id
     name
+    isDefault
     conditions {
       id
       type
@@ -81,7 +83,8 @@ export const CamundaTaskFilterEdit = () => {
   return (
     <Edit<ItemType> mutationMode="pessimistic" queryOptions={queryOptions}>
       <SimpleForm onSubmit={save}>
-        <TextInput source="name" style={minWidthStyle} validate={required()} />
+        <TextInput source="name" style={minWidthStyle} validate={required()} helperText={false}/>
+        <BooleanInput source="isDefault" helperText={false}/>
         <ArrayInput source="conditions">
           <SimpleFormIterator
             fullWidth

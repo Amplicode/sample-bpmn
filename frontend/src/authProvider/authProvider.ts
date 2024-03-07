@@ -1,19 +1,47 @@
-import { gql } from "@amplicode/gql";
+import {gql} from "@amplicode/gql";
 import axios from "axios";
-import { GraphQLError } from "graphql";
+import {GraphQLError} from "graphql";
 import qs from "qs";
-import { AuthProvider } from "react-admin";
-import { apolloClient } from "../core/apollo/client";
+import {AuthProvider} from "react-admin";
+import {apolloClient} from "../core/apollo/client";
+import {ApolloQueryResult} from "@apollo/client";
+import {UserInfoQuery} from "@amplicode/gql/graphql";
 
 export const TOKEN_KEY = "refine-auth";
 export const PERMISSIONS_KEY = "refine-permissions";
 
 const LOGIN_URI = "/login";
+
+const USER_INFO = gql(`
+  query userInfo {
+   userInfo {
+     id
+     fullName
+     avatar
+   }
+  }
+`);
+
 const USER_PERMISSIONS = gql(`
      query userPermissions {
          userPermissions
      }
 `);
+
+interface UserInfo {
+  id: string;
+  fullName?: string | null;
+  avatar?: string | null;
+}
+
+// TODO importing from 'ra-core/src/types' break `npm run build` command
+// import {UserIdentity} from "ra-core/src/types";
+interface UserIdentity {
+  id: string | number;
+  fullName?: string;
+  avatar?: string;
+  [key: string]: any;
+}
 
 export const authProvider: AuthProvider = {
   login: async ({ username, _email, password }) => {
@@ -88,14 +116,20 @@ export const authProvider: AuthProvider = {
 
     return Promise.resolve(permissions);
   },
-  getUserIdentity: async () => {
-    const token = localStorage.getItem(TOKEN_KEY);
-    if (!token) {
-      return Promise.reject();
+  getIdentity: async (): Promise<UserIdentity> => {
+    const token: string | null = localStorage.getItem(TOKEN_KEY);
+    if (token == null) {
+      throw new Error(`Getting identity failed - no token`);
     }
 
-    return Promise.resolve({
-      id: 1,
+    const response: ApolloQueryResult<UserInfoQuery> = await apolloClient.query({
+      query: USER_INFO,
     });
+    const userInfo: UserInfo | null | undefined | void = response?.data?.userInfo;
+    return {
+      id: userInfo?.id ?? "",
+      fullName: userInfo?.fullName ?? "",
+      avatar: userInfo?.avatar ?? "",
+    };
   },
 };

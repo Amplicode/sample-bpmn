@@ -46,6 +46,7 @@ const messages: TranslationMessages = {
       fields: {
         id: 'id',
         name: 'Name',
+        isDefault: 'Use by default',
         conditions: 'Conditions'
       }
     },
@@ -148,6 +149,7 @@ const messages: TranslationMessages = {
       }
     },
     taskList: {
+      filter: "Filter",
       open: "Open"
     },
     taskForm: {

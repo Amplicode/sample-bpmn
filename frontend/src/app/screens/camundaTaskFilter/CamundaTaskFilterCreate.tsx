@@ -1,6 +1,6 @@
-import { gql } from "@amplicode/gql";
-import { ResultOf } from "@graphql-typed-document-node/core";
-import { useCallback } from "react";
+import {gql} from "@amplicode/gql";
+import {ResultOf} from "@graphql-typed-document-node/core";
+import {useCallback} from "react";
 import {
   ArrayInput,
   Create,
@@ -11,22 +11,23 @@ import {
   useCreate,
   useNotify,
   useRedirect,
-  useTranslate,
+  useTranslate, BooleanInput,
 } from "react-admin";
 import {
   FieldValues,
   SubmitHandler,
 } from "react-hook-form";
-import { Button } from "@mui/material";
-import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material";
-import { checkServerValidationErrors } from "../../../core/error/checkServerValidationError";
-import { ConditionInputs } from "./ConditionInputs";
+import {Button} from "@mui/material";
+import {AddCircleOutline, RemoveCircleOutline} from "@mui/icons-material";
+import {checkServerValidationErrors} from "../../../core/error/checkServerValidationError";
+import {ConditionInputs} from "./ConditionInputs";
 
 const UPDATE_TASK_FILTER =
   gql(`mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {
   updateTaskFilter(input: $input) {
     id
     name
+    isDefault
     conditions {
       id
       type
@@ -36,7 +37,7 @@ const UPDATE_TASK_FILTER =
   }
 }`);
 
-const minWidthStyle = { minWidth: 400 };
+const minWidthStyle = {minWidth: 400};
 
 export const CamundaTaskFilterCreate = () => {
   const redirect = useRedirect();
@@ -47,12 +48,12 @@ export const CamundaTaskFilterCreate = () => {
   const save: SubmitHandler<FieldValues> = useCallback(
     async (data: FieldValues) => {
       try {
-        const params = { data, meta: { mutation: UPDATE_TASK_FILTER } };
-        const options = { returnPromise: true };
+        const params = {data, meta: {mutation: UPDATE_TASK_FILTER}};
+        const options = {returnPromise: true};
 
         await create("CamundaTaskFilter", params, options);
 
-        notify("ra.notification.created", { messageArgs: { smart_count: 1 } });
+        notify("ra.notification.created", {messageArgs: {smart_count: 1}});
         redirect("list", "CamundaTaskFilter");
       } catch (response: any) {
         console.log("create failed with error", response);
@@ -65,23 +66,24 @@ export const CamundaTaskFilterCreate = () => {
   return (
     <Create<ItemType>>
       <SimpleForm onSubmit={save}>
-      <TextInput source="name" style={minWidthStyle} validate={required()} />
+        <TextInput source="name" style={minWidthStyle} validate={required()} helperText={false}/>
+        <BooleanInput source="isDefault" helperText={false}/>
         <ArrayInput source="conditions">
           <SimpleFormIterator
             fullWidth
             addButton={
-              <Button startIcon={<AddCircleOutline />}>
+              <Button startIcon={<AddCircleOutline/>}>
                 {translate("camunda.taskFilter.condition.addCondition")}
               </Button>
             }
             removeButton={
-              <Button startIcon={<RemoveCircleOutline />}>
+              <Button startIcon={<RemoveCircleOutline/>}>
                 {translate("camunda.taskFilter.condition.removeCondition")}
               </Button>
             }
             disableClear
           >
-            <ConditionInputs />
+            <ConditionInputs/>
           </SimpleFormIterator>
         </ArrayInput>
       </SimpleForm>

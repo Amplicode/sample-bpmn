@@ -21,6 +21,7 @@ const CAMUNDA_TASK_FILTER_LIST =
       content {
         id
         name
+        isDefault
         conditions {
           id
           type
@@ -82,8 +83,10 @@ export const TaskList = (props: Omit<ListProps, "children">) => {
     }));
   }, [data]);
 
+  const defaultFilter = data?.camundaTaskFilterList.content?.find(value => value?.isDefault);
+
   const filters = choices
-    ? [<SelectInput source="filterId" alwaysOn choices={choices} />]
+    ? [<SelectInput source="filterId" alwaysOn choices={choices} label="camunda.taskList.filter"/>]
     : [];
 
   return (
@@ -91,9 +94,11 @@ export const TaskList = (props: Omit<ListProps, "children">) => {
       queryOptions={queryOptions}
       exporter={false}
       filters={filters}
+      filterDefaultValues={{filterId: defaultFilter?.id}}
+      sort={{field: "taskState", order: "DESC"}}
       {...props}
     >
-      <Datagrid rowClick="show" bulkActionButtons={false}>
+      <Datagrid rowClick="edit" bulkActionButtons={false}>
         <TextField source="name" />
         <TextField source="processName" />
         <TextField source="processInstanceKey" />

@@ -13,11 +13,11 @@ import { TypedDocumentNode as DocumentNode } from "@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-  "mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}":
+  "mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    isDefault\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}":
     types.UpdateTaskFilterDocument,
-  "query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}":
+  "query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    isDefault\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}":
     types.CamundaTaskFilterDocument,
-  "query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }":
+  "query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        isDefault\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }":
     types.CamundaTaskFilterListDocument,
   "\nmutation DeleteCamundaTaskFilter($id: ID!) {\n  deleteCamundaTaskFilter(id: $id)\n}\n":
     types.DeleteCamundaTaskFilterDocument,
@@ -75,6 +75,8 @@ const documents = {
     types.CamundaVariablesDocument,
   "query CamundaTaskList_CamundaTaskList(\n    $sort: [CamundaTaskOrderByInput],\n    $page: OffsetPageInput,\n    $filter: CamundaTaskListFilterInput,\n) {\n    camundaTaskList(\n        page: $page,\n        sort: $sort,\n        filter: $filter\n) {\n        content {\n            assignee\n            creationDate\n            dueDate\n            followUpDate\n            id\n            name\n            processName\n            processInstanceKey\n            taskState\n        }\n        totalElements\n    }\n}":
     types.CamundaTaskList_CamundaTaskListDocument,
+  "\n  query userInfo {\n   userInfo {\n     id\n     fullName\n     avatar\n   }\n  }\n":
+    types.UserInfoDocument,
   "\n     query userPermissions {\n         userPermissions\n     }\n":
     types.UserPermissionsDocument,
 };
@@ -97,20 +99,20 @@ export function gql(source: string): unknown;
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"
-): (typeof documents)["mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"];
+  source: "mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    isDefault\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"
+): (typeof documents)["mutation UpdateTaskFilter($input: CamundaTaskFilterInput!) {\n  updateTaskFilter(input: $input) {\n    id\n    name\n    isDefault\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"
-): (typeof documents)["query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"];
+  source: "query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    isDefault\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"
+): (typeof documents)["query CamundaTaskFilter($id: ID!) {\n  camundaTaskFilter(id: $id) {\n    id\n    name\n    isDefault\n    conditions {\n      id\n      type\n      values\n      valueExpression\n    }\n  }\n}"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(
-  source: "query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }"
-): (typeof documents)["query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }"];
+  source: "query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        isDefault\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }"
+): (typeof documents)["query CamundaTaskFilterList($page: OffsetPageInput) {\n    camundaTaskFilterList(page: $page) {\n      content {\n        id\n        name\n        isDefault\n        conditions {\n          id\n          type\n          values\n          valueExpression\n        }\n      }\n      totalElements\n    }\n  }"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -279,6 +281,12 @@ export function gql(
 export function gql(
   source: "query CamundaTaskList_CamundaTaskList(\n    $sort: [CamundaTaskOrderByInput],\n    $page: OffsetPageInput,\n    $filter: CamundaTaskListFilterInput,\n) {\n    camundaTaskList(\n        page: $page,\n        sort: $sort,\n        filter: $filter\n) {\n        content {\n            assignee\n            creationDate\n            dueDate\n            followUpDate\n            id\n            name\n            processName\n            processInstanceKey\n            taskState\n        }\n        totalElements\n    }\n}"
 ): (typeof documents)["query CamundaTaskList_CamundaTaskList(\n    $sort: [CamundaTaskOrderByInput],\n    $page: OffsetPageInput,\n    $filter: CamundaTaskListFilterInput,\n) {\n    camundaTaskList(\n        page: $page,\n        sort: $sort,\n        filter: $filter\n) {\n        content {\n            assignee\n            creationDate\n            dueDate\n            followUpDate\n            id\n            name\n            processName\n            processInstanceKey\n            taskState\n        }\n        totalElements\n    }\n}"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(
+  source: "\n  query userInfo {\n   userInfo {\n     id\n     fullName\n     avatar\n   }\n  }\n"
+): (typeof documents)["\n  query userInfo {\n   userInfo {\n     id\n     fullName\n     avatar\n   }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
